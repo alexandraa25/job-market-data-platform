@@ -8,7 +8,7 @@ with DAG(
     dag_id="job_market_etl",
     description="Job Market ETL: extract → transform → validate → load",
     start_date=pendulum.datetime(2026, 10, 1, tz="Europe/Bucharest"),
-    schedule="@daily",
+    schedule="7 19 * * *",
     catchup=False,
     max_active_runs=1,
     tags=["etl", "data-engineering", "job-market"],

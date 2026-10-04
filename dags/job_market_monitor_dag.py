@@ -20,6 +20,7 @@ with DAG(
         do_xcom_push=False,
         env={
             "RECONCILE_METADATA_URL": "postgresql+psycopg://airflow:airflow@airflow-db:5432/airflow",
+            "ETL_DAILY_TIME": "19:07",
             "MAX_REJECTED_PERCENT": os.getenv("MAX_REJECTED_PERCENT", "10"),
         },
         retries=2,

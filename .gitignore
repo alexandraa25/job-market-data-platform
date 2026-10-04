@@ -10,8 +10,10 @@ data/processed/*
 data/runs/
 
 AGENTS.md
-README.md
 
 # Power BI local caches and binary report
 **/.pbi/
 powerbi/*.pbix
+
+
+/DOCUMENTATIE_PERSONALA.md

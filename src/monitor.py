@@ -86,9 +86,13 @@ def persist_alert(connection, run_id, kind, active, details):
     return None
 
 
-def check_daily(runs, tasks, now, grace_minutes=60):
+def check_daily(
+    runs, tasks, now, grace_minutes=60, scheduled_hour=0, scheduled_minute=0
+):
     local = now.astimezone(ZoneInfo("Europe/Bucharest"))
-    due = local.replace(hour=0, minute=0, second=0, microsecond=0)
+    due = local.replace(
+        hour=scheduled_hour, minute=scheduled_minute, second=0, microsecond=0
+    )
     candidates = [
         r
         for r in runs
@@ -155,7 +159,10 @@ def monitor(business, metadata, threshold=10, now=None):
                 transition = persist_alert(c, run["run_id"], kind, active, details)
                 if transition:
                     transitions.append((run["run_id"], kind, transition))
-        day, late, confirmed, details = check_daily(runs, tasks, now)
+        hour, minute = map(int, os.getenv("ETL_DAILY_TIME", "00:00").split(":"))
+        day, late, confirmed, details = check_daily(
+            runs, tasks, now, scheduled_hour=hour, scheduled_minute=minute
+        )
         transition = None
         if late or (details["state"] == "success" and details["all_tasks_success"]):
             transition = persist_alert(

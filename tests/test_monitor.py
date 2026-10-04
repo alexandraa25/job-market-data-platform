@@ -73,3 +73,23 @@ def test_alert_lifecycle(engine):
         assert persist_alert(c, "test", "pipeline_failed", False, {}) is None
         assert persist_alert(c, "test", "pipeline_failed", True, {}) == "reopened"
         assert c.execute(text("SELECT count(*) FROM pipeline_alerts")).scalar() == 1
+
+
+def test_custom_daily_time_excludes_older_run():
+    now = datetime(2026, 10, 4, 19, 8, tzinfo=ZoneInfo("Europe/Bucharest"))
+    old_run = {
+        "run_id": "old",
+        "state": "success",
+        "run_type": "scheduled",
+        "run_after": now.replace(hour=0, minute=0),
+        "clear_number": 0,
+    }
+    result = check_daily([old_run], {}, now, scheduled_hour=19, scheduled_minute=7)
+    assert result[3]["state"] == "missing"
+    assert result[1] is False
+    assert (
+        check_daily(
+            [], {}, now.replace(hour=20), scheduled_hour=19, scheduled_minute=7
+        )[1]
+        is True
+    )

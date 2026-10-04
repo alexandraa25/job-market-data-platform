@@ -8,3 +8,9 @@ __pycache__
 data/raw/*
 data/processed/*
 logs/*
+DOCUMENTATIE_PERSONALA.md
+AGENTS.md
+.pytest_cache
+data/runs/
+powerbi/*.pbix
+**/.pbi/
