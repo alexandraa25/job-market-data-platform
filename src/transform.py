@@ -68,11 +68,15 @@ def transform_jobs(data):
     )
 
     # Convert dates
+    df["_dq_invalid_pubDate"] = df["pubDate"].notna() & pd.to_datetime(df["pubDate"], unit="s", errors="coerce").isna()
+
     df["pubDate"] = pd.to_datetime(
         df["pubDate"],
         unit="s",
         errors="coerce"
     )
+
+    df["_dq_invalid_expiryDate"] = df["expiryDate"].notna() & pd.to_datetime(df["expiryDate"], unit="s", errors="coerce").isna()
 
     df["expiryDate"] = pd.to_datetime(
         df["expiryDate"],
@@ -81,10 +85,14 @@ def transform_jobs(data):
     )
 
     # Convert salary columns to numeric
+    df["_dq_invalid_minSalary"] = df["minSalary"].notna() & pd.to_numeric(df["minSalary"], errors="coerce").isna()
+
     df["minSalary"] = pd.to_numeric(
         df["minSalary"],
         errors="coerce"
     )
+
+    df["_dq_invalid_maxSalary"] = df["maxSalary"].notna() & pd.to_numeric(df["maxSalary"], errors="coerce").isna()
 
     df["maxSalary"] = pd.to_numeric(
         df["maxSalary"],

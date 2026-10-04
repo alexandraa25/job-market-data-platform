@@ -1,70 +1,16 @@
 import logging
-
-from extract import (
-    extract_jobs,
-    save_raw_data
-)
-
-from transform import (
-    transform_jobs,
-    normalize_list_columns,
-    add_primary_role,
-    extract_skills,
-    validate_jobs,
-    save_processed_data
-)
-
-from load import (
-    create_db_engine,
-    test_connection,
-    upsert_jobs
-)
+from uuid import uuid4
 
 from logger_config import setup_logger
-
-
-logger = logging.getLogger(__name__)
+from stages import run_stage
 
 
 def main():
-
-    logger.info("Starting ETL pipeline")
-
-    # 1. EXTRACT
-    data = extract_jobs(
-        max_jobs_per_query=40
-    )
-
-    save_raw_data(data)
-
-    # 2. TRANSFORM
-    df = transform_jobs(data)
-
-    df = normalize_list_columns(df)
-
-    df = add_primary_role(df)
-
-    df = extract_skills(df)
-
-    # 3. VALIDATE
-    validate_jobs(df)
-
-    # 4. LOAD
-    engine = create_db_engine()
-
-    test_connection(engine)
-
-    upsert_jobs(
-        df,
-        engine
-    )
-
-    # 5. SAVE PROCESSED DATA
-    save_processed_data(df)
-
-    logger.info(
-        "ETL pipeline completed successfully"
-    )
+    run_id = "manual_" + uuid4().hex
+    logging.info("Starting ETL pipeline | run %s", run_id)
+    for stage in ("extract", "transform", "validate", "load"):
+        run_stage(stage, run_id, audit=True, source="manual")
+    logging.info("ETL pipeline completed successfully | run %s", run_id)
 
 
 if __name__ == "__main__":

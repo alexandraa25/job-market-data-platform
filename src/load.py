@@ -5,6 +5,10 @@ import pandas as pd
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, text
 from sqlalchemy.engine import URL
+try:
+    from .model import sync_dimensions
+except ImportError:
+    from model import sync_dimensions
 
 
 logger = logging.getLogger(__name__)
@@ -315,6 +319,8 @@ def upsert_jobs(df, engine):
             else:
                 skipped += 1
 
+        sync_dimensions(connection, records)
+
     logger.info(
         "PostgreSQL UPSERT completed | "
         "Inserted: %s | Updated: %s | Skipped: %s",
@@ -322,3 +328,4 @@ def upsert_jobs(df, engine):
         updated,
         skipped
     )
+    return {"inserted": inserted, "updated": updated, "skipped": skipped}
