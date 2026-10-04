@@ -1,4 +1,5 @@
 """Run one ETL stage; exchange typed JSON artifacts within a DAG run."""
+
 import argparse
 import hashlib
 import json
@@ -12,16 +13,28 @@ try:
     from .audit import begin_stage, finish_stage
     from .quality import validate_and_save
     from .extract import extract_jobs, save_raw_data
-    from .transform import (transform_jobs, normalize_list_columns, add_primary_role,
-                            extract_skills, validate_jobs, save_processed_data)
+    from .transform import (
+        transform_jobs,
+        normalize_list_columns,
+        add_primary_role,
+        extract_skills,
+        validate_jobs,
+        save_processed_data,
+    )
     from .load import create_db_engine, test_connection, upsert_jobs
     from .logger_config import setup_logger
 except ImportError:
     from audit import begin_stage, finish_stage
     from quality import validate_and_save
     from extract import extract_jobs, save_raw_data
-    from transform import (transform_jobs, normalize_list_columns, add_primary_role,
-                           extract_skills, validate_jobs, save_processed_data)
+    from transform import (
+        transform_jobs,
+        normalize_list_columns,
+        add_primary_role,
+        extract_skills,
+        validate_jobs,
+        save_processed_data,
+    )
     from load import create_db_engine, test_connection, upsert_jobs
     from logger_config import setup_logger
 
@@ -35,7 +48,14 @@ def run_directory(run_id):
 
 def write_frame(df, path):
     temporary = path.with_suffix(".tmp")
-    df.to_json(temporary, orient="table", date_format="iso", date_unit="ns", double_precision=15, index=False)
+    df.to_json(
+        temporary,
+        orient="table",
+        date_format="iso",
+        date_unit="ns",
+        double_precision=15,
+        index=False,
+    )
     temporary.replace(path)
 
 
@@ -55,7 +75,9 @@ def _execute_stage(stage, run_id):
         return {"extracted": len(data["jobs"])}
     elif stage == "transform":
         data = json.loads(raw.read_text(encoding="utf-8"))
-        df = extract_skills(add_primary_role(normalize_list_columns(transform_jobs(data))))
+        df = extract_skills(
+            add_primary_role(normalize_list_columns(transform_jobs(data)))
+        )
         write_frame(df, transformed)
     elif stage == "validate":
         # Remove any previous approval before revalidating this run.
@@ -65,7 +87,11 @@ def _execute_stage(stage, run_id):
         df = validate_and_save(df, directory)
         write_frame(df, validated)
         report = json.loads((directory / "quality_report.json").read_text())
-        return {"accepted": report["accepted"], "rejected": report["rejected"], "quality_report_path": str(directory / "quality_report.json")}
+        return {
+            "accepted": report["accepted"],
+            "rejected": report["rejected"],
+            "quality_report_path": str(directory / "quality_report.json"),
+        }
     elif stage == "load":
         df = pd.read_json(validated, orient="table")
         engine = create_db_engine()
@@ -81,7 +107,6 @@ def _execute_stage(stage, run_id):
     logger.info("Stage %s completed successfully", stage)
 
 
-
 def run_stage(stage, run_id, audit=False, source="airflow"):
     if not audit:
         return _execute_stage(stage, run_id)
@@ -95,18 +120,29 @@ def run_stage(stage, run_id, audit=False, source="airflow"):
             report_path = run_directory(run_id) / "quality_report.json"
             if stage == "validate" and report_path.exists():
                 report = json.loads(report_path.read_text())
-                metrics = {"accepted": report["accepted"], "rejected": report["rejected"],
-                           "quality_report_path": str(report_path)}
+                metrics = {
+                    "accepted": report["accepted"],
+                    "rejected": report["rejected"],
+                    "quality_report_path": str(report_path),
+                }
             try:
-                finish_stage(engine, run_id, stage, attempt, metrics, type(error).__name__)
+                finish_stage(
+                    engine, run_id, stage, attempt, metrics, type(error).__name__
+                )
             except Exception:
-                logger.error("Could not persist failure audit for run %s stage %s", run_id, stage)
+                logger.error(
+                    "Could not persist failure audit for run %s stage %s", run_id, stage
+                )
             raise
         finish_stage(engine, run_id, stage, attempt, metrics)
-        logger.info("Stage %s completed successfully | audit attempt %s", stage, attempt)
+        logger.info(
+            "Stage %s completed successfully | audit attempt %s", stage, attempt
+        )
         return metrics
     finally:
         engine.dispose()
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("stage", choices=["extract", "transform", "validate", "load"])

@@ -1,0 +1,65 @@
+table Overview
+	lineageTag: 5c69d930-4356-4f52-88b0-29b64245c1ef
+
+	measure 'Joburi colectate' = SUM(Overview[total_jobs])
+		formatString: #,0
+		lineageTag: d6822849-b07d-4650-9925-14790bf29071
+
+	measure Companii = SUM(Overview[total_companies])
+		formatString: #,0
+		lineageTag: 372348f9-1a74-42f7-8c70-c45ae7748fd6
+
+	measure 'Cu salariu' = SUM(Overview[jobs_with_salary])
+		formatString: #,0
+		lineageTag: bc51672a-d549-4889-84b6-e008aa5fcf9c
+
+	measure 'Acoperire salarii' = DIVIDE(SUM(Overview[jobs_with_salary]),SUM(Overview[total_jobs]))
+		formatString: 0.0%
+		lineageTag: 199fcba7-9c9d-4707-9193-00fb6f491266
+
+	column total_jobs
+		dataType: int64
+		formatString: 0
+		lineageTag: 74eded76-2b06-4c6d-804a-7433cb3ef2df
+		summarizeBy: none
+		sourceColumn: total_jobs
+
+	column total_companies
+		dataType: int64
+		formatString: 0
+		lineageTag: 3ad7d05d-b648-4f9d-8bf3-07562ad77ea8
+		summarizeBy: none
+		sourceColumn: total_companies
+
+	column jobs_with_salary
+		dataType: int64
+		formatString: 0
+		lineageTag: 54c64235-7f85-4b13-811e-dc72c0f2d127
+		summarizeBy: none
+		sourceColumn: jobs_with_salary
+
+	column jobs_without_salary
+		dataType: int64
+		formatString: 0
+		lineageTag: 70a0af64-0459-47e9-aef7-1f6b593f8d19
+		summarizeBy: none
+		sourceColumn: jobs_without_salary
+
+	column salary_coverage_pct
+		dataType: double
+		formatString: 0.00
+		lineageTag: 7a6dee30-4324-4796-a841-563afa094d01
+		summarizeBy: none
+		sourceColumn: salary_coverage_pct
+
+	partition Overview = m
+		mode: import
+		source =
+				let
+				 Snapshot = #table({"total_jobs", "total_companies", "jobs_with_salary", "jobs_without_salary", "salary_coverage_pct"}, {
+				{283, 166, 101, 182, 35.69}
+				}),
+				 Source = if UsePostgreSQL then PostgreSQL.Database("localhost:5433", "job_market_db", [Query="SELECT * FROM analytics.overview", CreateNavigationProperties=false]) else Snapshot,
+				 Typed = Table.TransformColumnTypes(Source, {{"total_jobs", Int64.Type}, {"total_companies", Int64.Type}, {"jobs_with_salary", Int64.Type}, {"jobs_without_salary", Int64.Type}, {"salary_coverage_pct", type number}})
+				in Typed
+

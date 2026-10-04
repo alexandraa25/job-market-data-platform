@@ -1,0 +1,5 @@
+expression UsePostgreSQL = false meta [IsParameterQuery=true, Type="Logical", IsParameterQueryRequired=true]
+	lineageTag: 476ca5a5-1385-4bf6-bbe4-829df7f4583a
+
+	annotation PBI_ResultType = Logical
+

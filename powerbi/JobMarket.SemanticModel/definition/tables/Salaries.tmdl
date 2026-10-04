@@ -1,0 +1,118 @@
+table Salaries
+	lineageTag: bd53e4e1-93c8-4765-b413-fb758402bcd2
+
+	measure 'Esantion salarii' = SUM(Salaries[salary_sample_size])
+		formatString: #,0
+		lineageTag: f45dd885-dfa1-407f-9acf-d7a8250d1101
+
+	measure 'Medie comparabila' = IF(HASONEVALUE(Salaries[currency]) && HASONEVALUE(Salaries[salary_period]) && NOT(ISBLANK(SELECTEDVALUE(Salaries[currency]))) && NOT(ISBLANK(SELECTEDVALUE(Salaries[salary_period]))), DIVIDE(SUMX(Salaries,Salaries[mean_advertised_salary]*Salaries[salary_sample_size]),SUM(Salaries[salary_sample_size])))
+		formatString: #,0.00
+		lineageTag: 559532f2-bc86-4571-8262-6e7a7a7c4bcf
+
+	column primary_role
+		dataType: string
+		formatString: 0
+		lineageTag: be57b0bf-582f-442b-aaf7-f70c6f982fc1
+		summarizeBy: none
+		sourceColumn: primary_role
+
+	column currency
+		dataType: string
+		formatString: 0
+		lineageTag: 74f810ce-0eb7-4d74-a684-c6cd7330a1ca
+		summarizeBy: none
+		sourceColumn: currency
+
+	column salary_period
+		dataType: string
+		formatString: 0
+		lineageTag: 33eca7d4-80a6-4329-ba7c-cecaa31ad21e
+		summarizeBy: none
+		sourceColumn: salary_period
+
+	column total_jobs
+		dataType: int64
+		formatString: 0
+		lineageTag: 63715ed3-201b-4740-999d-e8052df86582
+		summarizeBy: none
+		sourceColumn: total_jobs
+
+	column salary_sample_size
+		dataType: int64
+		formatString: 0
+		lineageTag: 4ff68b7a-672a-499b-8efb-d5db0c006e50
+		summarizeBy: none
+		sourceColumn: salary_sample_size
+
+	column jobs_without_salary
+		dataType: int64
+		formatString: 0
+		lineageTag: 0f68d460-b07c-4592-9721-dc0c9987715e
+		summarizeBy: none
+		sourceColumn: jobs_without_salary
+
+	column salary_coverage_pct
+		dataType: double
+		formatString: 0.00
+		lineageTag: b6070348-4724-4925-97cd-5adb02755f2d
+		summarizeBy: none
+		sourceColumn: salary_coverage_pct
+
+	column mean_advertised_salary
+		dataType: double
+		formatString: 0.00
+		lineageTag: 1d1b993e-d787-4dff-89a5-131d6068f9e0
+		summarizeBy: none
+		sourceColumn: mean_advertised_salary
+
+	column median_advertised_salary
+		dataType: double
+		formatString: 0.00
+		lineageTag: cfd99b43-e967-4abb-b485-a1e50666264a
+		summarizeBy: none
+		sourceColumn: median_advertised_salary
+
+	column lowest_advertised_salary
+		dataType: double
+		formatString: 0.00
+		lineageTag: 1f79564b-184c-4162-954d-d22d83c3a8bb
+		summarizeBy: none
+		sourceColumn: lowest_advertised_salary
+
+	column highest_advertised_salary
+		dataType: double
+		formatString: 0.00
+		lineageTag: e35ca95c-db28-4e5d-a912-4286e030961f
+		summarizeBy: none
+		sourceColumn: highest_advertised_salary
+
+	partition Salaries = m
+		mode: import
+		source =
+				let
+				 Snapshot = #table({"primary_role", "currency", "salary_period", "total_jobs", "salary_sample_size", "jobs_without_salary", "salary_coverage_pct", "mean_advertised_salary", "median_advertised_salary", "lowest_advertised_salary", "highest_advertised_salary"}, {
+				{"Data Analyst", "USD", "annual", 6, 6, 0, 100.0, 111539.17, 92511, 68500, 209000},
+				{"Data Analyst", null, "annual", 10, 0, 10, 0.0, null, null, null, null},
+				{"Data Engineer", "EUR", "annual", 1, 1, 0, 100.0, 50000.0, 50000, 50000, 50000},
+				{"Data Engineer", "USD", "annual", 5, 5, 0, 100.0, 184679.5, 143397.5, 72000, 448000},
+				{"Data Engineer", null, "annual", 13, 0, 13, 0.0, null, null, null, null},
+				{"Data Scientist", "USD", "annual", 10, 10, 0, 100.0, 219656.7, 161575, 92500, 486000},
+				{"Data Scientist", "USD", "hourly", 1, 1, 0, 100.0, 125.0, 125, 125, 125},
+				{"Data Scientist", null, "annual", 19, 0, 19, 0.0, null, null, null, null},
+				{"Machine Learning Engineer", "USD", "annual", 5, 4, 1, 80.0, 186637.5, 169850, 146500, 260350},
+				{"Machine Learning Engineer", "USD", "hourly", 1, 1, 0, 100.0, 125.0, 125, 125, 125},
+				{"Machine Learning Engineer", null, "annual", 11, 0, 11, 0.0, null, null, null, null},
+				{"Other", "CAD", "annual", 3, 3, 0, 100.0, 223333.33, 265000, 140000, 265000},
+				{"Other", "EUR", "hourly", 1, 1, 0, 100.0, 14.0, 14, 14, 14},
+				{"Other", "PHP", "annual", 1, 1, 0, 100.0, 300000.0, 300000, 300000, 300000},
+				{"Other", "PHP", "monthly", 1, 1, 0, 100.0, 60000.0, 60000, 60000, 60000},
+				{"Other", "THB", "annual", 1, 1, 0, 100.0, 190000.0, 190000, 190000, 190000},
+				{"Other", "USD", "annual", 58, 56, 2, 96.55, 167566.93, 145250, 50000, 640000},
+				{"Other", "USD", "hourly", 12, 8, 4, 66.67, 69.11, 67.5, 29, 135},
+				{"Other", "USD", "monthly", 2, 2, 0, 100.0, 9238.25, 9238.25, 7476.5, 11000},
+				{"Other", null, "annual", 122, 0, 122, 0.0, null, null, null, null}
+				}),
+				 Source = if UsePostgreSQL then PostgreSQL.Database("localhost:5433", "job_market_db", [Query="SELECT * FROM analytics.salary_by_role", CreateNavigationProperties=false]) else Snapshot,
+				 Typed = Table.TransformColumnTypes(Source, {{"primary_role", type text}, {"currency", type text}, {"salary_period", type text}, {"total_jobs", Int64.Type}, {"salary_sample_size", Int64.Type}, {"jobs_without_salary", Int64.Type}, {"salary_coverage_pct", type number}, {"mean_advertised_salary", type number}, {"median_advertised_salary", type number}, {"lowest_advertised_salary", type number}, {"highest_advertised_salary", type number}})
+				in Typed
+

@@ -5,20 +5,36 @@ from src.quality import assess_jobs, validate_and_save
 
 
 def valid_frame():
-    return pd.DataFrame({"guid": ["ok"], "title": ["Data Engineer"], "companyName": ["Company"],
-                         "minSalary": [10.0], "maxSalary": [20.0], "avgSalary": [15.0],
-                         "pubDate": [pd.Timestamp("2026-10-01")],
-                         "expiryDate": [pd.Timestamp("2026-11-01")],
-                         "primary_role": ["Data Engineer"], "has_python": [1]})
+    return pd.DataFrame(
+        {
+            "guid": ["ok"],
+            "title": ["Data Engineer"],
+            "companyName": ["Company"],
+            "minSalary": [10.0],
+            "maxSalary": [20.0],
+            "avgSalary": [15.0],
+            "pubDate": [pd.Timestamp("2026-10-01")],
+            "expiryDate": [pd.Timestamp("2026-11-01")],
+            "primary_role": ["Data Engineer"],
+            "has_python": [1],
+        }
+    )
 
 
-@pytest.mark.parametrize("column,value,reason", [
-    ("guid", " ", "missing_guid"), ("title", None, "missing_title"),
-    ("companyName", "", "missing_companyName"), ("minSalary", -1, "invalid_minSalary"),
-    ("minSalary", 30, "salary_range_reversed"), ("pubDate", pd.NaT, "missing_or_invalid_pubDate"),
-    ("expiryDate", pd.Timestamp("2026-09-01"), "expiry_before_publication"),
-    ("has_python", 2, "invalid_has_python"), ("primary_role", "Unknown", "invalid_primary_role"),
-])
+@pytest.mark.parametrize(
+    "column,value,reason",
+    [
+        ("guid", " ", "missing_guid"),
+        ("title", None, "missing_title"),
+        ("companyName", "", "missing_companyName"),
+        ("minSalary", -1, "invalid_minSalary"),
+        ("minSalary", 30, "salary_range_reversed"),
+        ("pubDate", pd.NaT, "missing_or_invalid_pubDate"),
+        ("expiryDate", pd.Timestamp("2026-09-01"), "expiry_before_publication"),
+        ("has_python", 2, "invalid_has_python"),
+        ("primary_role", "Unknown", "invalid_primary_role"),
+    ],
+)
 def test_reasons(column, value, reason):
     frame = valid_frame()
     frame[column] = value

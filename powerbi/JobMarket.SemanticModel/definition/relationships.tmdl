@@ -1,0 +1,12 @@
+relationship role_Roles
+	fromColumn: Roles.primary_role
+	toColumn: RoleFilter.primary_role
+
+relationship role_Skills
+	fromColumn: Skills.primary_role
+	toColumn: RoleFilter.primary_role
+
+relationship role_Salaries
+	fromColumn: Salaries.primary_role
+	toColumn: RoleFilter.primary_role
+

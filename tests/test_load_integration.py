@@ -1,4 +1,5 @@
 """Real PostgreSQL tests, enabled only with TEST_DATABASE_URL."""
+
 import logging
 import os
 from pathlib import Path
@@ -11,8 +12,12 @@ from sqlalchemy.engine import make_url
 from sqlalchemy.exc import IntegrityError
 
 from src.load import upsert_jobs
-from src.transform import (transform_jobs, normalize_list_columns,
-                           add_primary_role, extract_skills)
+from src.transform import (
+    transform_jobs,
+    normalize_list_columns,
+    add_primary_role,
+    extract_skills,
+)
 
 
 @pytest.fixture
@@ -28,12 +33,16 @@ def engine():
     try:
         with admin.begin() as connection:
             connection.execute(text(f'CREATE SCHEMA "{schema}"'))
-        isolated = create_engine(url, connect_args={"options": f"-csearch_path={schema}"})
+        isolated = create_engine(
+            url, connect_args={"options": f"-csearch_path={schema}"}
+        )
         # Use the real jobs schema, excluding the unrelated CREATE DATABASE statement.
         ddl = (Path(__file__).parents[1] / "sql/init.sql").read_text().split(";")[0]
         with isolated.begin() as connection:
             connection.execute(text(ddl))
-            for migration in sorted((Path(__file__).parents[1] / "sql/migrations").glob("*.sql")):
+            for migration in sorted(
+                (Path(__file__).parents[1] / "sql/migrations").glob("*.sql")
+            ):
                 for statement in migration.read_text().split(";"):
                     if statement.strip():
                         connection.execute(text(statement))
@@ -48,28 +57,44 @@ def engine():
 
 @pytest.fixture
 def jobs():
-    job = {"guid": "000123", "search_query": "data engineer",
-           "title": "Data Engineer", "companyName": "Test Company",
-           "employmentType": "Full Time", "minSalary": 50000,
-           "maxSalary": 70000, "salaryPeriod": "annual", "currency": "USD",
-           "seniority": ["Senior"], "locationRestrictions": [],
-           "categories": ["Data"], "parentCategories": [],
-           "description": "Python SQL", "pubDate": 1760000000,
-           "expiryDate": None, "applicationLink": "https://example.com/job"}
-    return extract_skills(add_primary_role(normalize_list_columns(
-        transform_jobs({"jobs": [job]})
-    )))
+    job = {
+        "guid": "000123",
+        "search_query": "data engineer",
+        "title": "Data Engineer",
+        "companyName": "Test Company",
+        "employmentType": "Full Time",
+        "minSalary": 50000,
+        "maxSalary": 70000,
+        "salaryPeriod": "annual",
+        "currency": "USD",
+        "seniority": ["Senior"],
+        "locationRestrictions": [],
+        "categories": ["Data"],
+        "parentCategories": [],
+        "description": "Python SQL",
+        "pubDate": 1760000000,
+        "expiryDate": None,
+        "applicationLink": "https://example.com/job",
+    }
+    return extract_skills(
+        add_primary_role(normalize_list_columns(transform_jobs({"jobs": [job]})))
+    )
 
 
 def snapshot(engine):
     with engine.connect() as connection:
-        return [dict(row) for row in connection.execute(
-            text("SELECT * FROM jobs ORDER BY guid")
-        ).mappings()]
+        return [
+            dict(row)
+            for row in connection.execute(
+                text("SELECT * FROM jobs ORDER BY guid")
+            ).mappings()
+        ]
 
 
 def assert_counts(caplog, inserted, updated, skipped):
-    assert f"Inserted: {inserted} | Updated: {updated} | Skipped: {skipped}" in caplog.text
+    assert (
+        f"Inserted: {inserted} | Updated: {updated} | Skipped: {skipped}" in caplog.text
+    )
 
 
 def test_new_job_insert(engine, jobs, caplog):

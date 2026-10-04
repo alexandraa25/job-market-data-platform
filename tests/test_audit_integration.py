@@ -31,21 +31,33 @@ def test_retry_keeps_failure_history(audit_engine):
     finish_stage(audit_engine, "run", "extract", second, {"extracted": 3})
     for stage in ("transform", "validate", "load"):
         attempt = begin_stage(audit_engine, "run", stage, "airflow")
-        finish_stage(audit_engine, "run", stage, attempt,
-                     {"inserted": 1, "updated": 1, "skipped": 1} if stage == "load" else {})
+        finish_stage(
+            audit_engine,
+            "run",
+            stage,
+            attempt,
+            {"inserted": 1, "updated": 1, "skipped": 1} if stage == "load" else {},
+        )
     result = row(audit_engine)
     assert result["status"] == "success"
     assert result["error_type"] is None
     assert result["extracted"] == 3
     assert result["finished_at"] > result["started_at"]
     with audit_engine.connect() as connection:
-        assert connection.execute(text("SELECT count(*) FROM job_run_attempts WHERE status='failed'")).scalar_one() == 1
+        assert (
+            connection.execute(
+                text("SELECT count(*) FROM job_run_attempts WHERE status='failed'")
+            ).scalar_one()
+            == 1
+        )
 
 
 def test_wrapper_records_real_failure_without_message(audit_engine, monkeypatch):
     monkeypatch.setattr(stages, "create_db_engine", lambda: audit_engine)
+
     def fail(*args):
         raise ValueError("password=do-not-persist")
+
     monkeypatch.setattr(stages, "_execute_stage", fail)
     with pytest.raises(ValueError):
         stages.run_stage("extract", "failed-run", audit=True)

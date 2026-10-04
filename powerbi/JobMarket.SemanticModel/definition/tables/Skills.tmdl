@@ -1,0 +1,132 @@
+table Skills
+	lineageTag: 60497dbc-38d0-49b2-adf3-8c61ec950b02
+
+	measure 'Joburi cu competenta' = SUM(Skills[job_count])
+		formatString: #,0
+		lineageTag: e656b842-78bc-41f9-afa4-adf58e7a1c02
+
+	measure 'Cerere competenta' = DIVIDE(SUM(Skills[job_count]),SUM(Roles[job_count]))
+		formatString: 0.0%
+		lineageTag: 62d3383f-ab85-4967-ab41-408f5f7c2161
+
+	column primary_role
+		dataType: string
+		formatString: 0
+		lineageTag: 1c2fb12b-7335-4fc2-acab-dacb0f9af612
+		summarizeBy: none
+		sourceColumn: primary_role
+
+	column skill_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 35f42e68-ac4a-47cd-8784-c2a14aa11240
+		summarizeBy: none
+		sourceColumn: skill_id
+
+	column skill
+		dataType: string
+		formatString: 0
+		lineageTag: 9d0948c9-f239-418d-8fac-d737b5a9fd9b
+		summarizeBy: none
+		sourceColumn: skill
+
+	column job_count
+		dataType: int64
+		formatString: 0
+		lineageTag: 3fdb8d21-456b-4cae-a876-77540fc06613
+		summarizeBy: none
+		sourceColumn: job_count
+
+	column role_job_count
+		dataType: int64
+		formatString: 0
+		lineageTag: fd47f3ea-2934-47a7-a889-599d552a75c7
+		summarizeBy: none
+		sourceColumn: role_job_count
+
+	column demand_pct
+		dataType: double
+		formatString: 0.00
+		lineageTag: 15ffc84f-8282-4cd6-a08e-ba789aa54b6a
+		summarizeBy: none
+		sourceColumn: demand_pct
+
+	partition Skills = m
+		mode: import
+		source =
+				let
+				 Snapshot = #table({"primary_role", "skill_id", "skill", "job_count", "role_job_count", "demand_pct"}, {
+				{"Other", 4, "tableau", 10, 201, 4.98},
+				{"Other", 7, "aws", 34, 201, 16.92},
+				{"Data Engineer", 4, "tableau", 6, 19, 31.58},
+				{"Data Scientist", 3, "spark", 4, 30, 13.33},
+				{"Data Analyst", 1, "python", 6, 16, 37.5},
+				{"Data Analyst", 3, "spark", 1, 16, 6.25},
+				{"Other", 68, "pytorch", 9, 201, 4.48},
+				{"Data Engineer", 9, "azure", 11, 19, 57.89},
+				{"Data Scientist", 67, "tensorflow", 4, 30, 13.33},
+				{"Data Engineer", 2, "sql", 16, 19, 84.21},
+				{"Data Analyst", 7, "aws", 1, 16, 6.25},
+				{"Other", 1, "python", 74, 201, 36.82},
+				{"Data Analyst", 67, "tensorflow", 1, 16, 6.25},
+				{"Machine Learning Engineer", 69, "scikit_learn", 5, 17, 29.41},
+				{"Data Scientist", 17, "databricks", 5, 30, 16.67},
+				{"Data Scientist", 11, "power_bi", 4, 30, 13.33},
+				{"Data Scientist", 42, "docker", 2, 30, 6.67},
+				{"Data Scientist", 4, "tableau", 7, 30, 23.33},
+				{"Machine Learning Engineer", 23, "gcp", 1, 17, 5.88},
+				{"Data Engineer", 42, "docker", 2, 19, 10.53},
+				{"Data Analyst", 23, "gcp", 1, 16, 6.25},
+				{"Other", 10, "snowflake", 5, 201, 2.49},
+				{"Other", 93, "pyspark", 10, 201, 4.98},
+				{"Data Engineer", 93, "pyspark", 4, 19, 21.05},
+				{"Data Scientist", 1, "python", 26, 30, 86.67},
+				{"Machine Learning Engineer", 2, "sql", 4, 17, 23.53},
+				{"Data Scientist", 88, "airflow", 1, 30, 3.33},
+				{"Machine Learning Engineer", 7, "aws", 2, 17, 11.76},
+				{"Other", 43, "kubernetes", 7, 201, 3.48},
+				{"Data Engineer", 10, "snowflake", 5, 19, 26.32},
+				{"Data Scientist", 69, "scikit_learn", 4, 30, 13.33},
+				{"Machine Learning Engineer", 1, "python", 14, 17, 82.35},
+				{"Other", 11, "power_bi", 27, 201, 13.43},
+				{"Data Analyst", 17, "databricks", 2, 16, 12.5},
+				{"Data Engineer", 88, "airflow", 2, 19, 10.53},
+				{"Data Engineer", 17, "databricks", 7, 19, 36.84},
+				{"Data Engineer", 23, "gcp", 3, 19, 15.79},
+				{"Data Analyst", 9, "azure", 3, 16, 18.75},
+				{"Data Engineer", 7, "aws", 8, 19, 42.11},
+				{"Data Analyst", 10, "snowflake", 2, 16, 12.5},
+				{"Data Scientist", 23, "gcp", 2, 30, 6.67},
+				{"Data Engineer", 1, "python", 17, 19, 89.47},
+				{"Machine Learning Engineer", 3, "spark", 3, 17, 17.65},
+				{"Data Engineer", 43, "kubernetes", 2, 19, 10.53},
+				{"Data Analyst", 11, "power_bi", 9, 16, 56.25},
+				{"Machine Learning Engineer", 42, "docker", 1, 17, 5.88},
+				{"Other", 23, "gcp", 15, 201, 7.46},
+				{"Data Scientist", 43, "kubernetes", 2, 30, 6.67},
+				{"Machine Learning Engineer", 67, "tensorflow", 6, 17, 35.29},
+				{"Other", 42, "docker", 7, 201, 3.48},
+				{"Data Scientist", 2, "sql", 17, 30, 56.67},
+				{"Data Scientist", 93, "pyspark", 5, 30, 16.67},
+				{"Machine Learning Engineer", 68, "pytorch", 9, 17, 52.94},
+				{"Other", 69, "scikit_learn", 5, 201, 2.49},
+				{"Data Scientist", 9, "azure", 4, 30, 13.33},
+				{"Machine Learning Engineer", 88, "airflow", 1, 17, 5.88},
+				{"Other", 17, "databricks", 25, 201, 12.44},
+				{"Other", 2, "sql", 58, 201, 28.86},
+				{"Other", 67, "tensorflow", 6, 201, 2.99},
+				{"Data Engineer", 11, "power_bi", 5, 19, 26.32},
+				{"Data Scientist", 68, "pytorch", 5, 30, 16.67},
+				{"Data Analyst", 4, "tableau", 4, 16, 25.0},
+				{"Other", 3, "spark", 15, 201, 7.46},
+				{"Data Analyst", 2, "sql", 12, 16, 75.0},
+				{"Machine Learning Engineer", 9, "azure", 1, 17, 5.88},
+				{"Other", 9, "azure", 32, 201, 15.92},
+				{"Data Analyst", 68, "pytorch", 1, 16, 6.25},
+				{"Data Engineer", 3, "spark", 7, 19, 36.84},
+				{"Data Scientist", 7, "aws", 4, 30, 13.33}
+				}),
+				 Source = if UsePostgreSQL then PostgreSQL.Database("localhost:5433", "job_market_db", [Query="SELECT * FROM analytics.skills_by_role", CreateNavigationProperties=false]) else Snapshot,
+				 Typed = Table.TransformColumnTypes(Source, {{"primary_role", type text}, {"skill_id", Int64.Type}, {"skill", type text}, {"job_count", Int64.Type}, {"role_job_count", Int64.Type}, {"demand_pct", type number}})
+				in Typed
+

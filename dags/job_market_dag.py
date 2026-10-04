@@ -4,7 +4,6 @@ import pendulum
 from airflow.sdk import DAG
 from airflow.providers.standard.operators.bash import BashOperator
 
-
 with DAG(
     dag_id="job_market_etl",
     description="Job Market ETL: extract → transform → validate → load",

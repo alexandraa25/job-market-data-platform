@@ -5,6 +5,7 @@ import pandas as pd
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, text
 from sqlalchemy.engine import URL
+
 try:
     from .model import sync_dimensions
 except ImportError:
@@ -24,12 +25,10 @@ def create_db_engine():
         password=os.getenv("DB_PASSWORD"),
         host=os.getenv("DB_HOST"),
         port=int(os.getenv("DB_PORT")),
-        database=os.getenv("DB_NAME")
+        database=os.getenv("DB_NAME"),
     )
 
-    engine = create_engine(
-        connection_url
-    )
+    engine = create_engine(connection_url)
 
     return engine
 
@@ -39,25 +38,16 @@ def test_connection(engine):
     try:
         with engine.connect() as connection:
 
-            result = connection.execute(
-                text("SELECT version();")
-            )
+            result = connection.execute(text("SELECT version();"))
 
             version = result.fetchone()
 
-            logger.info(
-                "Database connection successful"
-            )
+            logger.info("Database connection successful")
 
-            logger.info(
-                "PostgreSQL version: %s",
-                version[0]
-            )
+            logger.info("PostgreSQL version: %s", version[0])
 
     except Exception:
-        logger.exception(
-            "Database connection failed"
-        )
+        logger.exception("Database connection failed")
 
         raise
 
@@ -77,15 +67,12 @@ def prepare_for_database(df):
             "pubDate": "pub_date",
             "expiryDate": "expiry_date",
             "applicationLink": "application_link",
-            "avgSalary": "avg_salary"
+            "avgSalary": "avg_salary",
         }
     )
 
     # Convert NaN / NaT values to None
-    df = df.astype(object).where(
-        pd.notnull(df),
-        None
-    )
+    df = df.astype(object).where(pd.notnull(df), None)
 
     return df
 
@@ -94,9 +81,7 @@ def upsert_jobs(df, engine):
 
     df = prepare_for_database(df)
 
-    logger.info(
-        "Starting PostgreSQL incremental UPSERT"
-    )
+    logger.info("Starting PostgreSQL incremental UPSERT")
 
     inserted = 0
     updated = 0
@@ -137,7 +122,7 @@ def upsert_jobs(df, engine):
         "has_tableau",
         "has_tensorflow",
         "has_pytorch",
-        "has_scikit_learn"
+        "has_scikit_learn",
     ]
 
     insert_sql = text("""
@@ -267,28 +252,22 @@ def upsert_jobs(df, engine):
         WHERE guid = :guid
     """)
 
-    records = df.to_dict(
-        orient="records"
-    )
+    records = df.to_dict(orient="records")
 
     with engine.begin() as connection:
 
         for record in records:
 
-            existing = connection.execute(
-                select_sql,
-                {
-                    "guid": record["guid"]
-                }
-            ).mappings().first()
+            existing = (
+                connection.execute(select_sql, {"guid": record["guid"]})
+                .mappings()
+                .first()
+            )
 
             # New job
             if existing is None:
 
-                connection.execute(
-                    insert_sql,
-                    record
-                )
+                connection.execute(insert_sql, record)
 
                 inserted += 1
                 continue
@@ -308,10 +287,7 @@ def upsert_jobs(df, engine):
             # Existing but modified
             if changed:
 
-                connection.execute(
-                    update_sql,
-                    record
-                )
+                connection.execute(update_sql, record)
 
                 updated += 1
 
@@ -322,10 +298,9 @@ def upsert_jobs(df, engine):
         sync_dimensions(connection, records)
 
     logger.info(
-        "PostgreSQL UPSERT completed | "
-        "Inserted: %s | Updated: %s | Skipped: %s",
+        "PostgreSQL UPSERT completed | " "Inserted: %s | Updated: %s | Skipped: %s",
         inserted,
         updated,
-        skipped
+        skipped,
     )
     return {"inserted": inserted, "updated": updated, "skipped": skipped}

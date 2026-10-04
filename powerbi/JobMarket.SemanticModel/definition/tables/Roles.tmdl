@@ -1,0 +1,52 @@
+table Roles
+	lineageTag: eccb902d-ac35-431b-bc78-92a653b4f1b8
+
+	measure 'Joburi pe rol' = SUM(Roles[job_count])
+		formatString: #,0
+		lineageTag: cd737d55-d42b-410b-86e7-491070a7f429
+
+	column primary_role
+		dataType: string
+		formatString: 0
+		lineageTag: 6b1939f4-e1e6-4513-9acc-61f8239735b9
+		summarizeBy: none
+		sourceColumn: primary_role
+
+	column job_count
+		dataType: int64
+		formatString: 0
+		lineageTag: f7e788aa-dc27-43b8-b6d2-bf6205ddc3f8
+		summarizeBy: none
+		sourceColumn: job_count
+
+	column jobs_with_salary
+		dataType: int64
+		formatString: 0
+		lineageTag: e48cd6dc-9244-4ff0-8f54-1fdfda80f14a
+		summarizeBy: none
+		sourceColumn: jobs_with_salary
+
+	column salary_coverage_pct
+		dataType: double
+		formatString: 0.00
+		lineageTag: b3743e82-7eef-4848-9f1f-b867e6e1c2de
+		summarizeBy: none
+		sourceColumn: salary_coverage_pct
+
+	partition Roles = m
+		mode: import
+		source =
+				let
+				 Snapshot = #table({"primary_role", "job_count", "jobs_with_salary", "salary_coverage_pct"}, {
+				{"Data Analyst", 16, 6, 37.5},
+				{"Machine Learning Engineer", 17, 5, 29.41},
+				{"Other", 201, 73, 36.32},
+				{"Data Scientist", 30, 11, 36.67},
+				{"Data Engineer", 19, 6, 31.58}
+				}),
+				 Source = if UsePostgreSQL then PostgreSQL.Database("localhost:5433", "job_market_db", [Query="SELECT * FROM analytics.jobs_by_role", CreateNavigationProperties=false]) else Snapshot,
+				 Typed = Table.TransformColumnTypes(Source, {{"primary_role", type text}, {"job_count", Int64.Type}, {"jobs_with_salary", Int64.Type}, {"salary_coverage_pct", type number}})
+				in Typed
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,1691 @@
+{
+  "overview": [
+    {
+      "total_jobs": 283,
+      "total_companies": 166,
+      "jobs_with_salary": 101,
+      "jobs_without_salary": 182,
+      "salary_coverage_pct": 35.69
+    }
+  ],
+  "roles": [
+    {
+      "primary_role": "Data Analyst",
+      "job_count": 16,
+      "jobs_with_salary": 6,
+      "salary_coverage_pct": 37.5
+    },
+    {
+      "primary_role": "Machine Learning Engineer",
+      "job_count": 17,
+      "jobs_with_salary": 5,
+      "salary_coverage_pct": 29.41
+    },
+    {
+      "primary_role": "Other",
+      "job_count": 201,
+      "jobs_with_salary": 73,
+      "salary_coverage_pct": 36.32
+    },
+    {
+      "primary_role": "Data Scientist",
+      "job_count": 30,
+      "jobs_with_salary": 11,
+      "salary_coverage_pct": 36.67
+    },
+    {
+      "primary_role": "Data Engineer",
+      "job_count": 19,
+      "jobs_with_salary": 6,
+      "salary_coverage_pct": 31.58
+    }
+  ],
+  "companies": [
+    {
+      "company_id": 116,
+      "company_name": "DEFCON AI",
+      "job_count": 2
+    },
+    {
+      "company_id": 87,
+      "company_name": "Pinterest",
+      "job_count": 1
+    },
+    {
+      "company_id": 68,
+      "company_name": "Printful",
+      "job_count": 1
+    },
+    {
+      "company_id": 51,
+      "company_name": "Entefy",
+      "job_count": 3
+    },
+    {
+      "company_id": 146,
+      "company_name": "Guidewire Software",
+      "job_count": 1
+    },
+    {
+      "company_id": 52,
+      "company_name": "URUS Group",
+      "job_count": 2
+    },
+    {
+      "company_id": 190,
+      "company_name": "micro1",
+      "job_count": 1
+    },
+    {
+      "company_id": 162,
+      "company_name": "Be | Shaping the Future",
+      "job_count": 2
+    },
+    {
+      "company_id": 132,
+      "company_name": "SS&C Technologies",
+      "job_count": 1
+    },
+    {
+      "company_id": 176,
+      "company_name": "Hormel Foods",
+      "job_count": 1
+    },
+    {
+      "company_id": 169,
+      "company_name": "Bridgenext",
+      "job_count": 1
+    },
+    {
+      "company_id": 276,
+      "company_name": "Kate Worthington",
+      "job_count": 1
+    },
+    {
+      "company_id": 92,
+      "company_name": "VT Markets",
+      "job_count": 1
+    },
+    {
+      "company_id": 237,
+      "company_name": "Brompton Associates Pte Ltd",
+      "job_count": 1
+    },
+    {
+      "company_id": 101,
+      "company_name": "Openwave",
+      "job_count": 1
+    },
+    {
+      "company_id": 262,
+      "company_name": "Zensar",
+      "job_count": 2
+    },
+    {
+      "company_id": 115,
+      "company_name": "Anzen",
+      "job_count": 1
+    },
+    {
+      "company_id": 60,
+      "company_name": "Datavant",
+      "job_count": 3
+    },
+    {
+      "company_id": 97,
+      "company_name": "lemon.io",
+      "job_count": 1
+    },
+    {
+      "company_id": 238,
+      "company_name": "Ocwen Financial Corporation",
+      "job_count": 1
+    },
+    {
+      "company_id": 112,
+      "company_name": "Anaplan",
+      "job_count": 1
+    },
+    {
+      "company_id": 271,
+      "company_name": "Siegen HR Solutions, Inc.",
+      "job_count": 1
+    },
+    {
+      "company_id": 156,
+      "company_name": "Peraton",
+      "job_count": 1
+    },
+    {
+      "company_id": 59,
+      "company_name": "CareSource",
+      "job_count": 1
+    },
+    {
+      "company_id": 268,
+      "company_name": "Tulane University",
+      "job_count": 1
+    },
+    {
+      "company_id": 65,
+      "company_name": "DigiU Pty Ltd",
+      "job_count": 2
+    },
+    {
+      "company_id": 227,
+      "company_name": "Wipfli",
+      "job_count": 1
+    },
+    {
+      "company_id": 98,
+      "company_name": "BioCatch",
+      "job_count": 1
+    },
+    {
+      "company_id": 173,
+      "company_name": "Sinch",
+      "job_count": 2
+    },
+    {
+      "company_id": 73,
+      "company_name": "Children's Hospital of Philadelphia",
+      "job_count": 1
+    },
+    {
+      "company_id": 261,
+      "company_name": "Odyssey Systems Consulting Group, Ltd.",
+      "job_count": 1
+    },
+    {
+      "company_id": 11,
+      "company_name": "Bitwarden",
+      "job_count": 1
+    },
+    {
+      "company_id": 42,
+      "company_name": "Rancho BioSciences",
+      "job_count": 1
+    },
+    {
+      "company_id": 235,
+      "company_name": "Stryker",
+      "job_count": 1
+    },
+    {
+      "company_id": 121,
+      "company_name": "Agero",
+      "job_count": 1
+    },
+    {
+      "company_id": 88,
+      "company_name": "Green Dot Corporation",
+      "job_count": 1
+    },
+    {
+      "company_id": 188,
+      "company_name": "Hatch Asia",
+      "job_count": 1
+    },
+    {
+      "company_id": 119,
+      "company_name": "Alternative Payments",
+      "job_count": 1
+    },
+    {
+      "company_id": 113,
+      "company_name": "Vianai Systems",
+      "job_count": 1
+    },
+    {
+      "company_id": 40,
+      "company_name": "Sprout Social",
+      "job_count": 1
+    },
+    {
+      "company_id": 279,
+      "company_name": "MR DIY Philippines",
+      "job_count": 1
+    },
+    {
+      "company_id": 147,
+      "company_name": "Urrly",
+      "job_count": 1
+    },
+    {
+      "company_id": 214,
+      "company_name": "Navitus Health Solutions",
+      "job_count": 1
+    },
+    {
+      "company_id": 9,
+      "company_name": "NTT DATA Romania SA",
+      "job_count": 2
+    },
+    {
+      "company_id": 79,
+      "company_name": "Indero",
+      "job_count": 1
+    },
+    {
+      "company_id": 226,
+      "company_name": "KLDiscovery",
+      "job_count": 1
+    },
+    {
+      "company_id": 48,
+      "company_name": "BRAHMA AI",
+      "job_count": 1
+    },
+    {
+      "company_id": 26,
+      "company_name": "Stratera Technologies",
+      "job_count": 1
+    },
+    {
+      "company_id": 187,
+      "company_name": "Tier One Technologies",
+      "job_count": 1
+    },
+    {
+      "company_id": 85,
+      "company_name": "lastminute.com",
+      "job_count": 1
+    },
+    {
+      "company_id": 72,
+      "company_name": "HII",
+      "job_count": 2
+    },
+    {
+      "company_id": 281,
+      "company_name": "Catholic Relief Services",
+      "job_count": 1
+    },
+    {
+      "company_id": 95,
+      "company_name": "Lucy Electric",
+      "job_count": 1
+    },
+    {
+      "company_id": 57,
+      "company_name": "Swish Analytics",
+      "job_count": 1
+    },
+    {
+      "company_id": 19,
+      "company_name": "Bertelsmann-Jobs",
+      "job_count": 1
+    },
+    {
+      "company_id": 244,
+      "company_name": "Blue River Technology",
+      "job_count": 1
+    },
+    {
+      "company_id": 160,
+      "company_name": "Lifelancer",
+      "job_count": 1
+    },
+    {
+      "company_id": 259,
+      "company_name": "Valiant Solutions",
+      "job_count": 1
+    },
+    {
+      "company_id": 232,
+      "company_name": "WIRE IT",
+      "job_count": 1
+    },
+    {
+      "company_id": 21,
+      "company_name": "Code for America",
+      "job_count": 1
+    },
+    {
+      "company_id": 131,
+      "company_name": "Vezér Group",
+      "job_count": 1
+    },
+    {
+      "company_id": 3,
+      "company_name": "Sysco",
+      "job_count": 1
+    },
+    {
+      "company_id": 212,
+      "company_name": "Cummins",
+      "job_count": 1
+    },
+    {
+      "company_id": 37,
+      "company_name": "Circana",
+      "job_count": 1
+    },
+    {
+      "company_id": 28,
+      "company_name": "Courtyard",
+      "job_count": 3
+    },
+    {
+      "company_id": 204,
+      "company_name": "Deutsche Telekom",
+      "job_count": 1
+    },
+    {
+      "company_id": 5,
+      "company_name": "P@thlion Staffing Inc.",
+      "job_count": 5
+    },
+    {
+      "company_id": 171,
+      "company_name": "Granicus",
+      "job_count": 1
+    },
+    {
+      "company_id": 255,
+      "company_name": "ARNVIND GROUP",
+      "job_count": 1
+    },
+    {
+      "company_id": 165,
+      "company_name": "George Bernard Consulting",
+      "job_count": 8
+    },
+    {
+      "company_id": 56,
+      "company_name": "mercor",
+      "job_count": 6
+    },
+    {
+      "company_id": 151,
+      "company_name": "Zoox",
+      "job_count": 1
+    },
+    {
+      "company_id": 91,
+      "company_name": "FinThrive",
+      "job_count": 1
+    },
+    {
+      "company_id": 283,
+      "company_name": "Glens Falls Hospital",
+      "job_count": 1
+    },
+    {
+      "company_id": 209,
+      "company_name": "Attain Finance",
+      "job_count": 1
+    },
+    {
+      "company_id": 74,
+      "company_name": "Pearson",
+      "job_count": 1
+    },
+    {
+      "company_id": 54,
+      "company_name": "Certify",
+      "job_count": 1
+    },
+    {
+      "company_id": 4,
+      "company_name": "Photon",
+      "job_count": 4
+    },
+    {
+      "company_id": 225,
+      "company_name": "TheHiveCareers",
+      "job_count": 1
+    },
+    {
+      "company_id": 34,
+      "company_name": "Wonderlic",
+      "job_count": 1
+    },
+    {
+      "company_id": 245,
+      "company_name": "Augintel",
+      "job_count": 1
+    },
+    {
+      "company_id": 96,
+      "company_name": "Your Personal AI",
+      "job_count": 4
+    },
+    {
+      "company_id": 83,
+      "company_name": "ICF",
+      "job_count": 2
+    },
+    {
+      "company_id": 63,
+      "company_name": "Inizio Partners Corp",
+      "job_count": 2
+    },
+    {
+      "company_id": 90,
+      "company_name": "Jobs for Humanity",
+      "job_count": 1
+    },
+    {
+      "company_id": 10,
+      "company_name": "AgSource",
+      "job_count": 2
+    },
+    {
+      "company_id": 105,
+      "company_name": "Crowdstrike",
+      "job_count": 1
+    },
+    {
+      "company_id": 35,
+      "company_name": "Syneos Health India Private Limited",
+      "job_count": 2
+    },
+    {
+      "company_id": 216,
+      "company_name": "eClerx",
+      "job_count": 1
+    },
+    {
+      "company_id": 174,
+      "company_name": "RecruitNest Consulting",
+      "job_count": 1
+    },
+    {
+      "company_id": 107,
+      "company_name": "Clariter",
+      "job_count": 1
+    },
+    {
+      "company_id": 233,
+      "company_name": "Teleperformance",
+      "job_count": 1
+    },
+    {
+      "company_id": 134,
+      "company_name": "Symbotic",
+      "job_count": 1
+    },
+    {
+      "company_id": 86,
+      "company_name": "Scalian",
+      "job_count": 3
+    },
+    {
+      "company_id": 39,
+      "company_name": "Rhythm Pharmaceuticals",
+      "job_count": 1
+    },
+    {
+      "company_id": 168,
+      "company_name": "SSOE Group",
+      "job_count": 2
+    },
+    {
+      "company_id": 163,
+      "company_name": "Akamai Technologies",
+      "job_count": 7
+    },
+    {
+      "company_id": 93,
+      "company_name": "Boomering Inc",
+      "job_count": 1
+    },
+    {
+      "company_id": 89,
+      "company_name": "Boosta",
+      "job_count": 1
+    },
+    {
+      "company_id": 219,
+      "company_name": "Bridge Talent Management",
+      "job_count": 1
+    },
+    {
+      "company_id": 175,
+      "company_name": "Jobskey Consultancy",
+      "job_count": 2
+    },
+    {
+      "company_id": 50,
+      "company_name": "Lawrence Livermore National Laboratory",
+      "job_count": 1
+    },
+    {
+      "company_id": 253,
+      "company_name": "Summa Linguae Technologies",
+      "job_count": 2
+    },
+    {
+      "company_id": 14,
+      "company_name": "Tenet Healthcare",
+      "job_count": 1
+    },
+    {
+      "company_id": 66,
+      "company_name": "Carrington",
+      "job_count": 3
+    },
+    {
+      "company_id": 158,
+      "company_name": "TASQ Staffing Solutions",
+      "job_count": 19
+    },
+    {
+      "company_id": 277,
+      "company_name": "Conduent",
+      "job_count": 1
+    },
+    {
+      "company_id": 155,
+      "company_name": "Bausch Health US, LLC",
+      "job_count": 1
+    },
+    {
+      "company_id": 133,
+      "company_name": "Burnett Therapeutic Services",
+      "job_count": 1
+    },
+    {
+      "company_id": 2,
+      "company_name": "Mashreq",
+      "job_count": 4
+    },
+    {
+      "company_id": 16,
+      "company_name": "VORKIS knows what employer wants",
+      "job_count": 1
+    },
+    {
+      "company_id": 199,
+      "company_name": "Pomelo Care",
+      "job_count": 1
+    },
+    {
+      "company_id": 62,
+      "company_name": "Credit Acceptance",
+      "job_count": 1
+    },
+    {
+      "company_id": 123,
+      "company_name": "Experian",
+      "job_count": 1
+    },
+    {
+      "company_id": 75,
+      "company_name": "Climate First Bank",
+      "job_count": 1
+    },
+    {
+      "company_id": 128,
+      "company_name": "Sequoia Connect",
+      "job_count": 1
+    },
+    {
+      "company_id": 126,
+      "company_name": "Dautom",
+      "job_count": 4
+    },
+    {
+      "company_id": 194,
+      "company_name": "Harvard University",
+      "job_count": 1
+    },
+    {
+      "company_id": 243,
+      "company_name": "JNB Exectant",
+      "job_count": 1
+    },
+    {
+      "company_id": 166,
+      "company_name": "Argano",
+      "job_count": 1
+    },
+    {
+      "company_id": 142,
+      "company_name": "CSC",
+      "job_count": 1
+    },
+    {
+      "company_id": 41,
+      "company_name": "Vulcury",
+      "job_count": 5
+    },
+    {
+      "company_id": 46,
+      "company_name": "Bjak",
+      "job_count": 3
+    },
+    {
+      "company_id": 224,
+      "company_name": "EXL",
+      "job_count": 2
+    },
+    {
+      "company_id": 157,
+      "company_name": "Logistics Management Institute",
+      "job_count": 2
+    },
+    {
+      "company_id": 53,
+      "company_name": "Root, Inc.",
+      "job_count": 1
+    },
+    {
+      "company_id": 32,
+      "company_name": "BeiGene",
+      "job_count": 1
+    },
+    {
+      "company_id": 7,
+      "company_name": "Xperteez Technology",
+      "job_count": 5
+    },
+    {
+      "company_id": 275,
+      "company_name": "Source A Rep Pty Ltd",
+      "job_count": 1
+    },
+    {
+      "company_id": 183,
+      "company_name": "Wesco",
+      "job_count": 1
+    },
+    {
+      "company_id": 100,
+      "company_name": "Coderio",
+      "job_count": 1
+    },
+    {
+      "company_id": 136,
+      "company_name": "Agara",
+      "job_count": 3
+    },
+    {
+      "company_id": 38,
+      "company_name": "Community Health Systems",
+      "job_count": 1
+    },
+    {
+      "company_id": 150,
+      "company_name": "QVC",
+      "job_count": 1
+    },
+    {
+      "company_id": 140,
+      "company_name": "Vana",
+      "job_count": 1
+    },
+    {
+      "company_id": 139,
+      "company_name": "Chickasaw Nation Industries, Inc.",
+      "job_count": 1
+    },
+    {
+      "company_id": 12,
+      "company_name": "Fragomen",
+      "job_count": 1
+    },
+    {
+      "company_id": 78,
+      "company_name": "Keurig Dr Pepper",
+      "job_count": 1
+    },
+    {
+      "company_id": 24,
+      "company_name": "Honeycomb",
+      "job_count": 2
+    },
+    {
+      "company_id": 191,
+      "company_name": "Unravel Carbon Pte Ltd",
+      "job_count": 1
+    },
+    {
+      "company_id": 217,
+      "company_name": "Molina Healthcare",
+      "job_count": 5
+    },
+    {
+      "company_id": 159,
+      "company_name": "Legrand",
+      "job_count": 2
+    },
+    {
+      "company_id": 25,
+      "company_name": "Hitachi",
+      "job_count": 1
+    },
+    {
+      "company_id": 94,
+      "company_name": "Grupo Data",
+      "job_count": 1
+    },
+    {
+      "company_id": 218,
+      "company_name": "Cedars-Sinai Medical Center",
+      "job_count": 2
+    },
+    {
+      "company_id": 234,
+      "company_name": "OperationsArmy",
+      "job_count": 1
+    },
+    {
+      "company_id": 211,
+      "company_name": "Deploy",
+      "job_count": 1
+    },
+    {
+      "company_id": 256,
+      "company_name": "Edgewater Federal Solutions",
+      "job_count": 1
+    },
+    {
+      "company_id": 177,
+      "company_name": "HealthEdge",
+      "job_count": 1
+    },
+    {
+      "company_id": 20,
+      "company_name": "HSO Group B.V.",
+      "job_count": 1
+    },
+    {
+      "company_id": 1,
+      "company_name": "Netflix",
+      "job_count": 9
+    },
+    {
+      "company_id": 76,
+      "company_name": "Progressive GE",
+      "job_count": 1
+    },
+    {
+      "company_id": 18,
+      "company_name": "Upstart",
+      "job_count": 10
+    },
+    {
+      "company_id": 185,
+      "company_name": "CADMUS RESOURCES",
+      "job_count": 1
+    },
+    {
+      "company_id": 64,
+      "company_name": "Pearl Homes",
+      "job_count": 1
+    },
+    {
+      "company_id": 145,
+      "company_name": "Amplify",
+      "job_count": 1
+    },
+    {
+      "company_id": 55,
+      "company_name": "Compass UOL",
+      "job_count": 1
+    },
+    {
+      "company_id": 148,
+      "company_name": "The University of Chicago Medicine",
+      "job_count": 1
+    },
+    {
+      "company_id": 27,
+      "company_name": "CACI International Inc",
+      "job_count": 1
+    },
+    {
+      "company_id": 270,
+      "company_name": "FocusKPI",
+      "job_count": 1
+    },
+    {
+      "company_id": 143,
+      "company_name": "Doximity",
+      "job_count": 1
+    },
+    {
+      "company_id": 23,
+      "company_name": "OnHires",
+      "job_count": 3
+    },
+    {
+      "company_id": 203,
+      "company_name": "Cytel",
+      "job_count": 1
+    },
+    {
+      "company_id": 58,
+      "company_name": "Power Digital Marketing",
+      "job_count": 1
+    },
+    {
+      "company_id": 228,
+      "company_name": "Evolution Sports Group",
+      "job_count": 1
+    },
+    {
+      "company_id": 8,
+      "company_name": "Satoshi Solutions",
+      "job_count": 1
+    }
+  ],
+  "skills": [
+    {
+      "primary_role": "Other",
+      "skill_id": 4,
+      "skill": "tableau",
+      "job_count": 10,
+      "role_job_count": 201,
+      "demand_pct": 4.98
+    },
+    {
+      "primary_role": "Other",
+      "skill_id": 7,
+      "skill": "aws",
+      "job_count": 34,
+      "role_job_count": 201,
+      "demand_pct": 16.92
+    },
+    {
+      "primary_role": "Data Engineer",
+      "skill_id": 4,
+      "skill": "tableau",
+      "job_count": 6,
+      "role_job_count": 19,
+      "demand_pct": 31.58
+    },
+    {
+      "primary_role": "Data Scientist",
+      "skill_id": 3,
+      "skill": "spark",
+      "job_count": 4,
+      "role_job_count": 30,
+      "demand_pct": 13.33
+    },
+    {
+      "primary_role": "Data Analyst",
+      "skill_id": 1,
+      "skill": "python",
+      "job_count": 6,
+      "role_job_count": 16,
+      "demand_pct": 37.5
+    },
+    {
+      "primary_role": "Data Analyst",
+      "skill_id": 3,
+      "skill": "spark",
+      "job_count": 1,
+      "role_job_count": 16,
+      "demand_pct": 6.25
+    },
+    {
+      "primary_role": "Other",
+      "skill_id": 68,
+      "skill": "pytorch",
+      "job_count": 9,
+      "role_job_count": 201,
+      "demand_pct": 4.48
+    },
+    {
+      "primary_role": "Data Engineer",
+      "skill_id": 9,
+      "skill": "azure",
+      "job_count": 11,
+      "role_job_count": 19,
+      "demand_pct": 57.89
+    },
+    {
+      "primary_role": "Data Scientist",
+      "skill_id": 67,
+      "skill": "tensorflow",
+      "job_count": 4,
+      "role_job_count": 30,
+      "demand_pct": 13.33
+    },
+    {
+      "primary_role": "Data Engineer",
+      "skill_id": 2,
+      "skill": "sql",
+      "job_count": 16,
+      "role_job_count": 19,
+      "demand_pct": 84.21
+    },
+    {
+      "primary_role": "Data Analyst",
+      "skill_id": 7,
+      "skill": "aws",
+      "job_count": 1,
+      "role_job_count": 16,
+      "demand_pct": 6.25
+    },
+    {
+      "primary_role": "Other",
+      "skill_id": 1,
+      "skill": "python",
+      "job_count": 74,
+      "role_job_count": 201,
+      "demand_pct": 36.82
+    },
+    {
+      "primary_role": "Data Analyst",
+      "skill_id": 67,
+      "skill": "tensorflow",
+      "job_count": 1,
+      "role_job_count": 16,
+      "demand_pct": 6.25
+    },
+    {
+      "primary_role": "Machine Learning Engineer",
+      "skill_id": 69,
+      "skill": "scikit_learn",
+      "job_count": 5,
+      "role_job_count": 17,
+      "demand_pct": 29.41
+    },
+    {
+      "primary_role": "Data Scientist",
+      "skill_id": 17,
+      "skill": "databricks",
+      "job_count": 5,
+      "role_job_count": 30,
+      "demand_pct": 16.67
+    },
+    {
+      "primary_role": "Data Scientist",
+      "skill_id": 11,
+      "skill": "power_bi",
+      "job_count": 4,
+      "role_job_count": 30,
+      "demand_pct": 13.33
+    },
+    {
+      "primary_role": "Data Scientist",
+      "skill_id": 42,
+      "skill": "docker",
+      "job_count": 2,
+      "role_job_count": 30,
+      "demand_pct": 6.67
+    },
+    {
+      "primary_role": "Data Scientist",
+      "skill_id": 4,
+      "skill": "tableau",
+      "job_count": 7,
+      "role_job_count": 30,
+      "demand_pct": 23.33
+    },
+    {
+      "primary_role": "Machine Learning Engineer",
+      "skill_id": 23,
+      "skill": "gcp",
+      "job_count": 1,
+      "role_job_count": 17,
+      "demand_pct": 5.88
+    },
+    {
+      "primary_role": "Data Engineer",
+      "skill_id": 42,
+      "skill": "docker",
+      "job_count": 2,
+      "role_job_count": 19,
+      "demand_pct": 10.53
+    },
+    {
+      "primary_role": "Data Analyst",
+      "skill_id": 23,
+      "skill": "gcp",
+      "job_count": 1,
+      "role_job_count": 16,
+      "demand_pct": 6.25
+    },
+    {
+      "primary_role": "Other",
+      "skill_id": 10,
+      "skill": "snowflake",
+      "job_count": 5,
+      "role_job_count": 201,
+      "demand_pct": 2.49
+    },
+    {
+      "primary_role": "Other",
+      "skill_id": 93,
+      "skill": "pyspark",
+      "job_count": 10,
+      "role_job_count": 201,
+      "demand_pct": 4.98
+    },
+    {
+      "primary_role": "Data Engineer",
+      "skill_id": 93,
+      "skill": "pyspark",
+      "job_count": 4,
+      "role_job_count": 19,
+      "demand_pct": 21.05
+    },
+    {
+      "primary_role": "Data Scientist",
+      "skill_id": 1,
+      "skill": "python",
+      "job_count": 26,
+      "role_job_count": 30,
+      "demand_pct": 86.67
+    },
+    {
+      "primary_role": "Machine Learning Engineer",
+      "skill_id": 2,
+      "skill": "sql",
+      "job_count": 4,
+      "role_job_count": 17,
+      "demand_pct": 23.53
+    },
+    {
+      "primary_role": "Data Scientist",
+      "skill_id": 88,
+      "skill": "airflow",
+      "job_count": 1,
+      "role_job_count": 30,
+      "demand_pct": 3.33
+    },
+    {
+      "primary_role": "Machine Learning Engineer",
+      "skill_id": 7,
+      "skill": "aws",
+      "job_count": 2,
+      "role_job_count": 17,
+      "demand_pct": 11.76
+    },
+    {
+      "primary_role": "Other",
+      "skill_id": 43,
+      "skill": "kubernetes",
+      "job_count": 7,
+      "role_job_count": 201,
+      "demand_pct": 3.48
+    },
+    {
+      "primary_role": "Data Engineer",
+      "skill_id": 10,
+      "skill": "snowflake",
+      "job_count": 5,
+      "role_job_count": 19,
+      "demand_pct": 26.32
+    },
+    {
+      "primary_role": "Data Scientist",
+      "skill_id": 69,
+      "skill": "scikit_learn",
+      "job_count": 4,
+      "role_job_count": 30,
+      "demand_pct": 13.33
+    },
+    {
+      "primary_role": "Machine Learning Engineer",
+      "skill_id": 1,
+      "skill": "python",
+      "job_count": 14,
+      "role_job_count": 17,
+      "demand_pct": 82.35
+    },
+    {
+      "primary_role": "Other",
+      "skill_id": 11,
+      "skill": "power_bi",
+      "job_count": 27,
+      "role_job_count": 201,
+      "demand_pct": 13.43
+    },
+    {
+      "primary_role": "Data Analyst",
+      "skill_id": 17,
+      "skill": "databricks",
+      "job_count": 2,
+      "role_job_count": 16,
+      "demand_pct": 12.5
+    },
+    {
+      "primary_role": "Data Engineer",
+      "skill_id": 88,
+      "skill": "airflow",
+      "job_count": 2,
+      "role_job_count": 19,
+      "demand_pct": 10.53
+    },
+    {
+      "primary_role": "Data Engineer",
+      "skill_id": 17,
+      "skill": "databricks",
+      "job_count": 7,
+      "role_job_count": 19,
+      "demand_pct": 36.84
+    },
+    {
+      "primary_role": "Data Engineer",
+      "skill_id": 23,
+      "skill": "gcp",
+      "job_count": 3,
+      "role_job_count": 19,
+      "demand_pct": 15.79
+    },
+    {
+      "primary_role": "Data Analyst",
+      "skill_id": 9,
+      "skill": "azure",
+      "job_count": 3,
+      "role_job_count": 16,
+      "demand_pct": 18.75
+    },
+    {
+      "primary_role": "Data Engineer",
+      "skill_id": 7,
+      "skill": "aws",
+      "job_count": 8,
+      "role_job_count": 19,
+      "demand_pct": 42.11
+    },
+    {
+      "primary_role": "Data Analyst",
+      "skill_id": 10,
+      "skill": "snowflake",
+      "job_count": 2,
+      "role_job_count": 16,
+      "demand_pct": 12.5
+    },
+    {
+      "primary_role": "Data Scientist",
+      "skill_id": 23,
+      "skill": "gcp",
+      "job_count": 2,
+      "role_job_count": 30,
+      "demand_pct": 6.67
+    },
+    {
+      "primary_role": "Data Engineer",
+      "skill_id": 1,
+      "skill": "python",
+      "job_count": 17,
+      "role_job_count": 19,
+      "demand_pct": 89.47
+    },
+    {
+      "primary_role": "Machine Learning Engineer",
+      "skill_id": 3,
+      "skill": "spark",
+      "job_count": 3,
+      "role_job_count": 17,
+      "demand_pct": 17.65
+    },
+    {
+      "primary_role": "Data Engineer",
+      "skill_id": 43,
+      "skill": "kubernetes",
+      "job_count": 2,
+      "role_job_count": 19,
+      "demand_pct": 10.53
+    },
+    {
+      "primary_role": "Data Analyst",
+      "skill_id": 11,
+      "skill": "power_bi",
+      "job_count": 9,
+      "role_job_count": 16,
+      "demand_pct": 56.25
+    },
+    {
+      "primary_role": "Machine Learning Engineer",
+      "skill_id": 42,
+      "skill": "docker",
+      "job_count": 1,
+      "role_job_count": 17,
+      "demand_pct": 5.88
+    },
+    {
+      "primary_role": "Other",
+      "skill_id": 23,
+      "skill": "gcp",
+      "job_count": 15,
+      "role_job_count": 201,
+      "demand_pct": 7.46
+    },
+    {
+      "primary_role": "Data Scientist",
+      "skill_id": 43,
+      "skill": "kubernetes",
+      "job_count": 2,
+      "role_job_count": 30,
+      "demand_pct": 6.67
+    },
+    {
+      "primary_role": "Machine Learning Engineer",
+      "skill_id": 67,
+      "skill": "tensorflow",
+      "job_count": 6,
+      "role_job_count": 17,
+      "demand_pct": 35.29
+    },
+    {
+      "primary_role": "Other",
+      "skill_id": 42,
+      "skill": "docker",
+      "job_count": 7,
+      "role_job_count": 201,
+      "demand_pct": 3.48
+    },
+    {
+      "primary_role": "Data Scientist",
+      "skill_id": 2,
+      "skill": "sql",
+      "job_count": 17,
+      "role_job_count": 30,
+      "demand_pct": 56.67
+    },
+    {
+      "primary_role": "Data Scientist",
+      "skill_id": 93,
+      "skill": "pyspark",
+      "job_count": 5,
+      "role_job_count": 30,
+      "demand_pct": 16.67
+    },
+    {
+      "primary_role": "Machine Learning Engineer",
+      "skill_id": 68,
+      "skill": "pytorch",
+      "job_count": 9,
+      "role_job_count": 17,
+      "demand_pct": 52.94
+    },
+    {
+      "primary_role": "Other",
+      "skill_id": 69,
+      "skill": "scikit_learn",
+      "job_count": 5,
+      "role_job_count": 201,
+      "demand_pct": 2.49
+    },
+    {
+      "primary_role": "Data Scientist",
+      "skill_id": 9,
+      "skill": "azure",
+      "job_count": 4,
+      "role_job_count": 30,
+      "demand_pct": 13.33
+    },
+    {
+      "primary_role": "Machine Learning Engineer",
+      "skill_id": 88,
+      "skill": "airflow",
+      "job_count": 1,
+      "role_job_count": 17,
+      "demand_pct": 5.88
+    },
+    {
+      "primary_role": "Other",
+      "skill_id": 17,
+      "skill": "databricks",
+      "job_count": 25,
+      "role_job_count": 201,
+      "demand_pct": 12.44
+    },
+    {
+      "primary_role": "Other",
+      "skill_id": 2,
+      "skill": "sql",
+      "job_count": 58,
+      "role_job_count": 201,
+      "demand_pct": 28.86
+    },
+    {
+      "primary_role": "Other",
+      "skill_id": 67,
+      "skill": "tensorflow",
+      "job_count": 6,
+      "role_job_count": 201,
+      "demand_pct": 2.99
+    },
+    {
+      "primary_role": "Data Engineer",
+      "skill_id": 11,
+      "skill": "power_bi",
+      "job_count": 5,
+      "role_job_count": 19,
+      "demand_pct": 26.32
+    },
+    {
+      "primary_role": "Data Scientist",
+      "skill_id": 68,
+      "skill": "pytorch",
+      "job_count": 5,
+      "role_job_count": 30,
+      "demand_pct": 16.67
+    },
+    {
+      "primary_role": "Data Analyst",
+      "skill_id": 4,
+      "skill": "tableau",
+      "job_count": 4,
+      "role_job_count": 16,
+      "demand_pct": 25.0
+    },
+    {
+      "primary_role": "Other",
+      "skill_id": 3,
+      "skill": "spark",
+      "job_count": 15,
+      "role_job_count": 201,
+      "demand_pct": 7.46
+    },
+    {
+      "primary_role": "Data Analyst",
+      "skill_id": 2,
+      "skill": "sql",
+      "job_count": 12,
+      "role_job_count": 16,
+      "demand_pct": 75.0
+    },
+    {
+      "primary_role": "Machine Learning Engineer",
+      "skill_id": 9,
+      "skill": "azure",
+      "job_count": 1,
+      "role_job_count": 17,
+      "demand_pct": 5.88
+    },
+    {
+      "primary_role": "Other",
+      "skill_id": 9,
+      "skill": "azure",
+      "job_count": 32,
+      "role_job_count": 201,
+      "demand_pct": 15.92
+    },
+    {
+      "primary_role": "Data Analyst",
+      "skill_id": 68,
+      "skill": "pytorch",
+      "job_count": 1,
+      "role_job_count": 16,
+      "demand_pct": 6.25
+    },
+    {
+      "primary_role": "Data Engineer",
+      "skill_id": 3,
+      "skill": "spark",
+      "job_count": 7,
+      "role_job_count": 19,
+      "demand_pct": 36.84
+    },
+    {
+      "primary_role": "Data Scientist",
+      "skill_id": 7,
+      "skill": "aws",
+      "job_count": 4,
+      "role_job_count": 30,
+      "demand_pct": 13.33
+    }
+  ],
+  "salaries": [
+    {
+      "primary_role": "Data Analyst",
+      "currency": "USD",
+      "salary_period": "annual",
+      "total_jobs": 6,
+      "salary_sample_size": 6,
+      "jobs_without_salary": 0,
+      "salary_coverage_pct": 100.0,
+      "mean_advertised_salary": 111539.17,
+      "median_advertised_salary": 92511,
+      "lowest_advertised_salary": 68500,
+      "highest_advertised_salary": 209000
+    },
+    {
+      "primary_role": "Data Analyst",
+      "currency": null,
+      "salary_period": "annual",
+      "total_jobs": 10,
+      "salary_sample_size": 0,
+      "jobs_without_salary": 10,
+      "salary_coverage_pct": 0.0,
+      "mean_advertised_salary": null,
+      "median_advertised_salary": null,
+      "lowest_advertised_salary": null,
+      "highest_advertised_salary": null
+    },
+    {
+      "primary_role": "Data Engineer",
+      "currency": "EUR",
+      "salary_period": "annual",
+      "total_jobs": 1,
+      "salary_sample_size": 1,
+      "jobs_without_salary": 0,
+      "salary_coverage_pct": 100.0,
+      "mean_advertised_salary": 50000.0,
+      "median_advertised_salary": 50000,
+      "lowest_advertised_salary": 50000,
+      "highest_advertised_salary": 50000
+    },
+    {
+      "primary_role": "Data Engineer",
+      "currency": "USD",
+      "salary_period": "annual",
+      "total_jobs": 5,
+      "salary_sample_size": 5,
+      "jobs_without_salary": 0,
+      "salary_coverage_pct": 100.0,
+      "mean_advertised_salary": 184679.5,
+      "median_advertised_salary": 143397.5,
+      "lowest_advertised_salary": 72000,
+      "highest_advertised_salary": 448000
+    },
+    {
+      "primary_role": "Data Engineer",
+      "currency": null,
+      "salary_period": "annual",
+      "total_jobs": 13,
+      "salary_sample_size": 0,
+      "jobs_without_salary": 13,
+      "salary_coverage_pct": 0.0,
+      "mean_advertised_salary": null,
+      "median_advertised_salary": null,
+      "lowest_advertised_salary": null,
+      "highest_advertised_salary": null
+    },
+    {
+      "primary_role": "Data Scientist",
+      "currency": "USD",
+      "salary_period": "annual",
+      "total_jobs": 10,
+      "salary_sample_size": 10,
+      "jobs_without_salary": 0,
+      "salary_coverage_pct": 100.0,
+      "mean_advertised_salary": 219656.7,
+      "median_advertised_salary": 161575,
+      "lowest_advertised_salary": 92500,
+      "highest_advertised_salary": 486000
+    },
+    {
+      "primary_role": "Data Scientist",
+      "currency": "USD",
+      "salary_period": "hourly",
+      "total_jobs": 1,
+      "salary_sample_size": 1,
+      "jobs_without_salary": 0,
+      "salary_coverage_pct": 100.0,
+      "mean_advertised_salary": 125.0,
+      "median_advertised_salary": 125,
+      "lowest_advertised_salary": 125,
+      "highest_advertised_salary": 125
+    },
+    {
+      "primary_role": "Data Scientist",
+      "currency": null,
+      "salary_period": "annual",
+      "total_jobs": 19,
+      "salary_sample_size": 0,
+      "jobs_without_salary": 19,
+      "salary_coverage_pct": 0.0,
+      "mean_advertised_salary": null,
+      "median_advertised_salary": null,
+      "lowest_advertised_salary": null,
+      "highest_advertised_salary": null
+    },
+    {
+      "primary_role": "Machine Learning Engineer",
+      "currency": "USD",
+      "salary_period": "annual",
+      "total_jobs": 5,
+      "salary_sample_size": 4,
+      "jobs_without_salary": 1,
+      "salary_coverage_pct": 80.0,
+      "mean_advertised_salary": 186637.5,
+      "median_advertised_salary": 169850,
+      "lowest_advertised_salary": 146500,
+      "highest_advertised_salary": 260350
+    },
+    {
+      "primary_role": "Machine Learning Engineer",
+      "currency": "USD",
+      "salary_period": "hourly",
+      "total_jobs": 1,
+      "salary_sample_size": 1,
+      "jobs_without_salary": 0,
+      "salary_coverage_pct": 100.0,
+      "mean_advertised_salary": 125.0,
+      "median_advertised_salary": 125,
+      "lowest_advertised_salary": 125,
+      "highest_advertised_salary": 125
+    },
+    {
+      "primary_role": "Machine Learning Engineer",
+      "currency": null,
+      "salary_period": "annual",
+      "total_jobs": 11,
+      "salary_sample_size": 0,
+      "jobs_without_salary": 11,
+      "salary_coverage_pct": 0.0,
+      "mean_advertised_salary": null,
+      "median_advertised_salary": null,
+      "lowest_advertised_salary": null,
+      "highest_advertised_salary": null
+    },
+    {
+      "primary_role": "Other",
+      "currency": "CAD",
+      "salary_period": "annual",
+      "total_jobs": 3,
+      "salary_sample_size": 3,
+      "jobs_without_salary": 0,
+      "salary_coverage_pct": 100.0,
+      "mean_advertised_salary": 223333.33,
+      "median_advertised_salary": 265000,
+      "lowest_advertised_salary": 140000,
+      "highest_advertised_salary": 265000
+    },
+    {
+      "primary_role": "Other",
+      "currency": "EUR",
+      "salary_period": "hourly",
+      "total_jobs": 1,
+      "salary_sample_size": 1,
+      "jobs_without_salary": 0,
+      "salary_coverage_pct": 100.0,
+      "mean_advertised_salary": 14.0,
+      "median_advertised_salary": 14,
+      "lowest_advertised_salary": 14,
+      "highest_advertised_salary": 14
+    },
+    {
+      "primary_role": "Other",
+      "currency": "PHP",
+      "salary_period": "annual",
+      "total_jobs": 1,
+      "salary_sample_size": 1,
+      "jobs_without_salary": 0,
+      "salary_coverage_pct": 100.0,
+      "mean_advertised_salary": 300000.0,
+      "median_advertised_salary": 300000,
+      "lowest_advertised_salary": 300000,
+      "highest_advertised_salary": 300000
+    },
+    {
+      "primary_role": "Other",
+      "currency": "PHP",
+      "salary_period": "monthly",
+      "total_jobs": 1,
+      "salary_sample_size": 1,
+      "jobs_without_salary": 0,
+      "salary_coverage_pct": 100.0,
+      "mean_advertised_salary": 60000.0,
+      "median_advertised_salary": 60000,
+      "lowest_advertised_salary": 60000,
+      "highest_advertised_salary": 60000
+    },
+    {
+      "primary_role": "Other",
+      "currency": "THB",
+      "salary_period": "annual",
+      "total_jobs": 1,
+      "salary_sample_size": 1,
+      "jobs_without_salary": 0,
+      "salary_coverage_pct": 100.0,
+      "mean_advertised_salary": 190000.0,
+      "median_advertised_salary": 190000,
+      "lowest_advertised_salary": 190000,
+      "highest_advertised_salary": 190000
+    },
+    {
+      "primary_role": "Other",
+      "currency": "USD",
+      "salary_period": "annual",
+      "total_jobs": 58,
+      "salary_sample_size": 56,
+      "jobs_without_salary": 2,
+      "salary_coverage_pct": 96.55,
+      "mean_advertised_salary": 167566.93,
+      "median_advertised_salary": 145250,
+      "lowest_advertised_salary": 50000,
+      "highest_advertised_salary": 640000
+    },
+    {
+      "primary_role": "Other",
+      "currency": "USD",
+      "salary_period": "hourly",
+      "total_jobs": 12,
+      "salary_sample_size": 8,
+      "jobs_without_salary": 4,
+      "salary_coverage_pct": 66.67,
+      "mean_advertised_salary": 69.11,
+      "median_advertised_salary": 67.5,
+      "lowest_advertised_salary": 29,
+      "highest_advertised_salary": 135
+    },
+    {
+      "primary_role": "Other",
+      "currency": "USD",
+      "salary_period": "monthly",
+      "total_jobs": 2,
+      "salary_sample_size": 2,
+      "jobs_without_salary": 0,
+      "salary_coverage_pct": 100.0,
+      "mean_advertised_salary": 9238.25,
+      "median_advertised_salary": 9238.25,
+      "lowest_advertised_salary": 7476.5,
+      "highest_advertised_salary": 11000
+    },
+    {
+      "primary_role": "Other",
+      "currency": null,
+      "salary_period": "annual",
+      "total_jobs": 122,
+      "salary_sample_size": 0,
+      "jobs_without_salary": 122,
+      "salary_coverage_pct": 0.0,
+      "mean_advertised_salary": null,
+      "median_advertised_salary": null,
+      "lowest_advertised_salary": null,
+      "highest_advertised_salary": null
+    }
+  ]
+}

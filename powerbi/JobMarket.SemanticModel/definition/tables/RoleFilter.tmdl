@@ -1,0 +1,13 @@
+table RoleFilter
+	lineageTag: d178148d-58e1-47d1-b2d7-ceeb876cf5f8
+
+	column primary_role
+		dataType: string
+		lineageTag: f22c3239-9ce1-4784-8fc4-13b522424834
+		summarizeBy: none
+		sourceColumn: primary_role
+
+	partition RoleFilter = m
+		mode: import
+		source = Table.Distinct(Table.SelectColumns(Roles, {"primary_role"}))
+
