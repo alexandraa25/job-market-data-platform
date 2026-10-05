@@ -1,6 +1,6 @@
 # Job Market Data Platform
 
-Platformă locală de Data Engineering care colectează anunțuri de angajare din Himalayas API, le curăță și validează, apoi le încarcă incremental în PostgreSQL. Apache Airflow orchestrează pipeline-ul, iar Power BI prezintă distribuția rolurilor, companiilor, competențelor și salariilor.
+Platformă de Data Engineering cu orchestrare locală și arhivare opțională în Azure Data Lake Gen2 care colectează anunțuri de angajare din Himalayas API, le curăță și validează, apoi le încarcă incremental în PostgreSQL. Apache Airflow orchestrează pipeline-ul, iar Power BI prezintă distribuția rolurilor, companiilor, competențelor și salariilor.
 
 Proiectul demonstrează un flux complet: ingestie API, procesare cu Pandas, data quality, modelare relațională, încărcare idempotentă, audit persistent și monitorizare.
 
@@ -37,11 +37,15 @@ Selecția folosește o singură monedă și o singură perioadă. Tabelul afișe
 ```mermaid
 flowchart LR
     API[Himalayas API] --> E[Extract]
+    E --> ADLS[Azure Data Lake Gen2 / raw opțional]
     E --> T[Transform]
     T --> V[Validate]
     V --> L[Load / UPSERT]
     V --> R[Rânduri respinse și raport DQ]
     L --> DB[(PostgreSQL)]
+    L --> SP[PySpark local]
+    ADLS --> SP
+    SP --> PQ[Azure processed / Parquet]
     DB --> SQL[View-uri analytics]
     SQL --> BI[Power BI]
     AF[Apache Airflow] -. orchestrează .-> E
@@ -55,6 +59,7 @@ flowchart LR
 - **PostgreSQL 18 și SQLAlchemy** — stocare relațională și tranzacții.
 - **Apache Airflow 3.3.2 / LocalExecutor** — orchestrare, retry și loguri.
 - **Docker Compose** — mediu local reproductibil.
+- **Azure Data Lake Gen2 și Microsoft Entra ID** — arhivare raw cu autentificare prin service principal.
 - **Power BI** — model semantic și raport de analiză.
 - **Pytest și GitHub Actions** — teste și workflow CI.
 
@@ -74,10 +79,11 @@ DAG-ul `job_market_etl` rulează zilnic, la **19:07** în `Europe/Bucharest` (`7
 
 | Etapă | Responsabilitate |
 | --- | --- |
-| `extract` | Colectează și deduplică anunțurile; salvează rezultatul brut. |
+| `extract` | Colectează și deduplică anunțurile; salvează rezultatul brut local și, opțional, în Azure. |
 | `transform` | Normalizează câmpurile și derivă rolurile și competențele. |
 | `validate` | Separă datele acceptate de cele respinse; blochează batchurile fără rânduri acceptate. |
 | `load` | Încarcă datele acceptate prin UPSERT și actualizează relațiile. |
+| `spark_process` | Procesează același snapshot raw cu PySpark și publică Parquet și manifest în Azure. |
 
 Task-urile folosesc `BashOperator`, retry cu backoff și timeout. Artefactele intermediare sunt separate pe run. `max_active_runs=1` previne suprapunerea rulărilor ETL.
 
@@ -127,7 +133,7 @@ Bazele de date pornesc prin dependențele Compose. `airflow-init` aplică migrar
 
 Compose este destinat dezvoltării locale și include credențiale demonstrative pentru baza de metadate; acestea nu sunt o configurație pentru producție.
 
-Deschide [Airflow UI](http://localhost:8080), autentifică-te cu configurația locală și activează `job_market_etl`, `job_market_audit_reconcile` și `job_market_monitor`. Pentru prima verificare, declanșează `job_market_etl` și urmărește cele patru task-uri și logurile lui `load`.
+Deschide [Airflow UI](http://localhost:8080), autentifică-te cu configurația locală și activează `job_market_etl`, `job_market_audit_reconcile` și `job_market_monitor`. Pentru prima verificare, declanșează `job_market_etl` și urmărește cele cinci task-uri și logurile lui `load` și `spark_process`.
 
 PostgreSQL pentru datele de business este accesibil de pe host la `localhost:5433`, baza `job_market_db`.
 
@@ -150,6 +156,76 @@ docker compose exec -T db psql -U postgres -d job_market_db -v ON_ERROR_STOP=1 -
 ```
 
 Volumele păstrează datele între restarturi. `docker compose down -v` le șterge.
+
+## Arhivare raw în Azure (opțional)
+
+Creează un Storage Account cu hierarchical namespace activat și un container privat `raw`. Atribuie aplicației Microsoft Entra folosite de pipeline rolul **Storage Blob Data Contributor**, limitat la acest container. În `.env`, completează:
+
+```dotenv
+AZURE_UPLOAD_ENABLED=true
+AZURE_STORAGE_ACCOUNT_NAME=<numele-contului>
+AZURE_STORAGE_CONTAINER=raw
+AZURE_TENANT_ID=<Directory-tenant-ID>
+AZURE_CLIENT_ID=<Application-client-ID>
+AZURE_CLIENT_SECRET=<valoarea-secretului>
+```
+
+Folosește valoarea secretului, nu Secret ID. Păstrează secretul local și înlocuiește-l înainte de expirare. Exemplul de mediu dezactivează integrarea implicit; execuția exclusiv locală rămâne disponibilă.
+
+După modificarea dependențelor sau a configurației:
+
+```bash
+docker compose build airflow-scheduler etl
+docker compose up -d airflow-api-server airflow-scheduler airflow-dag-processor
+```
+
+`extract` încarcă rezultatul colectat și deduplicat la `raw/jobs/<sha256(run_id)>/raw.json`. Reluarea aceluiași run folosește aceeași cale și poate înlocui conținutul cu rezultatul noii extrageri. Un run nou are altă cale. Manifestul local `data/runs/<sha256(run_id)>/azure_upload.json` păstrează calea, numărul de bytes și SHA256, fără credențiale. Transformarea și încărcarea PostgreSQL folosesc în continuare artefactele locale.
+
+Când integrarea este activă, lipsa configurației sau eșecul uploadului oprește etapa `extract` și permite retry-ul Airflow. Uploadul nu creează containerul. Serviciile Azure pot consuma credit sau genera costuri în funcție de abonament și utilizare.
+
+Verificat la **5 octombrie 2026**: run-ul manual Airflow `azure_integration_20261005_final` a reușit cu toate cele patru task-uri din prima încercare: 128 acceptate, 0 respinse, 0 inserted, 3 updated, 125 skipped. Fișierul Azure de 867609 bytes a fost descărcat și comparat cu artefactul local, inclusiv SHA256. Rularea automată `scheduled__2026-10-05T10:26:00+00:00`, la 13:26 Europe/Bucharest, a confirmat ulterior aceleași rezultate: toate task-urile din prima încercare, fără Trigger/Clear, iar fișierul descărcat din Azure a fost identic cu cel local. Ora a fost mutată temporar pentru demonstrație, apoi restabilită la 19:07.
+
+## Procesare locală PySpark → Azure Parquet
+
+Serviciul Docker opțional `spark` folosește PySpark 4.0.1 și Java 17 pentru execuție independentă. Aceleași dependențe sunt instalate și în imaginea Airflow pentru orchestrare. Citește un snapshot raw din Azure prin SDK, apoi procesează local datele cu Spark `local[2]`. Nu este un cluster distribuit și nu folosește încă Databricks sau acces Hadoop ABFS direct.
+
+Creează containerul privat `processed` și atribuie aplicației rolul **Storage Blob Data Contributor** pe acesta. `AZURE_PROCESSED_CONTAINER` are valoarea implicită `processed`. Folosește identificatorul unei rulări existente cu upload raw:
+
+```bash
+docker compose --profile spark build spark
+docker compose --profile spark run --rm spark --run-id 'scheduled__2026-10-05T10:26:00+00:00'
+```
+
+Spark deduplică după GUID păstrând primul rând, curăță titlul/compania, convertește salariile și datele UTC, clasifică rolurile și detectează competențele. Separă rândurile acceptate și respinse, cu motive de respingere. Publicarea este blocată dacă nu există rânduri acceptate.
+
+Artefactele locale se află în `data/spark/<sha256(run_id)>/`: `raw.json`, directoarele Parquet `accepted` și `rejected`, plus `quality_report.json`. În Azure, fiecare procesare publică o versiune la `processed/jobs/<run-hash>/<raw-sha256>/<processing-id>/`. Fișierele sunt descărcate și comparate după upload; `manifest.json`, publicat ultimul, enumeră fișierele, bytes, SHA256 și contorii. Consumatorii trebuie să folosească doar versiunile cu manifest. Nu există încă retenție automată; o publicare întreruptă poate lăsa fișiere fără manifest.
+
+Pentru verificare fără publicare, adaugă `--local-only`; pentru lucru offline, folosește `--local-raw data/runs/<run-hash>/raw.json`. SDK-ul transferă datele prin driver și stocarea locală; această variantă este potrivită snapshoturilor demonstrative, nu fișierelor care depășesc memoria/discul local.
+
+```bash
+docker compose --profile spark run --rm --entrypoint python spark -m pytest tests/test_spark_process.py -q
+```
+
+Verificat la 5 octombrie 2026: **2 teste Spark trecute**, inclusiv comparația tuturor coloanelor acceptate cu Pandas pe snapshotul local demonstrativ; testul de comparație este omis dacă acel snapshot lipsește. Fluxul Azure raw → Spark → processed a publicat **128 acceptate, 0 respinse**, cu verificare byte cu byte a fișierelor Parquet. Spark poate fi rulat independent sau ca ultimul task al pipeline-ului zilnic Airflow.
+
+### Orchestrare Spark în Airflow
+
+Fluxul curent este `extract → transform → validate → load → spark_process`, zilnic la 19:07 Europe/Bucharest. Task-ul Spark folosește BashOperator în schedulerul LocalExecutor, același run ID și retry/timeout ca etapele existente. Nu are nevoie de Docker socket sau de pornirea serviciului separat `spark`.
+
+Când `AZURE_UPLOAD_ENABLED=true`, Spark descarcă raw din Azure și publică în containerul privat configurat prin `AZURE_PROCESSED_CONTAINER` (implicit `processed`). Când este `false`, `--airflow` selectează raw local al rulării și produce doar Parquet local. Eșecul Spark face întregul DAG failed; baza PostgreSQL poate fi deja actualizată, deoarece load precedă Spark. Auditul `job_runs` descrie cele patru etape PostgreSQL; starea completă, inclusiv Spark, se verifică în Airflow. Monitorul folosește starea DAG-ului și toate task-urile existente în metadate, păstrând compatibilitatea cu rulările istorice de patru task-uri.
+
+După aceste schimbări de imagine și mediu:
+
+```bash
+docker compose build airflow-init airflow-api-server airflow-scheduler airflow-dag-processor
+docker compose up -d airflow-api-server airflow-scheduler airflow-dag-processor
+```
+
+Pentru un eșec exclusiv Spark, reia doar `spark_process` prin Clear: nu este nevoie să refaci UPSERT-ul. Reprocesarea publică o versiune nouă cu manifest separat. Dacă reiei extract/transform/validate/load, reia și task-urile dependente, inclusiv Spark, ca rezultatele să reflecte noul snapshot. Fișierul local `quality_report.json` al procesării include calea manifestului Azure după succes. Secretul nu este trecut în comanda task-ului.
+
+Verificat: rularea manuală orchestrată `spark_orchestration_final_20261005` are toate cele cinci task-uri `success`, fiecare din prima încercare. Spark a procesat 128 de rânduri acceptate, 0 respinse. Manifestul și cele trei fișiere Parquet au fost descărcate din Azure și verificate față de artefactele locale. Toate cele 59 de teste au trecut în mediul Airflow cu PostgreSQL temporar; modul local fără upload a fost verificat separat. Programarea rămâne la 19:07. Rularea programată de cinci task-uri rămâne de confirmat; demonstrația automată anterioară a inclus cele patru task-uri existente atunci.
+
+Containerele Spark și Airflow folosesc același UID 50000 și grup 0 pentru artefactele partajate. Dacă există fișiere create anterior de un container Spark root, proprietarul lor trebuie corectat înainte de execuția Airflow.
 
 ## Raport Power BI
 
@@ -185,7 +261,7 @@ python -m pytest -v
 
 Testele de integrare necesită `TEST_DATABASE_URL` către un PostgreSQL dedicat, cu numele bazei terminat în `_test`. Fără această variabilă, testele de integrare sunt omise. Nu folosi baza de business pentru teste.
 
-Ultima verificare locală din **4 octombrie 2026**: **48 de teste trecute**, inclusiv UPSERT, rollback, data quality, audit, modelare, reconciliere și alerte, pe PostgreSQL temporar. DAG-ul ETL a fost verificat cu toate task-urile reușite; monitorul a avut și o rulare programată reușită. Workflow-ul [GitHub Actions](.github/workflows/tests.yml) este configurat, dar rezultatul unui run CI nu a fost verificat.
+Ultima verificare locală din **5 octombrie 2026**: **59 de teste trecute**, inclusiv UPSERT, rollback, data quality, audit, modelare, reconciliere, alerte, integrarea Azure simulată și procesarea Spark, pe PostgreSQL temporar. Pentru teste, setează `AZURE_UPLOAD_ENABLED=false` ca să eviți uploaduri reale; testele Azure controlează separat configurația. DAG-ul ETL a fost verificat cu toate task-urile reușite; monitorul a avut și o rulare programată reușită. Workflow-ul [GitHub Actions](.github/workflows/tests.yml) este configurat, dar rezultatul unui run CI nu a fost verificat.
 
 ## Limite și dezvoltări viitoare
 
@@ -194,7 +270,7 @@ Ultima verificare locală din **4 octombrie 2026**: **48 de teste trecute**, inc
 - Sursa conține numai anunțurile colectate prin căutările configurate; rezultatele nu reprezintă întreaga piață a muncii.
 - Competențele sunt detectate prin reguli textuale, iar salariile lipsă nu sunt estimate.
 - Rularea completă pe volume noi, conexiunea directă Power BI și refresh-ul său programat necesită verificări suplimentare.
-- Extensii posibile: notificări externe și migrarea orchestrării/stocării către Azure.
+- Extensii posibile: notificări externe și migrarea orchestrării și procesării către Azure; arhivarea raw este deja implementată.
 
 Detalii despre artefacte și reluarea task-urilor: [etapele Airflow](docs/airflow-stages.md).
 

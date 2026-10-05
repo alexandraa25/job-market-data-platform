@@ -93,3 +93,27 @@ def test_custom_daily_time_excludes_older_run():
         )[1]
         is True
     )
+
+
+@pytest.mark.parametrize(
+    "spark_state,confirmed",
+    [("success", True), ("failed", False), ("running", False), (None, False)],
+)
+def test_daily_includes_spark(spark_state, confirmed):
+    now = datetime(2026, 10, 5, 2, tzinfo=ZoneInfo("Europe/Bucharest"))
+    run = {
+        "run_id": "scheduled",
+        "state": "success",
+        "run_type": "scheduled",
+        "run_after": now.replace(hour=0),
+        "clear_number": 0,
+    }
+    tasks = {
+        "scheduled": dict.fromkeys(
+            ("extract", "transform", "validate", "load"), "success"
+        )
+    }
+    tasks["scheduled"]["spark_process"] = spark_state
+    result = check_daily([run], tasks, now)
+    assert result[2] is confirmed
+    assert result[1] is not confirmed

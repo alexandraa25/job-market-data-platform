@@ -6,7 +6,7 @@ from airflow.providers.standard.operators.bash import BashOperator
 
 with DAG(
     dag_id="job_market_etl",
-    description="Job Market ETL: extract → transform → validate → load",
+    description="Job Market ETL: extract → transform → validate → load → spark_process",
     start_date=pendulum.datetime(2026, 10, 1, tz="Europe/Bucharest"),
     schedule="7 19 * * *",
     catchup=False,
@@ -30,3 +30,19 @@ with DAG(
             max_retry_delay=timedelta(minutes=5),
         )
     stages["extract"] >> stages["transform"] >> stages["validate"] >> stages["load"]
+
+    spark_process = BashOperator(
+        task_id="spark_process",
+        bash_command='exec python -u -m src.spark_process --airflow --run-id "$ETL_RUN_ID"',
+        env={"ETL_RUN_ID": "{{ run_id }}", "SPARK_LOCAL_IP": "127.0.0.1"},
+        append_env=True,
+        cwd="/opt/airflow/project",
+        do_xcom_push=False,
+        skip_on_exit_code=None,
+        execution_timeout=timedelta(minutes=20),
+        retries=2,
+        retry_delay=timedelta(minutes=1),
+        retry_exponential_backoff=True,
+        max_retry_delay=timedelta(minutes=5),
+    )
+    stages["load"] >> spark_process

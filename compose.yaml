@@ -1,3 +1,12 @@
+x-azure-environment: &azure-environment
+  AZURE_PROCESSED_CONTAINER: ${AZURE_PROCESSED_CONTAINER:-processed}
+  AZURE_UPLOAD_ENABLED: ${AZURE_UPLOAD_ENABLED:-false}
+  AZURE_STORAGE_ACCOUNT_NAME: ${AZURE_STORAGE_ACCOUNT_NAME:-}
+  AZURE_STORAGE_CONTAINER: ${AZURE_STORAGE_CONTAINER:-raw}
+  AZURE_TENANT_ID: ${AZURE_TENANT_ID:-}
+  AZURE_CLIENT_ID: ${AZURE_CLIENT_ID:-}
+  AZURE_CLIENT_SECRET: ${AZURE_CLIENT_SECRET:-}
+
 x-airflow-environment: &airflow-environment
   AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg://airflow:airflow@airflow-db:5432/airflow
   MAX_REJECTED_PERCENT: ${MAX_REJECTED_PERCENT:-10}
@@ -44,6 +53,7 @@ services:
       context: .
 
     environment:
+      <<: *azure-environment
       DB_HOST: db
       DB_PORT: 5432
       DB_NAME: job_market_db
@@ -57,6 +67,19 @@ services:
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs
+
+  spark:
+    profiles: [spark]
+    build:
+      context: .
+      dockerfile: Dockerfile.spark
+    environment:
+      <<: *azure-environment
+      AZURE_PROCESSED_CONTAINER: ${AZURE_PROCESSED_CONTAINER:-processed}
+    volumes:
+      - ./src:/app/src:ro
+      - ./tests:/app/tests:ro
+      - ./data:/app/data
 
   airflow-db:
     image: postgres:18
@@ -161,7 +184,7 @@ services:
         condition: service_healthy
 
     environment:
-      <<: *airflow-environment
+      <<: [*airflow-environment, *azure-environment]
 
       DB_HOST: db
       DB_PORT: 5432

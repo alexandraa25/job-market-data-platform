@@ -4,3 +4,5 @@ sqlalchemy
 psycopg[binary]
 python-dotenv
 pytest
+azure-identity>=1.17,<2
+azure-storage-file-datalake>=12.16,<13

@@ -14,3 +14,5 @@ AGENTS.md
 data/runs/
 powerbi/*.pbix
 **/.pbi/
+
+data/spark/

@@ -105,6 +105,13 @@ def check_daily(
     all_success = bool(run) and all(
         tasks.get(run["run_id"], {}).get(s) == "success" for s in STAGES
     )
+    # Include added tasks (such as Spark), while retaining historical four-task runs.
+    all_success = (
+        all_success
+        and all(value == "success" for value in tasks.get(run["run_id"], {}).values())
+        if run
+        else False
+    )
     success = state == "success" and all_success
     details = {
         "run_id": run["run_id"] if run else None,

@@ -10,6 +10,7 @@ from pathlib import Path
 import pandas as pd
 
 try:
+    from .azure_storage import upload_raw
     from .audit import begin_stage, finish_stage
     from .quality import validate_and_save
     from .extract import extract_jobs, save_raw_data
@@ -24,6 +25,7 @@ try:
     from .load import create_db_engine, test_connection, upsert_jobs
     from .logger_config import setup_logger
 except ImportError:
+    from azure_storage import upload_raw
     from audit import begin_stage, finish_stage
     from quality import validate_and_save
     from extract import extract_jobs, save_raw_data
@@ -72,6 +74,12 @@ def _execute_stage(stage, run_id):
         temporary.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
         temporary.replace(raw)
         save_raw_data(data)
+        azure_result = upload_raw(raw, run_id)
+        if azure_result:
+            manifest = directory / "azure_upload.json"
+            temporary = manifest.with_suffix(".tmp")
+            temporary.write_text(json.dumps(azure_result), encoding="utf-8")
+            temporary.replace(manifest)
         return {"extracted": len(data["jobs"])}
     elif stage == "transform":
         data = json.loads(raw.read_text(encoding="utf-8"))
