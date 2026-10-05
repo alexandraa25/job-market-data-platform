@@ -38,30 +38,39 @@ def lake():
             yield service
 
 
-def transform(spark, jobs):
-    from pyspark.sql import functions as F, types as T, Window
+STRING_COLUMNS = [
+    "guid",
+    "search_query",
+    "title",
+    "companyName",
+    "employmentType",
+    "minSalary",
+    "maxSalary",
+    "salaryPeriod",
+    "currency",
+    "description",
+    "pubDate",
+    "expiryDate",
+    "applicationLink",
+]
+LIST_COLUMNS = ["seniority", "locationRestrictions", "categories", "parentCategories"]
 
-    strings = [
-        "guid",
-        "search_query",
-        "title",
-        "companyName",
-        "employmentType",
-        "minSalary",
-        "maxSalary",
-        "salaryPeriod",
-        "currency",
-        "description",
-        "pubDate",
-        "expiryDate",
-        "applicationLink",
-    ]
-    lists = ["seniority", "locationRestrictions", "categories", "parentCategories"]
-    schema = T.StructType(
-        [T.StructField(c, T.StringType()) for c in strings]
-        + [T.StructField(c, T.ArrayType(T.StringType())) for c in lists]
-        + [T.StructField("_position", T.LongType())]
+
+def raw_schema():
+    from pyspark.sql import types as T
+
+    return T.StructType(
+        [T.StructField(c, T.StringType()) for c in STRING_COLUMNS]
+        + [T.StructField(c, T.ArrayType(T.StringType())) for c in LIST_COLUMNS]
     )
+
+
+def transform(spark, jobs):
+    from pyspark.sql import types as T
+
+    strings = STRING_COLUMNS
+    lists = LIST_COLUMNS
+    schema = raw_schema().add("_position", T.LongType())
     rows = []
     for i, job in enumerate(jobs):
         row = {c: str(job[c]) if job.get(c) is not None else None for c in strings}
@@ -77,7 +86,14 @@ def transform(spark, jobs):
         )
         row["_position"] = i
         rows.append(row)
-    df = spark.createDataFrame(rows, schema)
+    return transform_frame(spark.createDataFrame(rows, schema))
+
+
+def transform_frame(df):
+    """Shared expressions for local records and a cloud-read raw DataFrame."""
+    from pyspark.sql import functions as F, Window
+
+    lists = LIST_COLUMNS
     df = (
         df.withColumn(
             "_rank",

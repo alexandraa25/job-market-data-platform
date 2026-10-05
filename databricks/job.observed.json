@@ -1,0 +1,38 @@
+{
+  "configuration_status": "exact_settings_supplied_by_user",
+  "job_name": "job_market_free_edition",
+  "job_id": 844658865350513,
+  "task_key": "process_job_market",
+  "notebook_name": "Job_Market_PySpark_Complet",
+  "compute": "Serverless",
+  "verified_manual_run": {
+    "run_id": 1092530376041511,
+    "state": "Succeeded",
+    "date": "2026-10-05",
+    "duration_seconds": 78,
+    "accepted": 128,
+    "rejected": 0
+  },
+  "schedule_user_reported": {
+    "daily_time": "19:15:47",
+    "quartz_cron_expression": "47 15 19 * * ?",
+    "timezone": "Europe/Bucharest",
+    "pause_status": "UNPAUSED",
+    "scheduled_execution_verified": false
+  },
+  "template_only_settings": [],
+  "unverified_settings": [
+    "serverless_environment_version_not_in_export"
+  ],
+  "verified_export_settings": {
+    "max_concurrent_runs": 1,
+    "queue_enabled": true,
+    "job_timeout_seconds": 0,
+    "task_timeout_seconds": 0,
+    "performance_target": "PERFORMANCE_OPTIMIZED",
+    "run_if": "ALL_SUCCESS",
+    "disabled": false,
+    "explicit_task_parameters": false,
+    "notifications_configured": false
+  }
+}

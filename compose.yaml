@@ -79,6 +79,7 @@ services:
     volumes:
       - ./src:/app/src:ro
       - ./tests:/app/tests:ro
+      - ./databricks:/app/databricks:ro
       - ./data:/app/data
 
   airflow-db:

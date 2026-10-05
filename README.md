@@ -6,7 +6,7 @@ Proiectul demonstrează un flux complet: ingestie API, procesare cu Pandas, data
 
 ## Demonstrație
 
-Capturi din aplicațiile reale, realizate la **4 octombrie 2026**. Raportul ilustrează snapshot-ul demonstrativ inclus în proiect; valorile sale nu reprezintă o măsurare a întregii piețe.
+Capturi din aplicațiile reale: Airflow și Power BI la **4 octombrie 2026**, Databricks Free Edition la **5 octombrie 2026**. Raportul ilustrează snapshot-ul demonstrativ inclus în proiect; valorile sale nu reprezintă o măsurare a întregii piețe.
 
 ### Airflow: rulare programată reușită
 
@@ -31,6 +31,14 @@ Filtrul este pe Data Engineer. Python apare în 17 din 19 joburi (89,5%), iar SQ
 Selecția folosește o singură monedă și o singură perioadă. Tabelul afișează și mărimea eșantionului; grupa Data Engineer are cinci salarii. Sunt limite salariale publicate în anunțuri, nu salarii efectiv plătite.
 
 ![Power BI: comparație salarială în USD anual](docs/images/powerbi-salaries-usd-annual.png)
+
+### Databricks Free Edition: PySpark și Parquet în cloud
+
+Notebookul demonstrativ [Job_Market_PySpark_Demo.py](databricks/Job_Market_PySpark_Demo.py) a rulat pe compute Serverless, cu un snapshot JSON încărcat manual în `/Volumes/workspace/default/raw/raw.json`. A separat anunțurile în rânduri, a curățat câmpurile, a convertit salariile/datele, a clasificat rolurile și a aplicat validarea demonstrativă: **128 acceptate, 0 respinse**. Parquetul salvat în volumul managed `processed` a fost recitit, confirmând **128 de rânduri**.
+
+![Databricks Free Edition: Parquet verificat, 128 de rânduri](docs/images/databricks-free-edition-success.png)
+
+Demonstrația folosește stocarea Databricks Free Edition, separat de containerele Azure ADLS. Pipeline-ul zilnic Airflow continuă să execute Spark local. Notebookul Demo păstrează varianta executată: verificarea Parquet compară numărul de rânduri; nu publică manifest, nu salvează rândurile respinse și nu detectează separat valorile neconvertibile devenite null. Nu reprezintă încă migrarea completă a validării proiectului. Varianta completată `Job_Market_PySpark_FreeEdition.py` include competențe, flaguri de conversie, respingeri Parquet, raport de calitate și manifest publicat după verificarea conținutului. Această versiune a fost verificată și în Free Edition: 128 acceptate, 0 respinse, Parquet verificat și manifest publicat.
 
 ## Arhitectură
 
@@ -227,6 +235,10 @@ Verificat: rularea manuală orchestrată `spark_orchestration_final_20261005` ar
 
 Containerele Spark și Airflow folosesc același UID 50000 și grup 0 pentru artefactele partajate. Dacă există fișiere create anterior de un container Spark root, proprietarul lor trebuie corectat înainte de execuția Airflow.
 
+## Databricks: demonstrație și migrare
+
+Demonstrația pe Databricks Free Edition este verificată prin notebookul exportat și captura de mai sus. Nu s-a trecut la Pay-As-You-Go. Separat, notebookul parametrizat `databricks/job_market_notebook.py` și modulul `src/cloud_process.py` sunt pregătite pentru integrare prin Unity Catalog; testele lor locale au trecut, dar acea variantă nu a fost executată în workspace. Conectarea directă la Azure ADLS și înlocuirea taskului local Airflow nu sunt efectuate. Instrucțiuni: [Databricks](databricks/README.md).
+
 ## Raport Power BI
 
 Raportul are trei pagini: **privire generală**, **competențe** și **salarii**. Proiectul editabil este `powerbi/JobMarket.pbip`, împreună cu folderele raportului și modelului semantic. Fișierul binar PBIX este exclus din Git.
@@ -261,7 +273,7 @@ python -m pytest -v
 
 Testele de integrare necesită `TEST_DATABASE_URL` către un PostgreSQL dedicat, cu numele bazei terminat în `_test`. Fără această variabilă, testele de integrare sunt omise. Nu folosi baza de business pentru teste.
 
-Ultima verificare locală din **5 octombrie 2026**: **59 de teste trecute**, inclusiv UPSERT, rollback, data quality, audit, modelare, reconciliere, alerte, integrarea Azure simulată și procesarea Spark, pe PostgreSQL temporar. Pentru teste, setează `AZURE_UPLOAD_ENABLED=false` ca să eviți uploaduri reale; testele Azure controlează separat configurația. DAG-ul ETL a fost verificat cu toate task-urile reușite; monitorul a avut și o rulare programată reușită. Workflow-ul [GitHub Actions](.github/workflows/tests.yml) este configurat, dar rezultatul unui run CI nu a fost verificat.
+Ultima verificare locală din **5 octombrie 2026**: **63 de teste trecute**, inclusiv UPSERT, rollback, data quality, audit, modelare, reconciliere, alerte, integrarea Azure simulată și procesarea Spark, pe PostgreSQL temporar. Pentru teste, setează `AZURE_UPLOAD_ENABLED=false` ca să eviți uploaduri reale; testele Azure controlează separat configurația. DAG-ul ETL a fost verificat cu toate task-urile reușite; monitorul a avut și o rulare programată reușită. Workflow-ul [GitHub Actions](.github/workflows/tests.yml) este configurat, dar rezultatul unui run CI nu a fost verificat.
 
 ## Limite și dezvoltări viitoare
 
@@ -277,3 +289,15 @@ Detalii despre artefacte și reluarea task-urilor: [etapele Airflow](docs/airflo
 ## Fișiere pentru repository
 
 Codul sursă, DAG-urile, schema SQL, testele, configurațiile fără secrete, proiectul Power BI text, snapshot-ul demonstrativ și capturile sunt incluse în prezentare. `.env`, datele brute/intermediare, logurile, cache-urile și PBIX-ul local sunt excluse din Git. Pentru a deschide raportul dintr-un clone, folosește `powerbi/JobMarket.pbip`; păstrează folderele raportului și modelului lângă el.
+
+Verificare Free Edition, 5 octombrie 2026: notebookul complet afișează 128 acceptate, 0 respinse, Parquet verificat și manifest la `/Volumes/workspace/default/processed/job_market/8ea0adbd6d0a4d43b81d5099c592cc26/manifest.json`. Aceasta confirmă execuția manuală a notebookului complet; încărcarea raw rămâne manuală, iar Job-ul Databricks a fost verificat ulterior prin Run now.
+
+## Databricks Job verificat
+
+La 5 octombrie 2026, Job-ul `job_market_free_edition`, task `process_job_market`, a executat notebookul complet pe Serverless cu starea **Succeeded**. Rularea a fost lansată manual prin Run now și a durat 1 minut și 18 secunde: 128 acceptate, 0 respinse, Parquet verificat și manifest nou publicat. Sursa rămâne snapshotul încărcat manual; nu există încă o programare cloud confirmată sau integrare de declanșare din Airflow.
+
+![Databricks Job: Succeeded și 128 de rânduri Parquet verificate](docs/images/databricks-job-success.png)
+
+Programarea Job-ului a fost configurată de utilizatoare zilnic la 19:15:47 Europe/Bucharest; prima execuție automată nu este încă verificată. Pentru actualizare, se înlocuiește manual raw.json în volumul Databricks raw cu snapshotul unei rulări locale reușite, apoi se rulează Job-ul. Orele celor două programe nu creează o dependență automată de transfer între Airflow și Free Edition.
+
+Configurație reproductibilă Job: [instrucțiuni și setări](databricks/JOB_CONFIGURATION.md). Șablonul este salvat; exportul exact a fost furnizat de utilizatoare și păstrat local și nu s-a efectuat deploy.

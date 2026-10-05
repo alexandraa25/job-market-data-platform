@@ -18,3 +18,6 @@ powerbi/*.pbix
 
 /DOCUMENTATIE_PERSONALA.md
 data/spark/
+
+# Exact Databricks workspace export remains local until reviewed
+/databricks/job.export.json
