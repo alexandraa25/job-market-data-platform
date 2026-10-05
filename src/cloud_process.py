@@ -53,4 +53,3 @@ def process_cloud(spark, run_id, raw_root, processed_root, write_manifest):
     report["manifest_path"] = prefix + "/manifest.json"
     write_manifest(report["manifest_path"], json.dumps(report, indent=2))
     return report
-
