@@ -8,7 +8,7 @@
   "schedule": {
     "quartz_cron_expression": "47 15 19 * * ?",
     "timezone_id": "Europe/Bucharest",
-    "pause_status": "UNPAUSED"
+    "pause_status": "PAUSED"
   },
   "max_concurrent_runs": 1,
   "tasks": [

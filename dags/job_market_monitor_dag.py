@@ -7,7 +7,11 @@ from airflow.providers.standard.operators.bash import BashOperator
 with DAG(
     dag_id="job_market_monitor",
     start_date=pendulum.datetime(2026, 10, 1, tz="Europe/Bucharest"),
-    schedule="*/5 * * * *",
+    # OPRIT: fara rulari automate; executarea manuala ramane disponibila.
+    schedule=None,
+    # PORNIT: comenteaza schedule=None si decomenteaza linia urmatoare.
+    # schedule="*/5 * * * *",  # monitorizare la fiecare 5 minute
+    # Dupa reactivare, activeaza si DAG-ul din UI Airflow (Unpause).
     catchup=False,
     max_active_runs=1,
     tags=["monitoring", "job-market"],

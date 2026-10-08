@@ -4,6 +4,10 @@ Platformă de Data Engineering cu orchestrare locală și arhivare opțională �
 
 Proiectul demonstrează un flux complet: ingestie API, procesare cu Pandas, data quality, modelare relațională, încărcare idempotentă, audit persistent și monitorizare.
 
+## Starea versiunii
+
+Programările Airflow și Databricks sunt oprite implicit. Pornirea serviciilor Docker nu declanșează ETL-ul manual. Pentru pornire, oprire și reactivare: [ghidul de operare](docs/OPERATIONS.md). Transferul snapshotului către Databricks Free Edition rămâne manual.
+
 ## Demonstrație
 
 Capturi din aplicațiile reale: Airflow și Power BI la **4 octombrie 2026**, Databricks Free Edition la **5 octombrie 2026**. Raportul ilustrează snapshot-ul demonstrativ inclus în proiect; valorile sale nu reprezintă o măsurare a întregii piețe.
@@ -83,7 +87,7 @@ flowchart LR
 
 ## Pipeline și orchestrare
 
-DAG-ul `job_market_etl` rulează zilnic, la **19:07** în `Europe/Bucharest` (`7 19 * * *`):
+DAG-ul `job_market_etl` are cinci etape. Implicit folosește `schedule=None`; programarea opțională la **19:07 Europe/Bucharest** (`7 19 * * *`) este păstrată comentată:
 
 | Etapă | Responsabilitate |
 | --- | --- |
@@ -95,7 +99,7 @@ DAG-ul `job_market_etl` rulează zilnic, la **19:07** în `Europe/Bucharest` (`7
 
 Task-urile folosesc `BashOperator`, retry cu backoff și timeout. Artefactele intermediare sunt separate pe run. `max_active_runs=1` previne suprapunerea rulărilor ETL.
 
-DAG-urile `job_market_audit_reconcile` și `job_market_monitor` rulează la fiecare cinci minute. Monitorul înregistrează alertele în PostgreSQL și tranzițiile în logurile Airflow, fără notificări externe. Pragul implicit pentru respingeri este **10%**, configurabil; lipsa succesului zilnic este semnalată după ora **20:07**.
+DAG-urile `job_market_audit_reconcile` și `job_market_monitor` sunt oprite implicit; la reactivarea programării rulează la fiecare cinci minute. Monitorul înregistrează alertele în PostgreSQL și tranzițiile în logurile Airflow, fără notificări externe. Pragul implicit pentru respingeri este **10%**, configurabil; lipsa succesului zilnic este semnalată după ora **20:07**.
 
 ## Modelul de date
 
@@ -141,7 +145,7 @@ Bazele de date pornesc prin dependențele Compose. `airflow-init` aplică migrar
 
 Compose este destinat dezvoltării locale și include credențiale demonstrative pentru baza de metadate; acestea nu sunt o configurație pentru producție.
 
-Deschide [Airflow UI](http://localhost:8080), autentifică-te cu configurația locală și activează `job_market_etl`, `job_market_audit_reconcile` și `job_market_monitor`. Pentru prima verificare, declanșează `job_market_etl` și urmărește cele cinci task-uri și logurile lui `load` și `spark_process`.
+Deschide [Airflow UI](http://localhost:8080), autentifică-te cu configurația locală și activează numai `job_market_etl` pentru o demonstrație manuală. Cu `schedule=None` nu există rulări periodice. Declanșează `job_market_etl` și urmărește cele cinci task-uri și logurile lui `load` și `spark_process`.
 
 PostgreSQL pentru datele de business este accesibil de pe host la `localhost:5433`, baza `job_market_db`.
 
@@ -218,7 +222,7 @@ Verificat la 5 octombrie 2026: **2 teste Spark trecute**, inclusiv comparația t
 
 ### Orchestrare Spark în Airflow
 
-Fluxul curent este `extract → transform → validate → load → spark_process`, zilnic la 19:07 Europe/Bucharest. Task-ul Spark folosește BashOperator în schedulerul LocalExecutor, același run ID și retry/timeout ca etapele existente. Nu are nevoie de Docker socket sau de pornirea serviciului separat `spark`.
+Fluxul curent este `extract → transform → validate → load → spark_process`, cu programarea oprită implicit; ora opțională este 19:07 Europe/Bucharest. Task-ul Spark folosește BashOperator în schedulerul LocalExecutor, același run ID și retry/timeout ca etapele existente. Nu are nevoie de Docker socket sau de pornirea serviciului separat `spark`.
 
 Când `AZURE_UPLOAD_ENABLED=true`, Spark descarcă raw din Azure și publică în containerul privat configurat prin `AZURE_PROCESSED_CONTAINER` (implicit `processed`). Când este `false`, `--airflow` selectează raw local al rulării și produce doar Parquet local. Eșecul Spark face întregul DAG failed; baza PostgreSQL poate fi deja actualizată, deoarece load precedă Spark. Auditul `job_runs` descrie cele patru etape PostgreSQL; starea completă, inclusiv Spark, se verifică în Airflow. Monitorul folosește starea DAG-ului și toate task-urile existente în metadate, păstrând compatibilitatea cu rulările istorice de patru task-uri.
 
@@ -231,7 +235,7 @@ docker compose up -d airflow-api-server airflow-scheduler airflow-dag-processor
 
 Pentru un eșec exclusiv Spark, reia doar `spark_process` prin Clear: nu este nevoie să refaci UPSERT-ul. Reprocesarea publică o versiune nouă cu manifest separat. Dacă reiei extract/transform/validate/load, reia și task-urile dependente, inclusiv Spark, ca rezultatele să reflecte noul snapshot. Fișierul local `quality_report.json` al procesării include calea manifestului Azure după succes. Secretul nu este trecut în comanda task-ului.
 
-Verificat: rularea manuală orchestrată `spark_orchestration_final_20261005` are toate cele cinci task-uri `success`, fiecare din prima încercare. Spark a procesat 128 de rânduri acceptate, 0 respinse. Manifestul și cele trei fișiere Parquet au fost descărcate din Azure și verificate față de artefactele locale. Toate cele 59 de teste au trecut în mediul Airflow cu PostgreSQL temporar; modul local fără upload a fost verificat separat. Programarea rămâne la 19:07. Rularea programată de cinci task-uri rămâne de confirmat; demonstrația automată anterioară a inclus cele patru task-uri existente atunci.
+Verificat: rularea manuală orchestrată `spark_orchestration_final_20261005` are toate cele cinci task-uri `success`, fiecare din prima încercare. Spark a procesat 128 de rânduri acceptate, 0 respinse. Manifestul și cele trei fișiere Parquet au fost descărcate din Azure și verificate față de artefactele locale. Toate cele 59 de teste au trecut în mediul Airflow cu PostgreSQL temporar; modul local fără upload a fost verificat separat. Verificarea din 8 octombrie a confirmat și rulările programate de cinci task-uri pentru 5–7 octombrie; ulterior toate programările au fost puse pe pauză.
 
 Containerele Spark și Airflow folosesc același UID 50000 și grup 0 pentru artefactele partajate. Dacă există fișiere create anterior de un container Spark root, proprietarul lor trebuie corectat înainte de execuția Airflow.
 
@@ -267,21 +271,21 @@ Instrucțiuni: [documentația Power BI](powerbi/README.md).
 ## Teste și validare
 
 ```bash
-python -m pip install -r requirements.txt
+python -m pip install -r requirements.txt -r requirements.spark.txt
 python -m pytest -v
 ```
 
 Testele de integrare necesită `TEST_DATABASE_URL` către un PostgreSQL dedicat, cu numele bazei terminat în `_test`. Fără această variabilă, testele de integrare sunt omise. Nu folosi baza de business pentru teste.
 
-Ultima verificare locală din **5 octombrie 2026**: **63 de teste trecute**, inclusiv UPSERT, rollback, data quality, audit, modelare, reconciliere, alerte, integrarea Azure simulată și procesarea Spark, pe PostgreSQL temporar. Pentru teste, setează `AZURE_UPLOAD_ENABLED=false` ca să eviți uploaduri reale; testele Azure controlează separat configurația. DAG-ul ETL a fost verificat cu toate task-urile reușite; monitorul a avut și o rulare programată reușită. Workflow-ul [GitHub Actions](.github/workflows/tests.yml) este configurat, dar rezultatul unui run CI nu a fost verificat.
+Ultima verificare locală din **5 octombrie 2026**: **63 de teste trecute**, inclusiv UPSERT, rollback, data quality, audit, modelare, reconciliere, alerte, integrarea Azure simulată și procesarea Spark, pe PostgreSQL temporar. Pentru teste, setează `AZURE_UPLOAD_ENABLED=false` ca să eviți uploaduri reale; testele Azure controlează separat configurația. DAG-ul ETL a fost verificat cu toate task-urile reușite; monitorul a avut și o rulare programată reușită. Workflow-ul [GitHub Actions](.github/workflows/tests.yml) a fost verificat cu succes: [run din 5 octombrie](https://github.com/alexandraa25/job-market-data-platform/actions/runs/37311228006). Java 17 este necesar pentru testele PySpark.
 
 ## Limite și dezvoltări viitoare
 
 - Mediul este local: calculatorul, Docker și Airflow trebuie să rămână active pentru programare și monitorizare.
-- Rularea programată din 4 octombrie 2026, ora 19:07, a reușit automat: toate cele patru task-uri din prima încercare, fără Trigger/Clear. Funcționarea peste o noapte nesupravegheată rămâne de verificat.
+- Rularea programată din 4 octombrie 2026, ora 19:07, a reușit automat: toate cele patru task-uri din prima încercare, fără Trigger/Clear. Rulările programate din 5–7 octombrie au reușit cu cinci task-uri și clear_number=0; două au pornit târziu. Execuția punctuală necesită serviciile active la ora programată.
 - Sursa conține numai anunțurile colectate prin căutările configurate; rezultatele nu reprezintă întreaga piață a muncii.
 - Competențele sunt detectate prin reguli textuale, iar salariile lipsă nu sunt estimate.
-- Rularea completă pe volume noi, conexiunea directă Power BI și refresh-ul său programat necesită verificări suplimentare.
+- Instalarea locală pe volume noi este verificată; conexiunea directă Power BI și refresh-ul său programat necesită verificări suplimentare.
 - Extensii posibile: notificări externe și migrarea orchestrării și procesării către Azure; arhivarea raw este deja implementată.
 
 Detalii despre artefacte și reluarea task-urilor: [etapele Airflow](docs/airflow-stages.md).
@@ -294,10 +298,21 @@ Verificare Free Edition, 5 octombrie 2026: notebookul complet afișează 128 acc
 
 ## Databricks Job verificat
 
-La 5 octombrie 2026, Job-ul `job_market_free_edition`, task `process_job_market`, a executat notebookul complet pe Serverless cu starea **Succeeded**. Rularea a fost lansată manual prin Run now și a durat 1 minut și 18 secunde: 128 acceptate, 0 respinse, Parquet verificat și manifest nou publicat. Sursa rămâne snapshotul încărcat manual; nu există încă o programare cloud confirmată sau integrare de declanșare din Airflow.
+La 5 octombrie 2026, Job-ul `job_market_free_edition`, task `process_job_market`, a executat notebookul complet pe Serverless cu starea **Succeeded**. Rularea a fost lansată manual prin Run now și a durat 1 minut și 18 secunde: 128 acceptate, 0 respinse, Parquet verificat și manifest nou publicat. Sursa rămâne snapshotul încărcat manual; rulările cloud programate sunt confirmate, dar nu există integrare de declanșare sau transfer automat din Airflow.
 
 ![Databricks Job: Succeeded și 128 de rânduri Parquet verificate](docs/images/databricks-job-success.png)
 
-Programarea Job-ului a fost configurată de utilizatoare zilnic la 19:15:47 Europe/Bucharest; prima execuție automată nu este încă verificată. Pentru actualizare, se înlocuiește manual raw.json în volumul Databricks raw cu snapshotul unei rulări locale reușite, apoi se rulează Job-ul. Orele celor două programe nu creează o dependență automată de transfer între Airflow și Free Edition.
+Programarea Job-ului a fost configurată de utilizatoare zilnic la 19:15:47 Europe/Bucharest; captura din 8 octombrie confirmă rulări By scheduler / Succeeded pe 5, 6 și 7 octombrie. Programarea a fost apoi pusă pe Paused, confirmat vizual. Pentru actualizare, se înlocuiește manual raw.json în volumul Databricks raw cu snapshotul unei rulări locale reușite, apoi se rulează Job-ul. Orele celor două programe nu creează o dependență automată de transfer între Airflow și Free Edition.
 
 Configurație reproductibilă Job: [instrucțiuni și setări](databricks/JOB_CONFIGURATION.md). Șablonul este salvat; exportul exact a fost furnizat de utilizatoare și păstrat local și nu s-a efectuat deploy.
+
+
+## Operare
+
+Instrucțiunile complete de pornire, oprire, rulare manuală și reactivare sunt în [docs/OPERATIONS.md](docs/OPERATIONS.md). Programările sunt oprite, iar datele existente sunt păstrate.
+
+## Validarea versiunii v1.0
+
+La 8 octombrie 2026 a fost construită o copie a surselor publice, fără configurația, datele sau logurile locale. Docker a folosit proiectul separat `jmp-v1-validation`, volume noi și porturile de test 15433/18080. Build-ul a folosit cache-ul Docker disponibil; nu este o verificare fără cache. Au fost create opt tabele și cinci view-uri analytics, iar airflow-init a terminat cu cod 0. Importul DAG-urilor nu a avut erori; autentificarea API și citirea DAG-urilor au reușit.
+
+Rularea manuală `release_v1_fresh_install`: toate cele cinci task-uri success, fiecare din prima încercare; 131 acceptate, 0 respinse, 131 inserate în baza nouă, Parquet local verificat. Azure a fost dezactivat. Regresia pe o bază separată `_test`: **62 passed, 1 skipped** (comparația cu snapshotul local este omisă când snapshotul lipsește). Aceasta verifică instalarea locală și fluxul orchestrator, nu configurarea unui nou cont Azure, workspace Databricks sau refresh Power BI.

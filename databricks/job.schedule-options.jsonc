@@ -1,0 +1,8 @@
+// Referinta cu comentarii: NU trimite acest fisier JSONC catre Jobs API.
+// Modifica pause_status in job.template.json si aplica separat in Job-ul cloud.
+{
+  "quartz_cron_expression": "47 15 19 * * ?",
+  "timezone_id": "Europe/Bucharest",
+  "pause_status": "PAUSED" // OPRIT: fara rulari automate, Run now ramane disponibil.
+  // "pause_status": "UNPAUSED" // PORNIT: inlocuieste linia PAUSED cu aceasta.
+}

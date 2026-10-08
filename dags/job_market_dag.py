@@ -8,7 +8,11 @@ with DAG(
     dag_id="job_market_etl",
     description="Job Market ETL: extract → transform → validate → load → spark_process",
     start_date=pendulum.datetime(2026, 10, 1, tz="Europe/Bucharest"),
-    schedule="7 19 * * *",
+    # OPRIT: fara rulari automate; executarea manuala ramane disponibila.
+    schedule=None,
+    # PORNIT: comenteaza schedule=None si decomenteaza linia urmatoare.
+    # schedule="7 19 * * *",  # zilnic la 19:07 Europe/Bucharest
+    # Dupa reactivare, activeaza si DAG-ul din UI Airflow (Unpause).
     catchup=False,
     max_active_runs=1,
     tags=["etl", "data-engineering", "job-market"],

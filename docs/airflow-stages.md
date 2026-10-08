@@ -71,3 +71,8 @@ and every additional task present in metadata to succeed; historical four-task
 runs remain supported. No Docker socket is mounted. No volume deletion.
 
 Verified final manual Airflow run spark_orchestration_final_20261005: all five tasks success on try 1, 128 accepted / 0 rejected in Spark. Azure manifest and three Parquet files independently downloaded and verified. 59 regression tests passed on isolated PostgreSQL; offline --airflow mode verified. Spark standalone now uses UID 50000/group 0 matching Airflow; existing root-owned data/spark was corrected. Daily five-task scheduled execution is configured but not yet observed.
+
+
+## Stare curenta si operare
+
+La 8 octombrie 2026, cele trei DAG-uri sunt pe pauza si au schedule=None. Rularile programate 5–7 octombrie au reusit cu toate cele cinci task-uri si clear_number=0; cele din 6 si 7 au pornit tarziu. Programarile cron sunt pastrate comentate. Serviciul ETL independent are profil manual, deci pornirea normala Compose nu colecteaza date. Ghid complet: [OPERATIONS.md](OPERATIONS.md). Istoricul verificarilor de mai sus este pastrat.

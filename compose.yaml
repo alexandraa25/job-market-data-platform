@@ -49,6 +49,8 @@ services:
       start_period: 10s
 
   etl:
+    # Manual only: a normal compose up must not start ingestion or Azure uploads.
+    profiles: [manual]
     build:
       context: .
 
