@@ -1,12 +1,14 @@
 # Pornire si oprire
 
+Acest branch foloseste stiva Docker job-market-data-platform-ml, separata de folderul stabil. PostgreSQL: localhost:15434; Airflow: localhost:18081. Nu copia .env sau datele din folderul stabil.
+
 ## Configuratie implicita
 
 Cele trei DAG-uri folosesc schedule=None. Programarile anterioare sunt pastrate comentate. Template-ul Databricks este PAUSED. Serviciul etl are profilul manual: docker compose up -d nu il porneste. Datele si volumele existente nu sunt sterse.
 
 ## Instalare pe un calculator nou
 
-Ai nevoie de Docker Desktop cu Linux containers si Docker Compose, Internet, porturile 5433 si 8080 libere. Power BI Desktop este optional pentru raport.
+Ai nevoie de Docker Desktop cu Linux containers si Docker Compose, Internet, porturile 15434 si 18081 libere. Power BI Desktop este optional pentru raport.
 
 1. Cloneaza repository-ul si intra in folderul lui.
 2. Copiaza .env.example in .env. Inlocuieste DB_PASSWORD, AIRFLOW_JWT_SECRET si AIRFLOW_API_SECRET_KEY cu valori locale. Pentru DB_PASSWORD foloseste caractere URL-safe deoarece conexiunea SQLAlchemy este construita ca URL. Pastreaza AZURE_UPLOAD_ENABLED=false pentru demonstratia locala. Nu publica .env.
@@ -26,7 +28,7 @@ Pe volume noi, PostgreSQL aplica sql/init.sql si analytics_views.sql; airflow-in
 docker compose exec airflow-api-server cat /opt/airflow/simple_auth_manager_passwords.json.generated
 ```
 
-Nu publica rezultatul sau logurile care contin parola. Deschide http://localhost:8080 si autentifica-te. Fisierul generat nu este montat persistent in aceasta configuratie; dupa recrearea API serverului verifica parola din nou. Pentru productie este necesar un mecanism de autentificare adecvat. Nu folosi airflow users create: configuratia curenta nu foloseste FAB.
+Nu publica rezultatul sau logurile care contin parola. Deschide http://localhost:18081 si autentifica-te. Fisierul generat nu este montat persistent in aceasta configuratie; dupa recrearea API serverului verifica parola din nou. Pentru productie este necesar un mecanism de autentificare adecvat. Nu folosi airflow users create: configuratia curenta nu foloseste FAB.
 
 ## O singura rulare Airflow
 

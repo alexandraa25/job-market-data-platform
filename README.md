@@ -1,5 +1,7 @@
 # Job Market Data Platform
 
+**Branch de dezvoltare ML:** acest folder pornește din `v1.0`; modelul ML nu este încă implementat. Configurația Docker folosește proiectul separat `job-market-data-platform-ml`, PostgreSQL la `localhost:15434` și Airflow la `http://localhost:18081`. Azure și programările sunt oprite. Vezi [lucrul cu cele două foldere](docs/ML_DEVELOPMENT.md).
+
 Platformă de Data Engineering cu orchestrare locală și arhivare opțională în Azure Data Lake Gen2 care colectează anunțuri de angajare din Himalayas API, le curăță și validează, apoi le încarcă incremental în PostgreSQL. Apache Airflow orchestrează pipeline-ul, iar Power BI prezintă distribuția rolurilor, companiilor, competențelor și salariilor.
 
 Proiectul demonstrează un flux complet: ingestie API, procesare cu Pandas, data quality, modelare relațională, încărcare idempotentă, audit persistent și monitorizare.
@@ -145,9 +147,9 @@ Bazele de date pornesc prin dependențele Compose. `airflow-init` aplică migrar
 
 Compose este destinat dezvoltării locale și include credențiale demonstrative pentru baza de metadate; acestea nu sunt o configurație pentru producție.
 
-Deschide [Airflow UI](http://localhost:8080), autentifică-te cu configurația locală și activează numai `job_market_etl` pentru o demonstrație manuală. Cu `schedule=None` nu există rulări periodice. Declanșează `job_market_etl` și urmărește cele cinci task-uri și logurile lui `load` și `spark_process`.
+Deschide [Airflow UI](http://localhost:18081), autentifică-te cu configurația locală și activează numai `job_market_etl` pentru o demonstrație manuală. Cu `schedule=None` nu există rulări periodice. Declanșează `job_market_etl` și urmărește cele cinci task-uri și logurile lui `load` și `spark_process`.
 
-PostgreSQL pentru datele de business este accesibil de pe host la `localhost:5433`, baza `job_market_db`.
+PostgreSQL pentru datele de business este accesibil de pe host la `localhost:15434`, baza `job_market_db`.
 
 ### 3. Execuție manuală
 
