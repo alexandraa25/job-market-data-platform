@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="ro">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Etichetare joburi pentru ML</title>
+    <style>
+        :root {
+            font-family: Segoe UI, Arial, sans-serif;
+            color: #172c37;
+            background: #f1f5f5
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0
+        }
+
+        header {
+            background: #143c48;
+            color: white;
+            padding: 28px max(24px, calc((100vw - 1080px)/2))
+        }
+
+        h1 {
+            font-size: 28px;
+            margin: 0 0 8px
+        }
+
+        header p {
+            margin: 0;
+            color: #d5e5e8
+        }
+
+        main {
+            max-width: 1080px;
+            margin: 24px auto;
+            padding: 0 24px
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 20px
+        }
+
+        button,
+        .file-label {
+            font: inherit;
+            border: 1px solid #b8cbd0;
+            background: white;
+            padding: 11px 16px;
+            border-radius: 7px;
+            cursor: pointer
+        }
+
+        button:hover,
+        .file-label:hover {
+            background: #e5f0f1
+        }
+
+        button:disabled {
+            opacity: .45;
+            cursor: default
+        }
+
+        .primary {
+            background: #146e77;
+            color: white;
+            border-color: #146e77
+        }
+
+        .primary:hover {
+            background: #105961
+        }
+
+        input[type=file] {
+            max-width: 270px
+        }
+
+        .stats {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 16px 0
+        }
+
+        .stat {
+            background: white;
+            padding: 12px 16px;
+            border: 1px solid #d5e0e2;
+            border-radius: 8px
+        }
+
+        article {
+            background: white;
+            padding: 24px;
+            border: 1px solid #d5e0e2;
+            border-radius: 10px
+        }
+
+        h2 {
+            font-size: 23px;
+            line-height: 1.3;
+            margin: 8px 0
+        }
+
+        .muted {
+            color: #536b76;
+            font-size: 14px
+        }
+
+        .description {
+            white-space: pre-wrap;
+            line-height: 1.6;
+            max-height: 340px;
+            overflow: auto;
+            border-top: 1px solid #e0e9eb;
+            padding-top: 16px;
+            margin-top: 16px
+        }
+
+        .roles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 24px 0
+        }
+
+        .roles button.selected {
+            background: #146e77;
+            color: white;
+            border-color: #146e77
+        }
+
+        .navigation {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        #message {
+            padding: 10px 0;
+            color: #38555f
+        }
+
+        details {
+            margin: 16px 0;
+            font-size: 14px
+        }
+
+        .hidden {
+            display: none
+        }
+
+        .guid {
+            word-break: break-all
+        }
+
+        .instructions {
+            line-height: 1.6;
+            margin: 20px 0
+        }
+
+        progress {
+            width: 100%;
+            height: 10px;
+            accent-color: #146e77
+        }
+
+        @media(max-width:600px) {
+            article {
+                padding: 16px
+            }
+
+            h1 {
+                font-size: 24px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Etichetare joburi pentru Machine Learning</h1>
+        <p>Citeste anuntul si alege rolul potrivit. Alegerea ta devine eticheta de referinta.</p>
+    </header>
+    <main>
+        <div class="toolbar"><label>Incarca un fisier JSONL: <input id="file" type="file"
+                    accept=".jsonl,.json"></label><button id="save" class="primary" disabled>Descarca
+                progresul</button><button id="pending" disabled>Urmatorul neverificat</button></div>
+        <div class="instructions">Datele raman in browserul tau. Exporta progresul inainte sa inchizi pagina; il poti
+            reincarca pentru a continua. Nu este nevoie sa etichetezi toate anunturile dintr-o data.</div>
+        <progress id="progress" value="0" max="1"></progress>
+        <div id="stats" class="stats"></div>
+        <p id="message" role="status">Incarca review_queue.jsonl pentru a incepe.</p>
+        <article id="card" class="hidden">
+            <div id="position" class="muted"></div>
+            <h2 id="title"></h2>
+            <div id="company" class="muted"></div>
+            <div id="description" class="description"></div>
+            <p><strong>Care este rolul principal?</strong> Apasarea unei categorii confirma ca ai verificat anuntul.</p>
+            <div id="roles" class="roles"></div>
+            <div id="labelStatus" class="muted"></div>
+            <details>
+                <summary>Regulile de etichetare</summary>
+                <p>Data Engineer: pipeline-uri, integrare, stocare si infrastructura de date. Data Analyst: analiza, SQL
+                    si rapoarte BI. Data Scientist: analiza statistica si modelare predictiva. Machine Learning
+                    Engineer: dezvoltare si operationalizare ML. Other: roluri care nu se incadreaza in cele patru
+                    categorii. Pentru roluri mixte foloseste responsabilitatea principala. Daca nu poti decide, sari
+                    peste anunt.</p>
+            </details>
+            <details>
+                <summary>Clasificarea regulilor existente (optional)</summary>
+                <p id="suggestion"></p>
+            </details>
+            <div class="navigation"><button id="previous">Anterior</button><button id="next">Urmatorul / sari
+                    peste</button><button id="clear">Anuleaza eticheta</button></div>
+            <p id="guid" class="muted guid"></p>
+        </article>
+    </main>
+    <script id="initial-data" type="application/json">[]</script>
+    <script>
+        const categories = ['Data Engineer', 'Data Analyst', 'Data Scientist', 'Machine Learning Engineer', 'Other'];
+        let rows = [], index = 0, dirty = false;
+        const el = id => document.getElementById(id);
+        function message(value) {el('message').textContent = value;}
+        function load(data) {
+            if (!Array.isArray(data) || !data.length) throw Error('Fisierul nu contine anunturi.');
+            const ids = new Set();
+            for (const row of data) {if (!row.guid || !row.title || ids.has(row.guid)) throw Error('Fiecare anunt trebuie sa aiba guid unic si titlu.'); ids.add(row.guid); if (row.reviewed === true && (!categories.includes(row.human_label) || row.label_source !== 'human')) throw Error('Eticheta verificata invalida.');}
+            rows = data; index = Math.max(0, rows.findIndex(row => row.reviewed !== true)); dirty = false; render(); message('Fisier incarcat. Alege o categorie dupa ce citesti anuntul.');
+        }
+        function render() {
+            if (!rows.length) return;
+            el('card').classList.remove('hidden'); el('save').disabled = false; el('pending').disabled = false;
+            const row = rows[index], done = rows.filter(r => r.reviewed === true).length;
+            el('progress').max = rows.length; el('progress').value = done;
+            el('stats').replaceChildren();
+            for (const text of [`${done} / ${rows.length} verificate`, ...categories.map(c => `${c}: ${rows.filter(r => r.reviewed === true && r.human_label === c).length}`)]) {const item = document.createElement('span'); item.className = 'stat'; item.textContent = text; el('stats').append(item);}
+            el('position').textContent = `Anunt ${index + 1} din ${rows.length}`; el('title').textContent = row.title; el('company').textContent = row.company_name || ''; el('description').textContent = row.description || 'Descriere indisponibila'; el('suggestion').textContent = row.rule_role || 'Indisponibila'; el('guid').textContent = `ID: ${row.guid}`;
+            el('roles').replaceChildren();
+            for (const role of categories) {const button = document.createElement('button'); button.textContent = role; if (row.reviewed === true && row.human_label === role) button.className = 'selected'; button.onclick = () => {Object.assign(row, {human_label: role, label_source: 'human', reviewed: true, reviewed_at: new Date().toISOString()}); dirty = true; render(); message('Eticheta salvata in aceasta sesiune. Descarca progresul pentru a o pastra.');}; el('roles').append(button);}
+            el('labelStatus').textContent = row.reviewed === true ? `Verificat: ${row.human_label}` : 'Neverificat: nu va fi folosit la antrenare.';
+            el('previous').disabled = index === 0; el('next').disabled = index === rows.length - 1; el('clear').disabled = row.reviewed !== true;
+        }
+        el('file').onchange = async event => {try {if (dirty && !confirm('Ai progres neexportat. Vrei sa incarci alt fisier?')) return; const text = await event.target.files[0].text(); load(text.split(/\r?\n/).filter(line => line.trim()).map(line => JSON.parse(line)));} catch (error) {message(error.message);} };
+        el('previous').onclick = () => {if (index > 0) {index--; render();} };
+        el('next').onclick = () => {if (index < rows.length - 1) {index++; render();} };
+        el('pending').onclick = () => {const remaining = rows.findIndex((row, i) => i > index && row.reviewed !== true); index = remaining >= 0 ? remaining : Math.max(0, rows.findIndex(row => row.reviewed !== true)); render();};
+        el('clear').onclick = () => {Object.assign(rows[index], {human_label: '', label_source: '', reviewed: false}); delete rows[index].reviewed_at; dirty = true; render();};
+        el('save').onclick = () => {const blob = new Blob([rows.map(row => JSON.stringify(row)).join('\n') + '\n'], {type: 'application/x-ndjson'}); const url = URL.createObjectURL(blob), link = document.createElement('a'); link.href = url; link.download = 'reviewed_labels.jsonl'; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); dirty = false; message('Progres exportat. Muta fisierul in data/ml sau reincarca-l aici pentru a continua.');};
+        window.addEventListener('beforeunload', event => {if (dirty) {event.preventDefault(); event.returnValue = '';} });
+        try {const data = JSON.parse(el('initial-data').textContent); if (data.length) load(data);} catch (error) {message(error.message);}
+    </script>
+</body>
+
+</html>

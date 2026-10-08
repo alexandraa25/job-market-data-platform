@@ -24,6 +24,19 @@ x-airflow-environment: &airflow-environment
 
 services:
 
+  ml:
+    profiles: [ml]
+    build:
+      context: .
+      dockerfile: Dockerfile.ml
+    # Offline datasets only: no database connection or Azure credentials.
+    network_mode: none
+    volumes:
+      - ./src:/app/src:ro
+      - ./tests:/app/tests:ro
+      - ./data/ml:/app/data/ml
+      - ./models:/app/models
+
   db:
     image: postgres:18
 

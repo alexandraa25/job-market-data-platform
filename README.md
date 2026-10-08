@@ -1,6 +1,6 @@
 # Job Market Data Platform
 
-**Branch de dezvoltare ML:** acest folder pornește din `v1.0`; modelul ML nu este încă implementat. Configurația Docker folosește proiectul separat `job-market-data-platform-ml`, PostgreSQL la `localhost:15434` și Airflow la `http://localhost:18081`. Azure și programările sunt oprite. Vezi [lucrul cu cele două foldere](docs/ML_DEVELOPMENT.md).
+**Branch de dezvoltare ML:** acest folder pornește din `v1.0`; infrastructura ML offline este implementată; antrenarea pe etichete reale și integrarea în pipeline nu sunt încă efectuate. Configurația Docker folosește proiectul separat `job-market-data-platform-ml`, PostgreSQL la `localhost:15434` și Airflow la `http://localhost:18081`. Azure și programările sunt oprite. Vezi [lucrul cu cele două foldere](docs/ML_DEVELOPMENT.md).
 
 Platformă de Data Engineering cu orchestrare locală și arhivare opțională în Azure Data Lake Gen2 care colectează anunțuri de angajare din Himalayas API, le curăță și validează, apoi le încarcă incremental în PostgreSQL. Apache Airflow orchestrează pipeline-ul, iar Power BI prezintă distribuția rolurilor, companiilor, competențelor și salariilor.
 
@@ -318,3 +318,7 @@ Instrucțiunile complete de pornire, oprire, rulare manuală și reactivare sunt
 La 8 octombrie 2026 a fost construită o copie a surselor publice, fără configurația, datele sau logurile locale. Docker a folosit proiectul separat `jmp-v1-validation`, volume noi și porturile de test 15433/18080. Build-ul a folosit cache-ul Docker disponibil; nu este o verificare fără cache. Au fost create opt tabele și cinci view-uri analytics, iar airflow-init a terminat cu cod 0. Importul DAG-urilor nu a avut erori; autentificarea API și citirea DAG-urilor au reușit.
 
 Rularea manuală `release_v1_fresh_install`: toate cele cinci task-uri success, fiecare din prima încercare; 131 acceptate, 0 respinse, 131 inserate în baza nouă, Parquet local verificat. Azure a fost dezactivat. Regresia pe o bază separată `_test`: **62 passed, 1 skipped** (comparația cu snapshotul local este omisă când snapshotul lipsește). Aceasta verifică instalarea locală și fluxul orchestrator, nu configurarea unui nou cont Azure, workspace Databricks sau refresh Power BI.
+
+## Extensie ML in dezvoltare
+
+CLI prepare/train/predict, instrument local de etichetare si evaluare TF-IDF + Logistic Regression fata de regulile existente. Modelul necesita etichete umane; niciun rezultat de performanta reala nu este revendicat. Datele si modelele raman locale. Instructiuni: [ML_CLASSIFICATION.md](docs/ML_CLASSIFICATION.md).

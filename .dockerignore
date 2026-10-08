@@ -16,3 +16,6 @@ powerbi/*.pbix
 **/.pbi/
 
 data/spark/
+
+data/ml/
+models/
