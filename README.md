@@ -1,6 +1,6 @@
 # Job Market Data Platform
 
-**Branch de dezvoltare ML:** acest folder pornește din `v1.0`; infrastructura ML offline este implementată; antrenarea pe etichete reale și integrarea în pipeline nu sunt încă efectuate. Configurația Docker folosește proiectul separat `job-market-data-platform-ml`, PostgreSQL la `localhost:15434` și Airflow la `http://localhost:18081`. Azure și programările sunt oprite. Vezi [lucrul cu cele două foldere](docs/ML_DEVELOPMENT.md).
+**Branch de dezvoltare ML:** acest folder pornește din `v1.0`; infrastructura ML offline este implementată; primul model antrenat pe etichete umane rămâne experimental și nu este integrat în pipeline. Configurația Docker folosește proiectul separat `job-market-data-platform-ml`, PostgreSQL la `localhost:15434` și Airflow la `http://localhost:18081`. Azure și programările sunt oprite. Vezi [lucrul cu cele două foldere](docs/ML_DEVELOPMENT.md).
 
 Platformă de Data Engineering cu orchestrare locală și arhivare opțională în Azure Data Lake Gen2 care colectează anunțuri de angajare din Himalayas API, le curăță și validează, apoi le încarcă incremental în PostgreSQL. Apache Airflow orchestrează pipeline-ul, iar Power BI prezintă distribuția rolurilor, companiilor, competențelor și salariilor.
 
@@ -319,6 +319,13 @@ La 8 octombrie 2026 a fost construită o copie a surselor publice, fără config
 
 Rularea manuală `release_v1_fresh_install`: toate cele cinci task-uri success, fiecare din prima încercare; 131 acceptate, 0 respinse, 131 inserate în baza nouă, Parquet local verificat. Azure a fost dezactivat. Regresia pe o bază separată `_test`: **62 passed, 1 skipped** (comparația cu snapshotul local este omisă când snapshotul lipsește). Aceasta verifică instalarea locală și fluxul orchestrator, nu configurarea unui nou cont Azure, workspace Databricks sau refresh Power BI.
 
-## Extensie ML in dezvoltare
+## Extensie ML experimentala (branch separat)
 
-CLI prepare/train/predict, instrument local de etichetare si evaluare TF-IDF + Logistic Regression fata de regulile existente. Modelul necesita etichete umane; niciun rezultat de performanta reala nu este revendicat. Datele si modelele raman locale. Instructiuni: [ML_CLASSIFICATION.md](docs/ML_CLASSIFICATION.md).
+Clasificare in cinci categorii cu TF-IDF + Logistic Regression, etichetare umana, comparatie titlu versus descriere si evaluare pe lot nou rezervat. Pe 80 de anunturi finale: ML cu titlu **81.25% accuracy**, reguli **90%**. Macro F1: ML 0.4899, reguli 0.4483; unele categorii au doar un exemplu, deci rezultatul nu justifica promovarea. Regulile raman in pipeline; ML nu este integrat in Airflow, PostgreSQL sau Power BI.
+
+Datele, etichetele si modelele raman locale, excluse din Git. Este disponibila o demonstratie offline, cu exemple sintetice. Nu s-a facut merge in main si extensia nu este o versiune v2 lansata.
+
+- [Metoda si comenzile ML](docs/ML_CLASSIFICATION.md)
+- [Experimente si limite](docs/ML_EVALUATION.md)
+- [Evaluarea finala](docs/ML_FINAL_EVALUATION.md)
+- [Demonstratie pentru prezentare](docs/ML_DEMO.md)

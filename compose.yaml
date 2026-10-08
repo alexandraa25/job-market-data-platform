@@ -34,6 +34,7 @@ services:
     volumes:
       - ./src:/app/src:ro
       - ./tests:/app/tests:ro
+      - ./ml:/app/ml:ro
       - ./data/ml:/app/data/ml
       - ./models:/app/models
 

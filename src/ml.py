@@ -296,7 +296,9 @@ def predict_rows(rows, model_path, output, threshold=0.55):
     if not rows:
         write_rows(output, [])
         return 0
-    probabilities = model.predict_proba([features(row) for row in rows])
+    extract = clean_text if artifact.get("feature_mode") == "title_only" else None
+    texts = [extract(row["title"]) if extract else features(row) for row in rows]
+    probabilities = model.predict_proba(texts)
     result = []
     for row, scores in zip(rows, probabilities):
         index = int(scores.argmax())

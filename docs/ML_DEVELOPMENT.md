@@ -8,7 +8,7 @@ Folder: D:\Proiecte\job-market-data-platform. Branch main, versiunea prezentata 
 
 Folder: D:\Proiecte\job-market-data-platform-ml. Branch feature/ml-classification, pornit din tagul v1.0. Acesta este un Git worktree, nu un repository independent. Istoricul Git, tagurile si remote-ul sunt comune; fisierele de lucru sunt separate.
 
-Infrastructura ML offline este implementata; modelul pe etichete reale si integrarea in DAG nu sunt inca efectuate. Vezi ML_CLASSIFICATION.md. Fara antrenari sau colectari automate.
+Infrastructura ML offline este implementata; primul model pe etichete umane a fost evaluat si ramane experimental, sub regulile existente. Integrarea in DAG nu este efectuata. Vezi ML_CLASSIFICATION.md. Fara antrenari sau colectari automate.
 
 ## Izolare
 
