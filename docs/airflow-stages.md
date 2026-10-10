@@ -76,3 +76,6 @@ Verified final manual Airflow run spark_orchestration_final_20261005: all five t
 ## Stare curenta si operare
 
 La 8 octombrie 2026, cele trei DAG-uri sunt pe pauza si au schedule=None. Rularile programate 5–7 octombrie au reusit cu toate cele cinci task-uri si clear_number=0; cele din 6 si 7 au pornit tarziu. Programarile cron sunt pastrate comentate. Serviciul ETL independent are profil manual, deci pornirea normala Compose nu colecteaza date. Ghid complet: [OPERATIONS.md](OPERATIONS.md). Istoricul verificarilor de mai sus este pastrat.
+
+
+DAG-ul separat `job_market_multi_source` foloseste `src.sources_workflow`: doua extrageri auditate -> process (transform/select/validate) -> load. Snapshot local implicit, programare oprita. Contractul DAG-ului original ramane neschimbat. Pentru proceduri si limite vezi MULTIPLE_SOURCES.md.

@@ -16,3 +16,5 @@ powerbi/*.pbix
 **/.pbi/
 
 data/spark/
+
+data/sources/

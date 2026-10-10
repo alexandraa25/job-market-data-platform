@@ -1,3 +1,5 @@
+from contextlib import nullcontext
+from decimal import Decimal
 import logging
 import os
 
@@ -71,13 +73,38 @@ def prepare_for_database(df):
         }
     )
 
+    # Legacy single-source batches remain compatible; new sources require provenance.
+    if "source" not in df:
+        if df["guid"].astype(str).str.startswith("arbeitnow:").any():
+            raise ValueError("Arbeitnow batch requires explicit provenance")
+        df["source"] = "himalayas"
+        df["source_job_id"] = df["guid"]
+        df["source_url"] = df["application_link"]
+    for name in ("source", "source_job_id", "source_url"):
+        if name not in df:
+            raise ValueError("Incomplete source provenance")
+    if (
+        df[["source", "source_job_id"]].isna().any().any()
+        or df["source"].astype(str).str.strip().eq("").any()
+        or df["source_job_id"].astype(str).str.strip().eq("").any()
+    ):
+        raise ValueError("Source identity must be nonempty")
+    if df.duplicated(["source", "source_job_id"]).any():
+        raise ValueError("Duplicate source identity in batch")
+
     # Convert NaN / NaT values to None
     df = df.astype(object).where(pd.notnull(df), None)
+
+    # PostgreSQL NUMERIC uses Decimal; compare using the same representation.
+    for column in ("min_salary", "max_salary", "avg_salary"):
+        df[column] = df[column].map(
+            lambda value: Decimal(str(value)) if value is not None else None
+        )
 
     return df
 
 
-def upsert_jobs(df, engine):
+def upsert_jobs(df, engine, *, connection=None, by_source=None):
 
     df = prepare_for_database(df)
 
@@ -88,6 +115,9 @@ def upsert_jobs(df, engine):
     skipped = 0
 
     columns_to_compare = [
+        "source",
+        "source_job_id",
+        "source_url",
         "search_query",
         "title",
         "company_name",
@@ -128,6 +158,7 @@ def upsert_jobs(df, engine):
     insert_sql = text("""
         INSERT INTO jobs (
             guid,
+            source, source_job_id, source_url,
             search_query,
             title,
             company_name,
@@ -166,6 +197,7 @@ def upsert_jobs(df, engine):
         )
         VALUES (
             :guid,
+            :source, :source_job_id, :source_url,
             :search_query,
             :title,
             :company_name,
@@ -207,6 +239,7 @@ def upsert_jobs(df, engine):
     update_sql = text("""
         UPDATE jobs
         SET
+            source = :source, source_job_id = :source_job_id, source_url = :source_url,
             search_query = :search_query,
             title = :title,
             company_name = :company_name,
@@ -254,9 +287,16 @@ def upsert_jobs(df, engine):
 
     records = df.to_dict(orient="records")
 
-    with engine.begin() as connection:
+    with (
+        engine.begin() if connection is None else nullcontext(connection)
+    ) as connection:
 
         for record in records:
+            metrics = None
+            if by_source is not None:
+                metrics = by_source.setdefault(
+                    record["source"], {"inserted": 0, "updated": 0, "skipped": 0}
+                )
 
             existing = (
                 connection.execute(select_sql, {"guid": record["guid"]})
@@ -270,7 +310,15 @@ def upsert_jobs(df, engine):
                 connection.execute(insert_sql, record)
 
                 inserted += 1
+                if metrics is not None:
+                    metrics["inserted"] += 1
                 continue
+
+            if (existing["source"], existing["source_job_id"]) != (
+                record["source"],
+                record["source_job_id"],
+            ):
+                raise ValueError("Existing GUID cannot change source identity")
 
             # Check whether anything changed
             changed = False
@@ -290,10 +338,14 @@ def upsert_jobs(df, engine):
                 connection.execute(update_sql, record)
 
                 updated += 1
+                if metrics is not None:
+                    metrics["updated"] += 1
 
             # Existing and identical
             else:
                 skipped += 1
+                if metrics is not None:
+                    metrics["skipped"] += 1
 
         sync_dimensions(connection, records)
 

@@ -21,3 +21,6 @@ data/spark/
 
 # Exact Databricks workspace export remains local until reviewed
 /databricks/job.export.json
+
+# Local source snapshots and pilot results
+data/sources/

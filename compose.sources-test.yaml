@@ -1,0 +1,31 @@
+name: job-market-sources-tests
+services:
+  test-db:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: job_market_test
+      POSTGRES_HOST_AUTH_METHOD: trust
+    tmpfs:
+      - /var/lib/postgresql
+    networks: [isolated]
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U postgres -d job_market_test"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+  test-runner:
+    image: job-market-data-platform-sources-sources-pilot
+    environment:
+      TEST_DATABASE_URL: postgresql+psycopg://postgres@test-db:5432/job_market_test
+    depends_on:
+      test-db:
+        condition: service_healthy
+    networks: [isolated]
+    volumes:
+      - ./src:/app/src:ro
+      - ./tests:/app/tests:ro
+      - ./sql:/app/sql:ro
+    command: [python, -m, pytest, tests/test_sources_workflow.py, tests/test_source_load_audit.py, tests/test_load_integration.py, tests/test_audit_integration.py, tests/test_model_reconcile.py, tests/test_monitor.py, -q]
+networks:
+  isolated:
+    internal: true

@@ -1,3 +1,5 @@
+name: job-market-data-platform-sources
+
 x-azure-environment: &azure-environment
   AZURE_PROCESSED_CONTAINER: ${AZURE_PROCESSED_CONTAINER:-processed}
   AZURE_UPLOAD_ENABLED: ${AZURE_UPLOAD_ENABLED:-false}
@@ -21,6 +23,35 @@ x-airflow-environment: &airflow-environment
 
 services:
 
+  sources-pilot:
+    profiles: [sources]
+    build:
+      context: .
+    # Offline pilot: no DB, Azure environment or dependency on other services.
+    network_mode: none
+    command: [python, -m, src.sources_pilot, --help]
+    volumes:
+      - ./src:/app/src:ro
+      - ./tests:/app/tests:ro
+      - ./data/sources:/app/data/sources
+
+  sources-load:
+    profiles: [sources]
+    image: job-market-data-platform-sources-sources-pilot
+    command: [python, -m, src.sources_load, --help]
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: job_market_db
+      DB_USER: postgres
+      DB_PASSWORD: ${DB_PASSWORD}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./src:/app/src:ro
+      - ./data/sources:/app/data/sources:ro
+
   db:
     image: postgres:18
 
@@ -30,7 +61,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
 
     ports:
-      - "5433:5432"
+      - "127.0.0.1:${DB_HOST_PORT:-15435}:5432"
 
     volumes:
       - postgres_data:/var/lib/postgresql
@@ -161,7 +192,7 @@ services:
       start_period: 20s
 
     ports:
-      - "8080:8080"
+      - "127.0.0.1:${AIRFLOW_HOST_PORT:-18083}:8080"
 
     volumes:
       - ./dags:/opt/airflow/dags

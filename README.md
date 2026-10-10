@@ -1,5 +1,7 @@
 # Job Market Data Platform
 
+> Branch de dezvoltare multi-source: pilot offline Himalayas + Arbeitnow, cu provenienta si validare. Nu este integrat in DAG sau PostgreSQL; main/v1.0 si extensia ML sunt separate. Vezi [MULTIPLE_SOURCES.md](docs/MULTIPLE_SOURCES.md).
+
 Platformă de Data Engineering cu orchestrare locală și arhivare opțională în Azure Data Lake Gen2 care colectează anunțuri de angajare din Himalayas API, le curăță și validează, apoi le încarcă incremental în PostgreSQL. Apache Airflow orchestrează pipeline-ul, iar Power BI prezintă distribuția rolurilor, companiilor, competențelor și salariilor.
 
 Proiectul demonstrează un flux complet: ingestie API, procesare cu Pandas, data quality, modelare relațională, încărcare idempotentă, audit persistent și monitorizare.
@@ -316,3 +318,15 @@ Instrucțiunile complete de pornire, oprire, rulare manuală și reactivare sunt
 La 8 octombrie 2026 a fost construită o copie a surselor publice, fără configurația, datele sau logurile locale. Docker a folosit proiectul separat `jmp-v1-validation`, volume noi și porturile de test 15433/18080. Build-ul a folosit cache-ul Docker disponibil; nu este o verificare fără cache. Au fost create opt tabele și cinci view-uri analytics, iar airflow-init a terminat cu cod 0. Importul DAG-urilor nu a avut erori; autentificarea API și citirea DAG-urilor au reușit.
 
 Rularea manuală `release_v1_fresh_install`: toate cele cinci task-uri success, fiecare din prima încercare; 131 acceptate, 0 respinse, 131 inserate în baza nouă, Parquet local verificat. Azure a fost dezactivat. Regresia pe o bază separată `_test`: **62 passed, 1 skipped** (comparația cu snapshotul local este omisă când snapshotul lipsește). Aceasta verifică instalarea locală și fluxul orchestrator, nu configurarea unui nou cont Azure, workspace Databricks sau refresh Power BI.
+
+Politica pilotului Arbeitnow separă includerea, excluderea și revizuirea manuală; rezultatul automat: 21 incluse, 10 excluse și 15 ambigue. Cu revizuirea asistată a descrierilor: 24 incluse, 14 excluse și 8 ambigue din 46 de candidate. Vezi [documentația multi-source](docs/MULTIPLE_SOURCES.md).
+
+Integrarea surselor este grupată în `src/sources/`; pilotul offline se pornește prin `python -m src.sources_pilot`.
+
+Loaderul multi-source și migrarea provenienței PostgreSQL au fost verificate într-o bază temporară: 28 teste DB și 47 offline trecute. Migrarea bazei persistente și orchestrarea multi-source rămân pași următori.
+
+Încărcarea manuală în baza separată a fost verificată: 155 anunțuri (131 Himalayas, 24 Arbeitnow); repetarea lotului a omis toate cele 155 fără duplicate. Orchestrarea multi-source și auditul pe surse rămân pași următori.
+
+Auditul încărcării păstrează metrici și istoric separat pentru fiecare sursă, cu rollback al întregului lot la eșec. Verificat prin 30 teste PostgreSQL și reîncărcarea snapshotului real; auditul extragerii live și orchestrarea multi-source urmează.
+
+DAG-ul manual `job_market_multi_source` a fost verificat cu snapshoturi locale: două extrageri auditate, procesare comună și încărcare atomică; toate cele patru taskuri au reușit. Extragerea live rămâne neverificată în acest flux.
