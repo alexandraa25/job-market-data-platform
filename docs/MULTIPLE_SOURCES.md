@@ -144,3 +144,36 @@ docker compose exec -T airflow-scheduler airflow dags pause job_market_multi_sou
 ```
 
 Puneti pe pauza dupa terminarea demonstratiei, nu imediat dupa trigger. Run-urile noi au directoare distincte dupa hashul run_id, iar procesarea foloseste director separat pentru fiecare tentativa. Pentru o demonstrație din UI, folositi DAG-ul nou si mode=snapshot. Nu schimbati schedule pentru demonstrație.
+
+
+## Rulare live verificata — 10 octombrie 2026
+
+Run manual__sources_live_20261010, mode=live: DAG si toate4taskurile success in circa26sec. API Himalayas324; Arbeitnow745identitati unice, maxim3pagini. Filtru Arbeitnow51candidati:24incluse/10excluse/17review. Lot348acceptate,0qualityrejected. Rolurile Other Himalayas raman limita clasificarii existente; acceptarea tehnica nu confirma relevanta.
+
+UPSERT pe surse: Himalayas309insert/9update/6skip; Arbeitnow4insert/9update/11skip. Reincarcare a fisierului acceptat, fara API:0insert/0update/348skip. Baza cumulata468joburi (440Hima/28Ar), zero duplicate de identitate. Nu stergem joburile care nu apar in lotul curent. Auditul coreleaza extragerea si incarcarea cu run_id Airflow; revizuirile snapshotului vechi nu sunt aplicate datelor noi.
+
+Programarea ramaneNone, DAG repus pause dupa succes. Confirmare prin CLI, auditDB si raport JSON; UI screenshot/log serving prin browser nu au fost verificate. Azure si proiectul stabil nu au fost modificate. Serviciile sources raman pornite. Aceasta sectiune actualizeaza limitarile istorice despre fluxul live neverificat.
+
+
+## Comparatii BI pregatite
+View-uri source_summary/source_roles/source_skills aplicate. JobMarketSources.pbip este un model separat cu snapshot468joburi. Raportul are doua pagini verificate in Desktop la 11.10.2026; refresh snapshot, filtre sursa/rol si procente DAX validate. Importul PostgreSQL din Desktop a fost verificat la 14.10.2026: Refresh fara erori, 468 anunturi, filtre Arbeitnow/Data Engineer si procente conforme SQL. Raport salvat cu UsePostgreSQL=true; pentru snapshot offline se foloseste false. Actualizare manuala, fara refresh programat Service. Vezi powerbi/SOURCES_README.md pentru cele2pagini, filtre, interpretare si checklist. Raportul original intact.
+
+
+## Demonstrație completă — 14 octombrie 2026
+
+Run `manual__demo_complete_20261014`, mod `live`: extragere Himalayas + Arbeitnow → process → load → Refresh Power BI. Toate cele patru taskuri Airflow au reușit din prima încercare, între 12:11:29 și 12:12:05 Europe/Bucharest (aproximativ 36 secunde). DAG-ul a fost repus pe pauză; `schedule=None` rămâne neschimbat.
+
+| Sursă | Extrase | Acceptate tehnic | Inserate | Actualizate | Omise | Respinse de calitate |
+|---|---:|---:|---:|---:|---:|---:|
+| Himalayas | 351 | 351 | 351 | 0 | 0 | 0 |
+| Arbeitnow | 822 | 20 | 19 | 0 | 1 | 0 |
+
+Arbeitnow: 49 candidate după titlu, 20 incluse, 3 excluse și 26 pentru revizuire; alte 773 în afara filtrului. Cele 26 ambigue nu sunt încărcate și nu reprezintă respingeri tehnice de calitate. Acceptarea tehnică Himalayas nu confirmă relevanța; 252 din lot sunt clasificate Other de regulile existente.
+
+Baza cumulată a crescut de la **468 la 838 anunțuri**: 791 Himalayas și 47 Arbeitnow. Nu se șterg anunțurile istorice care lipsesc din lotul nou. Zero duplicate de identitate `(source, source_job_id)`; nu s-a verificat/eliminat dublarea semantică între surse. Auditul extragerii și auditul încărcării sunt corelate prin run_id.
+
+Refresh din PostgreSQL în Power BI a reușit: **838 anunțuri, 369 cu salariu, 44,0% acoperire globală**. Filtrul Arbeitnow + Data Engineer: **22 anunțuri, Python 16/72,7%, SQL 13/59,1%**, conforme SQL; total procentual gol. Filtrele au fost resetate și raportul salvat. Eticheta veche cu data snapshotului a fost înlocuită cu explicația actualizării manuale; snapshotul offline inclus rămâne cel din 10.10.2026 (468), separat de baza actuală.
+
+Dovezi agregate fără date brute sau credențiale: `docs/evidence/demo-multi-source-20261014.json`. Verificarea Airflow a folosit stările CLI și metadatele DB; nu este o verificare nouă a UI sau a log serving. Nu s-au rulat teste de idempotentă suplimentare în această demonstrație și nu se pretinde că regula de relevanță este validată de oameni. Azure și celelalte proiecte nu au fost modificate. Fără commit/push/merge.
+
+Pentru repetare: pornește Docker și serviciile sources, scoate temporar DAG-ul `job_market_multi_source` de pe pauză, declanșează un run cu ID nou și `mode=live`, așteaptă succesul tuturor taskurilor, verifică auditul, apoi repune DAG-ul pe pauză și apasă Refresh în `JobMarketSources.pbip`. Modul implicit `snapshot` nu apelează API-urile; alege explicit `live` pentru date noi. Nu modifica schedule și nu șterge volumele.

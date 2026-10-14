@@ -1,0 +1,178 @@
+{
+  "run_id": "manual__demo_complete_20261014",
+  "mode": "live",
+  "date": "2026-10-14",
+  "extraction_audit": [
+    {
+      "source": "arbeitnow",
+      "attempt": 1,
+      "mode": "live",
+      "status": "success",
+      "extracted": 822,
+      "error_type": null
+    },
+    {
+      "source": "himalayas",
+      "attempt": 1,
+      "mode": "live",
+      "status": "success",
+      "extracted": 351,
+      "error_type": null
+    }
+  ],
+  "load_audit": [
+    {
+      "source": "arbeitnow",
+      "status": "success",
+      "input_rows": 20,
+      "accepted": 20,
+      "rejected": 0,
+      "inserted": 19,
+      "updated": 0,
+      "skipped": 1,
+      "error_type": null
+    },
+    {
+      "source": "himalayas",
+      "status": "success",
+      "input_rows": 351,
+      "accepted": 351,
+      "rejected": 0,
+      "inserted": 351,
+      "updated": 0,
+      "skipped": 0,
+      "error_type": null
+    }
+  ],
+  "source_summary": [
+    {
+      "source": "arbeitnow",
+      "job_count": 47,
+      "company_count": 38,
+      "jobs_with_salary": 0,
+      "salary_coverage_pct": "0.00"
+    },
+    {
+      "source": "himalayas",
+      "job_count": 791,
+      "company_count": 517,
+      "jobs_with_salary": 369,
+      "salary_coverage_pct": "46.65"
+    }
+  ],
+  "duplicate_identities": [
+    {
+      "count": 0
+    }
+  ],
+  "selection": {
+    "arbeitnow_title_candidates": 49,
+    "arbeitnow_selected": 20,
+    "candidate_decisions": {
+      "review": 26,
+      "include": 20,
+      "exclude": 3
+    },
+    "arbeitnow_filtered_out": 773,
+    "roles_by_source": {
+      "himalayas": {
+        "Other": 252,
+        "Data Engineer": 17,
+        "Machine Learning Engineer": 23,
+        "Data Analyst": 11,
+        "Data Scientist": 48
+      },
+      "arbeitnow": {
+        "Data Engineer": 8,
+        "Machine Learning Engineer": 4,
+        "Data Scientist": 5,
+        "Data Analyst": 3
+      }
+    }
+  },
+  "quality": {
+    "total": 371,
+    "accepted": 371,
+    "rejected": 0,
+    "rejected_percent": 0.0,
+    "missing_percent": {
+      "avgSalary": 56.33,
+      "companyName": 0.0,
+      "expiryDate": 5.39,
+      "guid": 0.0,
+      "maxSalary": 56.33,
+      "minSalary": 56.33,
+      "primary_role": 0.0,
+      "pubDate": 0.0,
+      "title": 0.0
+    },
+    "reason_counts": {}
+  },
+  "tasks": [
+    {
+      "dag_id": "job_market_multi_source",
+      "logical_date": "",
+      "task_id": "extract_arbeitnow",
+      "state": "success",
+      "start_date": "2026-10-14T09:11:29.064708+00:00",
+      "end_date": "2026-10-14T09:11:39.525706+00:00"
+    },
+    {
+      "dag_id": "job_market_multi_source",
+      "logical_date": "",
+      "task_id": "extract_himalayas",
+      "state": "success",
+      "start_date": "2026-10-14T09:11:29.064169+00:00",
+      "end_date": "2026-10-14T09:11:56.117375+00:00"
+    },
+    {
+      "dag_id": "job_market_multi_source",
+      "logical_date": "",
+      "task_id": "process",
+      "state": "success",
+      "start_date": "2026-10-14T09:11:57.054754+00:00",
+      "end_date": "2026-10-14T09:12:00.455675+00:00"
+    },
+    {
+      "dag_id": "job_market_multi_source",
+      "logical_date": "",
+      "task_id": "load",
+      "state": "success",
+      "start_date": "2026-10-14T09:12:00.689635+00:00",
+      "end_date": "2026-10-14T09:12:04.631465+00:00"
+    }
+  ],
+  "powerbi_verified": {
+    "jobs": 838,
+    "jobs_with_salary": 369,
+    "salary_coverage_percent": 44.0,
+    "mode": "Import PostgreSQL",
+    "server": "localhost:15435",
+    "arbeitnow_data_engineer": {
+      "jobs": 22,
+      "python": 16,
+      "python_pct": 72.7,
+      "sql": 13,
+      "sql_pct": 59.1,
+      "percentage_total_blank": true
+    }
+  },
+  "limitations": [
+    "Stored historical jobs, not exclusively active ads",
+    "No cross-source semantic deduplication",
+    "Ambiguous Arbeitnow candidates excluded pending review",
+    "Himalayas Other classification remains heuristic",
+    "No scheduled run enabled"
+  ],
+  "dag_final_state": {
+    "state": "success",
+    "paused": true,
+    "schedule": null
+  },
+  "verification_channels": [
+    "Airflow CLI task states",
+    "Airflow metadata PostgreSQL",
+    "application PostgreSQL audits and views",
+    "Power BI Desktop Refresh and slicers"
+  ]
+}

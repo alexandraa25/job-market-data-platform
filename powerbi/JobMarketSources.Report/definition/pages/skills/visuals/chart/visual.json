@@ -1,0 +1,103 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "chart",
+  "position": {
+    "x": 306,
+    "y": 82,
+    "z": 0,
+    "height": 550,
+    "width": 500,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "SourceSkills"
+                    }
+                  },
+                  "Property": "skill"
+                }
+              },
+              "queryRef": "SourceSkills.skill",
+              "active": true,
+              "displayName": "Competenta"
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "SourceFilter"
+                    }
+                  },
+                  "Property": "source"
+                }
+              },
+              "queryRef": "SourceFilter.source",
+              "displayName": "Sursa"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "SourceSkills"
+                    }
+                  },
+                  "Property": "Anunturi cu competenta"
+                }
+              },
+              "queryRef": "SourceSkills.Anunturi cu competenta",
+              "displayName": "Anunturi cu competenta"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Anunturi cu fiecare competenta'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

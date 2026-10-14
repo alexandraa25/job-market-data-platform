@@ -1,0 +1,49 @@
+table SourceSummary
+	lineageTag: 82501da5-0704-4455-bf95-d7327959c08d
+
+	measure 'Anunturi cu salariu' = SUM(SourceSummary[jobs_with_salary])
+		formatString: #,0
+		lineageTag: 6d67d4e9-f05e-4fbf-82d8-a457751aaeec
+
+	measure 'Acoperire salarii' = DIVIDE(SUM(SourceSummary[jobs_with_salary]), SUM(SourceSummary[job_count]))
+		formatString: 0.0%
+		lineageTag: a78ad58a-59c6-4fe1-99b4-94ca5a1dfa35
+
+	column source
+		dataType: string
+		lineageTag: 900a7083-b4e2-4c2d-be89-e6d5407f6332
+		summarizeBy: none
+		sourceColumn: source
+
+	column job_count
+		dataType: int64
+		lineageTag: eba0ab35-7ebd-4717-94d5-729d88fbadd1
+		summarizeBy: none
+		sourceColumn: job_count
+
+	column company_count
+		dataType: int64
+		lineageTag: 5f5777d4-ad8a-4362-84ca-a64a77214592
+		summarizeBy: none
+		sourceColumn: company_count
+
+	column jobs_with_salary
+		dataType: int64
+		lineageTag: 31f8203b-54c0-4095-ba62-5c352695a8ab
+		summarizeBy: none
+		sourceColumn: jobs_with_salary
+
+	column salary_coverage_pct
+		dataType: double
+		lineageTag: 77074206-ee1f-4ea1-b95f-f023aed4a1b7
+		summarizeBy: none
+		sourceColumn: salary_coverage_pct
+
+	partition SourceSummary = m
+		mode: import
+		source =
+				let
+				 Snapshot = #table({"source", "job_count", "company_count", "jobs_with_salary", "salary_coverage_pct"}, {{"arbeitnow", 28, 21, 0, 0.0}, {"himalayas", 440, 294, 207, 47.05}}),
+				 Source = if UsePostgreSQL then PostgreSQL.Database(DatabaseServer, "job_market_db", [Query="SELECT * FROM analytics.source_summary", CreateNavigationProperties=false]) else Snapshot,
+				 Typed = Table.TransformColumnTypes(Source, {{"source", type text}, {"job_count", Int64.Type}, {"company_count", Int64.Type}, {"jobs_with_salary", Int64.Type}, {"salary_coverage_pct", type number}})
+				in Typed

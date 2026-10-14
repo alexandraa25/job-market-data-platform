@@ -287,7 +287,7 @@ Ultima verificare locală din **5 octombrie 2026**: **63 de teste trecute**, inc
 - Rularea programată din 4 octombrie 2026, ora 19:07, a reușit automat: toate cele patru task-uri din prima încercare, fără Trigger/Clear. Rulările programate din 5–7 octombrie au reușit cu cinci task-uri și clear_number=0; două au pornit târziu. Execuția punctuală necesită serviciile active la ora programată.
 - Sursa conține numai anunțurile colectate prin căutările configurate; rezultatele nu reprezintă întreaga piață a muncii.
 - Competențele sunt detectate prin reguli textuale, iar salariile lipsă nu sunt estimate.
-- Instalarea locală pe volume noi este verificată; conexiunea directă Power BI și refresh-ul său programat necesită verificări suplimentare.
+- Instalarea locală pe volume noi este verificată. Importul PostgreSQL în raportul separat Power BI Sources este verificat; conexiunea raportului original JobMarket și refresh-ul programat în Service necesită verificări suplimentare.
 - Extensii posibile: notificări externe și migrarea orchestrării și procesării către Azure; arhivarea raw este deja implementată.
 
 Detalii despre artefacte și reluarea task-urilor: [etapele Airflow](docs/airflow-stages.md).
@@ -329,4 +329,14 @@ Loaderul multi-source și migrarea provenienței PostgreSQL au fost verificate �
 
 Auditul încărcării păstrează metrici și istoric separat pentru fiecare sursă, cu rollback al întregului lot la eșec. Verificat prin 30 teste PostgreSQL și reîncărcarea snapshotului real; auditul extragerii live și orchestrarea multi-source urmează.
 
-DAG-ul manual `job_market_multi_source` a fost verificat cu snapshoturi locale: două extrageri auditate, procesare comună și încărcare atomică; toate cele patru taskuri au reușit. Extragerea live rămâne neverificată în acest flux.
+DAG-ul manual `job_market_multi_source` a fost verificat cu snapshoturi locale: două extrageri auditate, procesare comună și încărcare atomică; toate cele patru taskuri au reușit. Extragerea live a fost ulterior verificată pe 10 octombrie 2026: toate taskurile au reușit, 348 rânduri acceptate; repetarea încărcării a omis toate cele 348 fără duplicate.
+
+Modelul separat [Power BI Sources](powerbi/SOURCES_README.md) include agregări pe sursă și rol și măsuri pentru cererea de competențe. Raportul are două pagini verificate în Power BI Desktop la 11.10.2026: comparația surselor și competențe cu filtre pe sursă/rol. Snapshot: 468 anunțuri (440 Himalayas, 28 Arbeitnow). Filtrele și procentele DAX au fost verificate. Importul PostgreSQL a fost verificat la 14.10.2026; raportul Sources este salvat cu `UsePostgreSQL=true`, server `localhost:15435`, actualizare manuală prin Refresh. Pentru modul demonstrativ fără bază, setează `UsePostgreSQL=false`. Nu există refresh programat în Power BI Service.
+
+
+![Power BI: comparația surselor, snapshot 10.10.2026](docs/images/powerbi-sources-overview.png)
+
+
+### Demonstrație completă verificată — 14.10.2026
+
+Rulare manuală live `job_market_multi_source`: toate cele patru taskuri reușite, 371 acceptate tehnic, 370 inserate și 1 omis; zero respingeri de calitate. După Refresh, Power BI afișează 838 anunțuri istorice (791 Himalayas, 47 Arbeitnow), 369 cu salariu și 44,0% acoperire. Cele 26 de candidate Arbeitnow ambigue rămân pentru revizuire. DAG-ul a fost repus pe pauză. [Audit și pași](docs/MULTIPLE_SOURCES.md) · [Dovezi agregate](docs/evidence/demo-multi-source-20261014.json).

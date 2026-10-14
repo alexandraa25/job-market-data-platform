@@ -1,0 +1,12 @@
+table SourceFilter
+	lineageTag: 3ba9dd56-4932-4295-ac6f-9aada46f349a
+
+	column source
+		dataType: string
+		lineageTag: 67d53eb3-af98-4a60-922b-4d0691645410
+		summarizeBy: none
+		sourceColumn: source
+
+	partition SourceFilter = m
+		mode: import
+		source = Table.Distinct(Table.SelectColumns(SourceRoles, {"source"}))
