@@ -51,6 +51,22 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt -r requirements.spark.txt
 
+      - name: Verify database bootstrap and repeatable upgrade
+        env:
+          PGHOST: localhost
+          PGPORT: 5432
+          PGDATABASE: job_market_test
+          PGUSER: tester
+          PGPASSWORD: test-only-password
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y postgresql-client
+          psql -X -v ON_ERROR_STOP=1 -f sql/init.sql
+          psql -X -v ON_ERROR_STOP=1 -c "INSERT INTO jobs(guid,title,application_link) VALUES ('bootstrap-legacy','Legacy job','https://example.com/legacy')"
+          sh sql/migrate.sh
+          sh sql/migrate.sh
+          psql -X -v ON_ERROR_STOP=1 -f tests/database_bootstrap_validation.sql
+
       - name: Run tests
         run: |
           python -m pytest -v

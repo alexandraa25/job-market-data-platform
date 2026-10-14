@@ -79,3 +79,8 @@ La 8 octombrie 2026, cele trei DAG-uri sunt pe pauza si au schedule=None. Rulari
 
 
 DAG-ul separat `job_market_multi_source` foloseste `src.sources_workflow`: doua extrageri auditate -> process (transform/select/validate) -> load. Snapshot local implicit, programare oprita. Contractul DAG-ului original ramane neschimbat. Pentru proceduri si limite vezi MULTIPLE_SOURCES.md.
+
+
+## Pregatirea schemei PostgreSQL
+
+Serviciul db-migrate aplica migrarile001–006 si ambele seturi de view-uri intr-o tranzactie inaintea consumatorilor DB. ETL, sources-load, API server si scheduler asteapta service_completed_successfully. Pentru upgrade explicit folositi docker compose run --rm db-migrate cu stiva si parola existente, dupa oprirea consumatorilor. Schema business este separata de migrarile metadata airflow-init. Programarile raman None; contractele taskurilor nu se schimba.

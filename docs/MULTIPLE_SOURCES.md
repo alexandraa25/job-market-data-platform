@@ -177,3 +177,8 @@ Refresh din PostgreSQL în Power BI a reușit: **838 anunțuri, 369 cu salariu, 
 Dovezi agregate fără date brute sau credențiale: `docs/evidence/demo-multi-source-20261014.json`. Verificarea Airflow a folosit stările CLI și metadatele DB; nu este o verificare nouă a UI sau a log serving. Nu s-au rulat teste de idempotentă suplimentare în această demonstrație și nu se pretinde că regula de relevanță este validată de oameni. Azure și celelalte proiecte nu au fost modificate. Fără commit/push/merge.
 
 Pentru repetare: pornește Docker și serviciile sources, scoate temporar DAG-ul `job_market_multi_source` de pe pauză, declanșează un run cu ID nou și `mode=live`, așteaptă succesul tuturor taskurilor, verifică auditul, apoi repune DAG-ul pe pauză și apasă Refresh în `JobMarketSources.pbip`. Modul implicit `snapshot` nu apelează API-urile; alege explicit `live` pentru date noi. Nu modifica schedule și nu șterge volumele.
+
+
+## Configuratie curenta dupa corectiile pre-merge
+
+Pentru instalare/upgrade folositi README si OPERATIONS.md, nu pasii istorici de migrare manuala de mai sus. db-migrate aplica toate migrarile si view-urile inainte de consumatorii bazei. Alegeti explicit COMPOSE_PROJECT_NAME si porturile; imaginea sources-pilot/sources-load este derivata din numele proiectului si ambele servicii o pot construi. Stiva demonstratiei existente ramane sources,15435/18083,838anunturi; baza v1 nu este combinata sau modificata.
