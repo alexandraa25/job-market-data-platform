@@ -1,0 +1,35 @@
+table SourceRoles
+	lineageTag: b77a37c5-29e5-4d88-899d-9e5071731269
+
+	measure Anunturi = SUM(SourceRoles[job_count])
+		formatString: #,0
+		lineageTag: 8cf0ac9a-324f-445b-bfca-4db25a5f2e04
+
+	column source
+		dataType: string
+		lineageTag: 5c5ac442-414c-48d2-80af-a5b849874440
+		summarizeBy: none
+		sourceColumn: source
+
+	column primary_role
+		dataType: string
+		lineageTag: 1236eda1-c89e-4019-9134-2da92a7e85ef
+		summarizeBy: none
+		sourceColumn: primary_role
+
+	column job_count
+		dataType: int64
+		lineageTag: 055f812e-7baf-4578-a253-82bc7d1d7f72
+		summarizeBy: none
+		sourceColumn: job_count
+
+	partition SourceRoles = m
+		mode: import
+		source =
+				let
+				 Snapshot = #table({"source", "primary_role", "job_count"}, {{"himalayas", "Machine Learning Engineer", 33}, {"arbeitnow", "Data Analyst", 1}, {"arbeitnow", "Data Scientist", 6}, {"himalayas", "Data Scientist", 48}, {"arbeitnow", "Machine Learning Engineer", 7}, {"himalayas", "Other", 317}, {"himalayas", "Data Analyst", 19}, {"himalayas", "Data Engineer", 23}, {"arbeitnow", "Data Engineer", 14}}),
+				 Source = if UsePostgreSQL then PostgreSQL.Database(DatabaseServer, "job_market_db", [Query="SELECT * FROM analytics.source_roles", CreateNavigationProperties=false]) else Snapshot,
+				 Typed = Table.TransformColumnTypes(Source, {{"source", type text}, {"primary_role", type text}, {"job_count", Int64.Type}})
+				in Typed
+
+	annotation PBI_ResultType = Table

@@ -1,0 +1,19 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["SourceSummary","SourceRoles","SourceSkills","SourceFilter","RoleFilter","UsePostgreSQL","DatabaseServer"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table SourceSummary
+ref table SourceRoles
+ref table SourceSkills
+ref table SourceFilter
+ref table RoleFilter
+
+ref cultureInfo en-US

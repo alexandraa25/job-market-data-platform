@@ -1,0 +1,103 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "roles",
+  "position": {
+    "x": 24,
+    "y": 310,
+    "z": 0,
+    "height": 302,
+    "width": 704,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "RoleFilter"
+                    }
+                  },
+                  "Property": "primary_role"
+                }
+              },
+              "queryRef": "RoleFilter.primary_role",
+              "active": true,
+              "displayName": "Rol"
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "SourceFilter"
+                    }
+                  },
+                  "Property": "source"
+                }
+              },
+              "queryRef": "SourceFilter.source",
+              "displayName": "Sursa"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "SourceRoles"
+                    }
+                  },
+                  "Property": "Anunturi"
+                }
+              },
+              "queryRef": "SourceRoles.Anunturi",
+              "displayName": "Anunturi"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Roluri pe surse'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

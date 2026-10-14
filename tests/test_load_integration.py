@@ -144,8 +144,59 @@ def test_batch_error_rolls_back_insert_and_update(engine, jobs, caplog):
     invalid = jobs.copy()
     invalid.loc[0, "guid"] = None
     batch = pd.concat([changed, new, invalid], ignore_index=True)
+    batch["source"] = "himalayas"
+    batch["source_job_id"] = ["000123", "new-job", "invalid-but-present"]
+    batch["source_url"] = batch["applicationLink"]
     caplog.set_level(logging.INFO, logger="src.load")
     with pytest.raises(IntegrityError):
         upsert_jobs(batch, engine)
     assert snapshot(engine) == before
     assert "PostgreSQL UPSERT completed" not in caplog.text
+
+
+def test_multi_source_identity_and_incremental_updates(engine, jobs):
+    first = jobs.copy()
+    first["source"] = "himalayas"
+    first["source_job_id"] = "same-local-id"
+    first["source_url"] = "https://example.com/hima"
+    second = first.copy()
+    second["guid"] = "arbeitnow:same-local-id"
+    second["source"] = "arbeitnow"
+    second["source_url"] = "https://example.com/arbeitnow"
+    batch = pd.concat([first, second], ignore_index=True)
+    assert upsert_jobs(batch, engine) == {"inserted": 2, "updated": 0, "skipped": 0}
+    assert upsert_jobs(batch, engine) == {"inserted": 0, "updated": 0, "skipped": 2}
+    batch.loc[1, "source_url"] = "https://example.com/updated"
+    assert upsert_jobs(batch, engine) == {"inserted": 0, "updated": 1, "skipped": 1}
+    assert len(snapshot(engine)) == 2
+    changed = first.copy()
+    changed["source"] = "other"
+    with pytest.raises(ValueError, match="cannot change"):
+        upsert_jobs(changed, engine)
+    collision = second.copy()
+    collision["guid"] = "another-guid"
+    with pytest.raises(IntegrityError):
+        upsert_jobs(collision, engine)
+    assert len(snapshot(engine)) == 2
+
+
+def test_migration_backfills_legacy_and_is_repeatable(engine, jobs):
+    upsert_jobs(jobs, engine)
+    migration = (
+        Path(__file__).parents[1] / "sql/migrations/004_source_provenance.sql"
+    ).read_text()
+    with engine.begin() as connection:
+        connection.execute(text("ALTER TABLE jobs ALTER COLUMN source DROP NOT NULL"))
+        connection.execute(
+            text("ALTER TABLE jobs ALTER COLUMN source_job_id DROP NOT NULL")
+        )
+        connection.execute(
+            text("UPDATE jobs SET source=NULL, source_job_id=NULL, source_url=NULL")
+        )
+        for _ in range(2):
+            for statement in migration.split(";"):
+                if statement.strip():
+                    connection.execute(text(statement))
+    row = snapshot(engine)[0]
+    assert row["source"] == "himalayas" and row["source_job_id"] == "000123"
+    assert row["source_url"] == "https://example.com/job"

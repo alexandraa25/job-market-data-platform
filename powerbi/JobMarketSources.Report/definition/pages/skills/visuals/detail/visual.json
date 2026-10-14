@@ -1,0 +1,94 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "detail",
+  "position": {
+    "x": 826,
+    "y": 82,
+    "width": 430,
+    "height": 550,
+    "z": 0,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Numar si procent din selectia curenta'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "SourceSkills"
+                    }
+                  },
+                  "Property": "skill"
+                }
+              },
+              "queryRef": "SourceSkills.skill",
+              "displayName": "Competenta"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "SourceSkills"
+                    }
+                  },
+                  "Property": "Anunturi cu competenta"
+                }
+              },
+              "queryRef": "SourceSkills.Anunturi cu competenta",
+              "displayName": "Anunturi"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "SourceSkills"
+                    }
+                  },
+                  "Property": "Cerere competenta"
+                }
+              },
+              "queryRef": "SourceSkills.Cerere competenta",
+              "displayName": "Cerere %"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

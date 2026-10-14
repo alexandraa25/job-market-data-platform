@@ -1,0 +1,19 @@
+relationship source_SourceSummary
+	fromColumn: SourceSummary.source
+	toColumn: SourceFilter.source
+
+relationship source_SourceRoles
+	fromColumn: SourceRoles.source
+	toColumn: SourceFilter.source
+
+relationship source_SourceSkills
+	fromColumn: SourceSkills.source
+	toColumn: SourceFilter.source
+
+relationship role_SourceRoles
+	fromColumn: SourceRoles.primary_role
+	toColumn: RoleFilter.primary_role
+
+relationship role_SourceSkills
+	fromColumn: SourceSkills.primary_role
+	toColumn: RoleFilter.primary_role

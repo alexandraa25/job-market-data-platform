@@ -1,0 +1,9 @@
+expression UsePostgreSQL = true meta [IsParameterQuery=true, Type="Logical", IsParameterQueryRequired=true]
+	lineageTag: 99b7ce01-2209-4dc3-8050-f72d7eade6b7
+
+	annotation PBI_ResultType = Logical
+
+expression DatabaseServer = "localhost:15435" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: cb5a8031-06f4-418e-bb5e-81800096065a
+
+	annotation PBI_ResultType = Text

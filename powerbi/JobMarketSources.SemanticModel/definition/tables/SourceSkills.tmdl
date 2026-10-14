@@ -1,0 +1,43 @@
+table SourceSkills
+	lineageTag: 4993f5c2-2dd3-4ae7-804a-f5a143d21ffb
+
+	measure 'Anunturi cu competenta' = SUM(SourceSkills[job_count])
+		formatString: #,0
+		lineageTag: a3fb0681-ba21-4151-b38f-fd1dfbc14399
+
+	measure 'Cerere competenta' = IF(ISINSCOPE(SourceSkills[skill]), DIVIDE(SUM(SourceSkills[job_count]), SUM(SourceRoles[job_count])))
+		formatString: 0.0%
+		lineageTag: 61643389-140f-4860-9692-5fe87907d4e5
+
+	column source
+		dataType: string
+		lineageTag: 140224c5-7503-4f43-ab11-a39436d47754
+		summarizeBy: none
+		sourceColumn: source
+
+	column primary_role
+		dataType: string
+		lineageTag: 96b99245-dba8-44a5-b206-6a200781a5b0
+		summarizeBy: none
+		sourceColumn: primary_role
+
+	column skill
+		dataType: string
+		lineageTag: 1b1c4470-d63b-4727-ace7-ca91830198ff
+		summarizeBy: none
+		sourceColumn: skill
+
+	column job_count
+		dataType: int64
+		lineageTag: d23d5276-0ecf-492c-8fa0-2bb83d3cb659
+		summarizeBy: none
+		sourceColumn: job_count
+
+	partition SourceSkills = m
+		mode: import
+		source =
+				let
+				 Snapshot = #table({"source", "primary_role", "skill", "job_count"}, {{"himalayas", "Other", "spark", 17}, {"himalayas", "Machine Learning Engineer", "gcp", 15}, {"himalayas", "Data Scientist", "tensorflow", 14}, {"arbeitnow", "Machine Learning Engineer", "kubernetes", 3}, {"himalayas", "Other", "azure", 57}, {"arbeitnow", "Machine Learning Engineer", "docker", 1}, {"himalayas", "Data Scientist", "pyspark", 3}, {"himalayas", "Data Analyst", "sql", 16}, {"himalayas", "Data Scientist", "power_bi", 3}, {"himalayas", "Data Analyst", "azure", 3}, {"himalayas", "Machine Learning Engineer", "sql", 7}, {"himalayas", "Data Analyst", "airflow", 1}, {"arbeitnow", "Data Engineer", "power_bi", 2}, {"arbeitnow", "Machine Learning Engineer", "python", 6}, {"arbeitnow", "Data Engineer", "aws", 6}, {"himalayas", "Data Scientist", "sql", 39}, {"himalayas", "Data Engineer", "kubernetes", 1}, {"himalayas", "Data Engineer", "azure", 13}, {"arbeitnow", "Data Scientist", "sql", 5}, {"himalayas", "Data Analyst", "snowflake", 2}, {"arbeitnow", "Data Engineer", "azure", 2}, {"himalayas", "Machine Learning Engineer", "snowflake", 1}, {"himalayas", "Other", "databricks", 18}, {"himalayas", "Other", "power_bi", 31}, {"himalayas", "Data Engineer", "python", 19}, {"arbeitnow", "Data Engineer", "spark", 1}, {"himalayas", "Other", "aws", 61}, {"himalayas", "Other", "python", 131}, {"himalayas", "Machine Learning Engineer", "spark", 3}, {"himalayas", "Other", "gcp", 39}, {"himalayas", "Other", "sql", 84}, {"arbeitnow", "Machine Learning Engineer", "azure", 1}, {"himalayas", "Machine Learning Engineer", "docker", 8}, {"himalayas", "Data Scientist", "airflow", 4}, {"himalayas", "Data Engineer", "airflow", 5}, {"himalayas", "Data Scientist", "gcp", 9}, {"himalayas", "Machine Learning Engineer", "pyspark", 1}, {"himalayas", "Data Analyst", "databricks", 2}, {"himalayas", "Machine Learning Engineer", "scikit_learn", 8}, {"himalayas", "Other", "kubernetes", 27}, {"himalayas", "Other", "tableau", 19}, {"himalayas", "Data Scientist", "python", 43}, {"himalayas", "Other", "docker", 21}, {"himalayas", "Machine Learning Engineer", "databricks", 1}, {"himalayas", "Data Engineer", "tensorflow", 1}, {"himalayas", "Other", "airflow", 6}, {"arbeitnow", "Machine Learning Engineer", "pytorch", 4}, {"himalayas", "Data Analyst", "python", 11}, {"himalayas", "Data Scientist", "spark", 16}, {"arbeitnow", "Machine Learning Engineer", "tensorflow", 1}, {"himalayas", "Machine Learning Engineer", "aws", 20}, {"arbeitnow", "Data Engineer", "docker", 1}, {"himalayas", "Data Scientist", "docker", 5}, {"arbeitnow", "Machine Learning Engineer", "gcp", 1}, {"himalayas", "Data Scientist", "azure", 12}, {"arbeitnow", "Machine Learning Engineer", "aws", 1}, {"himalayas", "Machine Learning Engineer", "tensorflow", 10}, {"himalayas", "Data Engineer", "scikit_learn", 1}, {"arbeitnow", "Data Analyst", "sql", 1}, {"arbeitnow", "Data Engineer", "databricks", 2}, {"himalayas", "Data Scientist", "kubernetes", 1}, {"himalayas", "Data Analyst", "aws", 2}, {"himalayas", "Machine Learning Engineer", "airflow", 3}, {"himalayas", "Data Analyst", "power_bi", 7}, {"himalayas", "Other", "tensorflow", 15}, {"himalayas", "Machine Learning Engineer", "pytorch", 13}, {"arbeitnow", "Data Engineer", "kubernetes", 3}, {"himalayas", "Data Engineer", "power_bi", 7}, {"himalayas", "Data Engineer", "databricks", 4}, {"himalayas", "Data Engineer", "pyspark", 8}, {"himalayas", "Machine Learning Engineer", "python", 30}, {"himalayas", "Data Scientist", "tableau", 5}, {"himalayas", "Data Engineer", "docker", 3}, {"himalayas", "Data Analyst", "gcp", 1}, {"himalayas", "Data Analyst", "tableau", 8}, {"himalayas", "Data Engineer", "aws", 9}, {"himalayas", "Data Engineer", "sql", 19}, {"arbeitnow", "Machine Learning Engineer", "sql", 1}, {"himalayas", "Data Engineer", "gcp", 6}, {"himalayas", "Data Engineer", "tableau", 5}, {"himalayas", "Machine Learning Engineer", "kubernetes", 7}, {"arbeitnow", "Data Engineer", "python", 9}, {"himalayas", "Data Scientist", "pytorch", 11}, {"himalayas", "Machine Learning Engineer", "azure", 18}, {"himalayas", "Other", "pyspark", 5}, {"himalayas", "Other", "pytorch", 21}, {"himalayas", "Data Scientist", "scikit_learn", 11}, {"arbeitnow", "Data Scientist", "tableau", 2}, {"himalayas", "Data Engineer", "snowflake", 10}, {"himalayas", "Data Scientist", "snowflake", 8}, {"himalayas", "Other", "snowflake", 18}, {"arbeitnow", "Data Scientist", "python", 6}, {"arbeitnow", "Data Engineer", "airflow", 5}, {"himalayas", "Other", "scikit_learn", 6}, {"himalayas", "Data Engineer", "spark", 7}, {"arbeitnow", "Data Engineer", "snowflake", 2}, {"arbeitnow", "Data Engineer", "sql", 11}, {"himalayas", "Data Analyst", "pyspark", 1}, {"arbeitnow", "Data Engineer", "pyspark", 1}, {"himalayas", "Data Scientist", "aws", 21}, {"himalayas", "Data Scientist", "databricks", 14}}),
+				 Source = if UsePostgreSQL then PostgreSQL.Database(DatabaseServer, "job_market_db", [Query="SELECT * FROM analytics.source_skills", CreateNavigationProperties=false]) else Snapshot,
+				 Typed = Table.TransformColumnTypes(Source, {{"source", type text}, {"primary_role", type text}, {"skill", type text}, {"job_count", Int64.Type}})
+				in Typed

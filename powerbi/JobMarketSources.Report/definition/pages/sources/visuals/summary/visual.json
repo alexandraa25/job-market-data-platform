@@ -1,0 +1,122 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.1.0/schema.json",
+  "name": "summary",
+  "position": {
+    "x": 750,
+    "y": 310,
+    "width": 506,
+    "height": 302,
+    "z": 0,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Acoperirea surselor'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "SourceSummary"
+                    }
+                  },
+                  "Property": "source"
+                }
+              },
+              "queryRef": "SourceSummary.source",
+              "displayName": "Sursa"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "SourceSummary"
+                    }
+                  },
+                  "Property": "job_count"
+                }
+              },
+              "queryRef": "SourceSummary.job_count",
+              "displayName": "Anunturi"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "SourceSummary"
+                    }
+                  },
+                  "Property": "company_count"
+                }
+              },
+              "queryRef": "SourceSummary.company_count",
+              "displayName": "Companii"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "SourceSummary"
+                    }
+                  },
+                  "Property": "jobs_with_salary"
+                }
+              },
+              "queryRef": "SourceSummary.jobs_with_salary",
+              "displayName": "Cu salariu"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "SourceSummary"
+                    }
+                  },
+                  "Property": "salary_coverage_pct"
+                }
+              },
+              "queryRef": "SourceSummary.salary_coverage_pct",
+              "displayName": "Salarii %"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

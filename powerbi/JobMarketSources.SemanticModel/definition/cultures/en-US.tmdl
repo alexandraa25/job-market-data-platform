@@ -1,0 +1,293 @@
+cultureInfo en-US
+
+	linguisticMetadata =
+			{
+			  "Version": "2.0.0",
+			  "Language": "en-US",
+			  "Entities": {
+			    "sourceroles.anunturi": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SourceRoles",
+			          "ConceptualProperty": "Anunturi"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Anunturi": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "rolefilter.primary_role": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "RoleFilter",
+			          "ConceptualProperty": "primary_role"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Rol": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "sourcefilter.source": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SourceFilter",
+			          "ConceptualProperty": "source"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Sursa": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "sourcesummary.anunturi_cu_salariu": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SourceSummary",
+			          "ConceptualProperty": "Anunturi cu salariu"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Anunturi cu salariu": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "sourcesummary.acoperire_salarii": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SourceSummary",
+			          "ConceptualProperty": "Acoperire salarii"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Acoperire salarii": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "sourcesummary.source": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SourceSummary",
+			          "ConceptualProperty": "source"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Sursa": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "sourcesummary.job_count": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SourceSummary",
+			          "ConceptualProperty": "job_count"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Anunturi": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "sourcesummary.company_count": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SourceSummary",
+			          "ConceptualProperty": "company_count"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Companii": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "sourcesummary.jobs_with_salary": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SourceSummary",
+			          "ConceptualProperty": "jobs_with_salary"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Cu salariu": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "sourcesummary.salary_coverage_pct": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SourceSummary",
+			          "ConceptualProperty": "salary_coverage_pct"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Salarii %": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "sourceskills.skill": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SourceSkills",
+			          "ConceptualProperty": "skill"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Competenta": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "sourceskills.anunturi_cu_competenta": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SourceSkills",
+			          "ConceptualProperty": "Anunturi cu competenta"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Anunturi cu competenta": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Anunturi": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "sourceskills.cerere_competenta": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "SourceSkills",
+			          "ConceptualProperty": "Cerere competenta"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Cerere %": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    }
+			  }
+			}
+		contentType: json

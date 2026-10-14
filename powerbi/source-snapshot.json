@@ -1,0 +1,673 @@
+{
+  "summary": [
+    {
+      "source": "arbeitnow",
+      "job_count": 28,
+      "company_count": 21,
+      "jobs_with_salary": 0,
+      "salary_coverage_pct": 0.0
+    },
+    {
+      "source": "himalayas",
+      "job_count": 440,
+      "company_count": 294,
+      "jobs_with_salary": 207,
+      "salary_coverage_pct": 47.05
+    }
+  ],
+  "roles": [
+    {
+      "source": "himalayas",
+      "primary_role": "Machine Learning Engineer",
+      "job_count": 33
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Data Analyst",
+      "job_count": 1
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Data Scientist",
+      "job_count": 6
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Scientist",
+      "job_count": 48
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Machine Learning Engineer",
+      "job_count": 7
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Other",
+      "job_count": 317
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Analyst",
+      "job_count": 19
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Engineer",
+      "job_count": 23
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Data Engineer",
+      "job_count": 14
+    }
+  ],
+  "skills": [
+    {
+      "source": "himalayas",
+      "primary_role": "Other",
+      "skill": "spark",
+      "job_count": 17
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "gcp",
+      "job_count": 15
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Scientist",
+      "skill": "tensorflow",
+      "job_count": 14
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "kubernetes",
+      "job_count": 3
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Other",
+      "skill": "azure",
+      "job_count": 57
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "docker",
+      "job_count": 1
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Scientist",
+      "skill": "pyspark",
+      "job_count": 3
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Analyst",
+      "skill": "sql",
+      "job_count": 16
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Scientist",
+      "skill": "power_bi",
+      "job_count": 3
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Analyst",
+      "skill": "azure",
+      "job_count": 3
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "sql",
+      "job_count": 7
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Analyst",
+      "skill": "airflow",
+      "job_count": 1
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Data Engineer",
+      "skill": "power_bi",
+      "job_count": 2
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "python",
+      "job_count": 6
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Data Engineer",
+      "skill": "aws",
+      "job_count": 6
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Scientist",
+      "skill": "sql",
+      "job_count": 39
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Engineer",
+      "skill": "kubernetes",
+      "job_count": 1
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Engineer",
+      "skill": "azure",
+      "job_count": 13
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Data Scientist",
+      "skill": "sql",
+      "job_count": 5
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Analyst",
+      "skill": "snowflake",
+      "job_count": 2
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Data Engineer",
+      "skill": "azure",
+      "job_count": 2
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "snowflake",
+      "job_count": 1
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Other",
+      "skill": "databricks",
+      "job_count": 18
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Other",
+      "skill": "power_bi",
+      "job_count": 31
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Engineer",
+      "skill": "python",
+      "job_count": 19
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Data Engineer",
+      "skill": "spark",
+      "job_count": 1
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Other",
+      "skill": "aws",
+      "job_count": 61
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Other",
+      "skill": "python",
+      "job_count": 131
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "spark",
+      "job_count": 3
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Other",
+      "skill": "gcp",
+      "job_count": 39
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Other",
+      "skill": "sql",
+      "job_count": 84
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "azure",
+      "job_count": 1
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "docker",
+      "job_count": 8
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Scientist",
+      "skill": "airflow",
+      "job_count": 4
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Engineer",
+      "skill": "airflow",
+      "job_count": 5
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Scientist",
+      "skill": "gcp",
+      "job_count": 9
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "pyspark",
+      "job_count": 1
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Analyst",
+      "skill": "databricks",
+      "job_count": 2
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "scikit_learn",
+      "job_count": 8
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Other",
+      "skill": "kubernetes",
+      "job_count": 27
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Other",
+      "skill": "tableau",
+      "job_count": 19
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Scientist",
+      "skill": "python",
+      "job_count": 43
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Other",
+      "skill": "docker",
+      "job_count": 21
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "databricks",
+      "job_count": 1
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Engineer",
+      "skill": "tensorflow",
+      "job_count": 1
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Other",
+      "skill": "airflow",
+      "job_count": 6
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "pytorch",
+      "job_count": 4
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Analyst",
+      "skill": "python",
+      "job_count": 11
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Scientist",
+      "skill": "spark",
+      "job_count": 16
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "tensorflow",
+      "job_count": 1
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "aws",
+      "job_count": 20
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Data Engineer",
+      "skill": "docker",
+      "job_count": 1
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Scientist",
+      "skill": "docker",
+      "job_count": 5
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "gcp",
+      "job_count": 1
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Scientist",
+      "skill": "azure",
+      "job_count": 12
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "aws",
+      "job_count": 1
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "tensorflow",
+      "job_count": 10
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Engineer",
+      "skill": "scikit_learn",
+      "job_count": 1
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Data Analyst",
+      "skill": "sql",
+      "job_count": 1
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Data Engineer",
+      "skill": "databricks",
+      "job_count": 2
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Scientist",
+      "skill": "kubernetes",
+      "job_count": 1
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Analyst",
+      "skill": "aws",
+      "job_count": 2
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "airflow",
+      "job_count": 3
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Analyst",
+      "skill": "power_bi",
+      "job_count": 7
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Other",
+      "skill": "tensorflow",
+      "job_count": 15
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "pytorch",
+      "job_count": 13
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Data Engineer",
+      "skill": "kubernetes",
+      "job_count": 3
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Engineer",
+      "skill": "power_bi",
+      "job_count": 7
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Engineer",
+      "skill": "databricks",
+      "job_count": 4
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Engineer",
+      "skill": "pyspark",
+      "job_count": 8
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "python",
+      "job_count": 30
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Scientist",
+      "skill": "tableau",
+      "job_count": 5
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Engineer",
+      "skill": "docker",
+      "job_count": 3
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Analyst",
+      "skill": "gcp",
+      "job_count": 1
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Analyst",
+      "skill": "tableau",
+      "job_count": 8
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Engineer",
+      "skill": "aws",
+      "job_count": 9
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Engineer",
+      "skill": "sql",
+      "job_count": 19
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "sql",
+      "job_count": 1
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Engineer",
+      "skill": "gcp",
+      "job_count": 6
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Engineer",
+      "skill": "tableau",
+      "job_count": 5
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "kubernetes",
+      "job_count": 7
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Data Engineer",
+      "skill": "python",
+      "job_count": 9
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Scientist",
+      "skill": "pytorch",
+      "job_count": 11
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Machine Learning Engineer",
+      "skill": "azure",
+      "job_count": 18
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Other",
+      "skill": "pyspark",
+      "job_count": 5
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Other",
+      "skill": "pytorch",
+      "job_count": 21
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Scientist",
+      "skill": "scikit_learn",
+      "job_count": 11
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Data Scientist",
+      "skill": "tableau",
+      "job_count": 2
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Engineer",
+      "skill": "snowflake",
+      "job_count": 10
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Scientist",
+      "skill": "snowflake",
+      "job_count": 8
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Other",
+      "skill": "snowflake",
+      "job_count": 18
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Data Scientist",
+      "skill": "python",
+      "job_count": 6
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Data Engineer",
+      "skill": "airflow",
+      "job_count": 5
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Other",
+      "skill": "scikit_learn",
+      "job_count": 6
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Engineer",
+      "skill": "spark",
+      "job_count": 7
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Data Engineer",
+      "skill": "snowflake",
+      "job_count": 2
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Data Engineer",
+      "skill": "sql",
+      "job_count": 11
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Analyst",
+      "skill": "pyspark",
+      "job_count": 1
+    },
+    {
+      "source": "arbeitnow",
+      "primary_role": "Data Engineer",
+      "skill": "pyspark",
+      "job_count": 1
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Scientist",
+      "skill": "aws",
+      "job_count": 21
+    },
+    {
+      "source": "himalayas",
+      "primary_role": "Data Scientist",
+      "skill": "databricks",
+      "job_count": 14
+    }
+  ]
+}
