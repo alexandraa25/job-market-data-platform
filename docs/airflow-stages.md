@@ -84,3 +84,15 @@ DAG-ul separat `job_market_multi_source` foloseste `src.sources_workflow`: doua 
 ## Pregatirea schemei PostgreSQL
 
 Serviciul db-migrate aplica migrarile001–006 si ambele seturi de view-uri intr-o tranzactie inaintea consumatorilor DB. ETL, sources-load, API server si scheduler asteapta service_completed_successfully. Pentru upgrade explicit folositi docker compose run --rm db-migrate cu stiva si parola existente, dupa oprirea consumatorilor. Schema business este separata de migrarile metadata airflow-init. Programarile raman None; contractele taskurilor nu se schimba.
+
+
+## Consolidare verificata — 14.10.2026
+
+Baza activa unica are **1.388 de joburi** (1.341 Himalayas, 47 Arbeitnow), dupa importul a 550 de joburi lipsa din v1. Datele si auditurile anterioare au fost pastrate; backup-urile au trecut restaurarea integrala. Folderul operator este proiectul principal, cu PostgreSQL pe **15435** si Airflow pe **18083**, pastrand volumele stivei sources. Baza veche este oprita. Programarile raman oprite. Valorile/capturile anterioare descriu rularile lor istorice. Refresh-ul Power BI dupa consolidare ramane de efectuat in Desktop. Vezi [procedura](OPERATIONS.md).
+
+
+## Verificare dupa consolidare — 14.10.2026
+
+Rulare manuala live `manual__post_consolidation_20261014`: toate cele4 taskuri Airflow success. Himalayas: 351 acceptate, 351 omise ca neschimbate. Arbeitnow: 21 acceptate, 2 inserate, 10 actualizate, 9 omise. Zero respingeri tehnice si zero identitati duplicate. Baza are acum 1.390 de joburi (1.341 Himalayas, 49 Arbeitnow), dintre care604 cu salariu.
+
+Refresh complet Schema and data verificat in Power BI Desktop: 1.390 anunturi,604 cu salariu,43,5% acoperire; tabelul surselor corespunde SQL. Raportul a fost salvat. Toate cele4 DAG-uri au revenit pe pauza; programarile raman None si Azure upload false. Valorile1388 din consolidare si838 din demonstratia anterioara sunt istorice, nu totaluri curente. Dovezi agregate: `docs/evidence/post-consolidation-demo-20261014.json`.

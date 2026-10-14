@@ -198,7 +198,7 @@ table Companies
 				{228, "Evolution Sports Group", 1},
 				{8, "Satoshi Solutions", 1}
 				}),
-				 Source = if UsePostgreSQL then PostgreSQL.Database("localhost:5433", "job_market_db", [Query="SELECT * FROM analytics.jobs_by_company", CreateNavigationProperties=false]) else Snapshot,
+				 Source = if UsePostgreSQL then PostgreSQL.Database("localhost:15435", "job_market_db", [Query="SELECT * FROM analytics.jobs_by_company", CreateNavigationProperties=false]) else Snapshot,
 				 Typed = Table.TransformColumnTypes(Source, {{"company_id", Int64.Type}, {"company_name", type text}, {"job_count", Int64.Type}})
 				in Typed
 

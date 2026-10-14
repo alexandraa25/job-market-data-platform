@@ -24,3 +24,6 @@ data/spark/
 
 # Local source snapshots and pilot results
 data/sources/
+
+# Private database backups and consolidation exports
+data/backups/

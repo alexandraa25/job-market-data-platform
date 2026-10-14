@@ -1,0 +1,24 @@
+{
+  "legacy_jobs": 821,
+  "target_before": 838,
+  "imported_jobs": 550,
+  "consolidated_jobs": 1388,
+  "sources": {
+    "arbeitnow": 47,
+    "himalayas": 1341
+  },
+  "all_legacy_identities_present": true,
+  "backup_restore_verified": true,
+  "date": "2026-10-14",
+  "database": "job_market_db",
+  "host_port": 15435,
+  "airflow_port": 18083,
+  "duplicate_source_identities": 0,
+  "legacy_audit_keys_preserved": {
+    "job_runs": 14,
+    "job_run_attempts": 59,
+    "pipeline_alerts": 5,
+    "pipeline_daily_checks": 4
+  },
+  "power_bi_refresh_after_consolidation": "verified_in_Desktop_after_live_run_1390_jobs"
+}

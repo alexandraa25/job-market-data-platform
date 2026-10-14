@@ -40,3 +40,15 @@ Refresh complet din PostgreSQL, fără erori. Rezultatul corespunde celor trei v
 ## Ultima demonstrație live — 14.10.2026
 
 După rularea manuală Airflow, Refresh din PostgreSQL a actualizat raportul de la 468 la **838 anunțuri** (791 Himalayas, 47 Arbeitnow), **369 cu salariu, 44,0%**. Arbeitnow + Data Engineer: 22 anunțuri, Python16/72,7%, SQL13/59,1%. Raportul a fost salvat și redeschis cu noile valori; filtrele de test au fost resetate. Aceste valori sunt starea bazei după demonstrație; snapshotul offline inclus rămâne cel din 10.10.2026. Pași și audit: [demonstrația completă](../docs/MULTIPLE_SOURCES.md#demonstrație-completă--14-octombrie-2026).
+
+
+## Consolidare verificata — 14.10.2026
+
+Baza activa unica are **1.388 de joburi** (1.341 Himalayas, 47 Arbeitnow), dupa importul a 550 de joburi lipsa din v1. Datele si auditurile anterioare au fost pastrate; backup-urile au trecut restaurarea integrala. Folderul operator este proiectul principal, cu PostgreSQL pe **15435** si Airflow pe **18083**, pastrand volumele stivei sources. Baza veche este oprita. Programarile raman oprite. Valorile/capturile anterioare descriu rularile lor istorice. Refresh-ul Power BI dupa consolidare ramane de efectuat in Desktop. Vezi [procedura](../docs/OPERATIONS.md).
+
+
+## Verificare dupa consolidare — 14.10.2026
+
+Rulare manuala live `manual__post_consolidation_20261014`: toate cele4 taskuri Airflow success. Himalayas: 351 acceptate, 351 omise ca neschimbate. Arbeitnow: 21 acceptate, 2 inserate, 10 actualizate, 9 omise. Zero respingeri tehnice si zero identitati duplicate. Baza are acum 1.390 de joburi (1.341 Himalayas, 49 Arbeitnow), dintre care604 cu salariu.
+
+Refresh complet Schema and data verificat in Power BI Desktop: 1.390 anunturi,604 cu salariu,43,5% acoperire; tabelul surselor corespunde SQL. Raportul a fost salvat. Toate cele4 DAG-uri au revenit pe pauza; programarile raman None si Azure upload false. Valorile1388 din consolidare si838 din demonstratia anterioara sunt istorice, nu totaluri curente. Dovezi agregate: `docs/evidence/post-consolidation-demo-20261014.json`.

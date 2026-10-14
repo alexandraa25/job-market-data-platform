@@ -4,11 +4,21 @@
 
 Cele patru DAG-uri folosesc schedule=None. Programarile anterioare sunt pastrate comentate. Template-ul Databricks este PAUSED. Serviciul etl are profilul manual: docker compose up -d nu il porneste. Datele si volumele existente nu sunt sterse.
 
-## Alegerea stivei si a bazei
+## Baza unica dupa consolidarea din 14.10.2026
 
-COMPOSE_PROJECT_NAME, DB_HOST_PORT si AIRFLOW_HOST_PORT sunt obligatorii. Fara ele Compose refuza configuratia, inainte de a recrea containere. .env.example descrie ambele variante. Numele proiectului selecteaza volumele; schimbarea lui nu muta si nu combina date.
+Folderul operator local este `D:/Proiecte/job-market-data-platform`. `.env` local pastreaza numele Compose `job-market-data-platform-sources` pentru a reutiliza volumele existente, cu PostgreSQL `localhost:15435` si Airflow `http://localhost:18083`. Numele tehnic nu inseamna ca exista doua baze active. Nu porniti Docker din vechiul worktree sources: configuratia lui locala a fost dezactivata prin golirea `COMPOSE_PROJECT_NAME`.
 
-In sesiunea curenta baza sources (proiect job-market-data-platform-sources, port15435) pastreaza cele838anunturi si ramane baza demonstratiei multi-source. Baza v1 din job-market-data-platform ramane separata. Nu porniti simultan acelasi nume Compose din doua foldere: desemnati un singur folder operator. Dupa un viitor merge, fie continuati stiva sources din folderul deja operator, fie faceti un transfer explicit cu backup/restore catre o stiva aleasa; nu schimbati numele sau parola ca metoda de migrare a datelor. Nu se efectueaza transfer automat.
+Baza business unica `job_market_db` are 1.388 de joburi: 1.341 Himalayas si 47 Arbeitnow. Au fost adaugate 550 de joburi lipsa din baza v1, fara suprascrierea celor 271 de identitati deja prezente. Istoricul vechi de audit a fost importat cu pastrarea inregistrarilor existente la conflict. Relatiile companii/competente au fost refacute pentru joburile importate; nu exista identitati duplicate sau companii nemapate pentru nume nenule.
+
+Backup-urile ambelor baze au fost restaurate integral in baze temporare de verificare, apoi acele baze temporare au fost eliminate. Baza v1 si serviciile ei sunt oprite; volumul vechi este pastrat doar pentru recuperare. Backup-urile/configuratiile sunt locale in `data/backups/`, ignorate de Git. Baza metadata Airflow ramane separata, asa cum cere Airflow; nu este o a doua copie a datelor business.
+
+Din folderul operator folositi `docker compose up -d airflow-api-server airflow-scheduler airflow-dag-processor`, respectiv `docker compose stop`. Cele patru DAG-uri raman pe pauza si cu programare oprita; Azure upload ramane false. Metadatele si logurile stivei sources au fost pastrate, iar artefactele locale au fost copiate in folderul principal cu arhivarea fisierelor inlocuite.
+
+Raportul Sources foloseste in continuare `localhost:15435`. Conexiunile PostgreSQL din raportul original au fost aliniate la acelasi port; modul lui implicit ramane snapshot (`UsePostgreSQL=false`). Pentru date reale seteaza true. Dupa redeschiderea PBIP, executa Refresh in Desktop. **Refresh-ul dupa consolidare nu a fost verificat in Desktop**; importurile/capturile anterioare raman dovezi istorice, nu valori curente.
+
+## Alte instalari si upgrade
+
+COMPOSE_PROJECT_NAME, DB_HOST_PORT si AIRFLOW_HOST_PORT sunt obligatorii. .env.example descrie instalari separate pe volume noi. Configuratia locala consolidata descrisa mai sus are prioritate pe acest laptop.
 
 Pentru upgrade-ul bazei principale existente, pastrati numele original job-market-data-platform, porturile5433/8080 si parola volumului in .env, faceti backup, opriti consumatorii si executati:
 
@@ -105,4 +115,11 @@ Nu exista curatare automata a artefactelor sau politica de retentie Azure in ace
 
 Testata configuratia Compose reala pe un proiect temporar cu volum nou si port aleator: db-migrate Exit0, coloanele de provenienta NOT NULL, tabelele de audit si ambele seturi de view-uri prezente. A doua rulare a reusit. Pe o baza v1 temporara, randul existent si-a pastrat identitatea si linkul, provenienta a fost completata, apoi loaderul a inserat un rand si l-a omis la repetare. O migrare invalida introdusa numai in test a esuat, iar DDL-ul precedent din aceeasi tranzactie a fost rollback.
 
-Configuratia fara nume/porturi explicite a fost refuzata inainte de pornire. Loaderul s-a construit si a pornit cu imaginea derivata dintr-un alt nume Compose. Regresia Python/PostgreSQL: 78passed, 3module Spark omise in imaginea fara PySpark; cele5teste Spark trecute anterior nu au fost repetate pentru schimbari limitate la setup/documentatie. Verificarea de schema si backfill este adaugata in GitHub Actions; noua versiune a workflow-ului nu a fost inca executata pe GitHub. Serviciile reale Airflow nu au fost recreate in aceasta verificare, iar bazele reale nu au fost migrate sau combinate.
+Configuratia fara nume/porturi explicite a fost refuzata inainte de pornire. Loaderul s-a construit si a pornit cu imaginea derivata dintr-un alt nume Compose. Regresia Python/PostgreSQL: 78passed, 3module Spark omise in imaginea fara PySpark; cele5teste Spark trecute anterior nu au fost repetate pentru schimbari limitate la setup/documentatie. Verificarea de schema si backfill este adaugata in GitHub Actions; workflow-ul a trecut ulterior pe PR #1 si pe main (commit be1a4db). Serviciile reale Airflow nu au fost recreate in aceasta verificare, iar bazele reale nu au fost migrate sau combinate.
+
+
+## Verificare dupa consolidare — 14.10.2026
+
+Rulare manuala live `manual__post_consolidation_20261014`: toate cele4 taskuri Airflow success. Himalayas: 351 acceptate, 351 omise ca neschimbate. Arbeitnow: 21 acceptate, 2 inserate, 10 actualizate, 9 omise. Zero respingeri tehnice si zero identitati duplicate. Baza are acum 1.390 de joburi (1.341 Himalayas, 49 Arbeitnow), dintre care604 cu salariu.
+
+Refresh complet Schema and data verificat in Power BI Desktop: 1.390 anunturi,604 cu salariu,43,5% acoperire; tabelul surselor corespunde SQL. Raportul a fost salvat. Toate cele4 DAG-uri au revenit pe pauza; programarile raman None si Azure upload false. Valorile1388 din consolidare si838 din demonstratia anterioara sunt istorice, nu totaluri curente. Dovezi agregate: `docs/evidence/post-consolidation-demo-20261014.json`.

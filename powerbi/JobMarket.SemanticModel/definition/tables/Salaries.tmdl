@@ -112,7 +112,7 @@ table Salaries
 				{"Other", "USD", "monthly", 2, 2, 0, 100.0, 9238.25, 9238.25, 7476.5, 11000},
 				{"Other", null, "annual", 122, 0, 122, 0.0, null, null, null, null}
 				}),
-				 Source = if UsePostgreSQL then PostgreSQL.Database("localhost:5433", "job_market_db", [Query="SELECT * FROM analytics.salary_by_role", CreateNavigationProperties=false]) else Snapshot,
+				 Source = if UsePostgreSQL then PostgreSQL.Database("localhost:15435", "job_market_db", [Query="SELECT * FROM analytics.salary_by_role", CreateNavigationProperties=false]) else Snapshot,
 				 Typed = Table.TransformColumnTypes(Source, {{"primary_role", type text}, {"currency", type text}, {"salary_period", type text}, {"total_jobs", Int64.Type}, {"salary_sample_size", Int64.Type}, {"jobs_without_salary", Int64.Type}, {"salary_coverage_pct", type number}, {"mean_advertised_salary", type number}, {"median_advertised_salary", type number}, {"lowest_advertised_salary", type number}, {"highest_advertised_salary", type number}})
 				in Typed
 

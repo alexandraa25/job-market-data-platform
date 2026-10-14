@@ -59,7 +59,7 @@ table Overview
 				 Snapshot = #table({"total_jobs", "total_companies", "jobs_with_salary", "jobs_without_salary", "salary_coverage_pct"}, {
 				{283, 166, 101, 182, 35.69}
 				}),
-				 Source = if UsePostgreSQL then PostgreSQL.Database("localhost:5433", "job_market_db", [Query="SELECT * FROM analytics.overview", CreateNavigationProperties=false]) else Snapshot,
+				 Source = if UsePostgreSQL then PostgreSQL.Database("localhost:15435", "job_market_db", [Query="SELECT * FROM analytics.overview", CreateNavigationProperties=false]) else Snapshot,
 				 Typed = Table.TransformColumnTypes(Source, {{"total_jobs", Int64.Type}, {"total_companies", Int64.Type}, {"jobs_with_salary", Int64.Type}, {"jobs_without_salary", Int64.Type}, {"salary_coverage_pct", type number}})
 				in Typed
 

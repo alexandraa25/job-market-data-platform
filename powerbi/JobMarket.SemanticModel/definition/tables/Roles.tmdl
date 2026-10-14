@@ -44,7 +44,7 @@ table Roles
 				{"Data Scientist", 30, 11, 36.67},
 				{"Data Engineer", 19, 6, 31.58}
 				}),
-				 Source = if UsePostgreSQL then PostgreSQL.Database("localhost:5433", "job_market_db", [Query="SELECT * FROM analytics.jobs_by_role", CreateNavigationProperties=false]) else Snapshot,
+				 Source = if UsePostgreSQL then PostgreSQL.Database("localhost:15435", "job_market_db", [Query="SELECT * FROM analytics.jobs_by_role", CreateNavigationProperties=false]) else Snapshot,
 				 Typed = Table.TransformColumnTypes(Source, {{"primary_role", type text}, {"job_count", Int64.Type}, {"jobs_with_salary", Int64.Type}, {"salary_coverage_pct", type number}})
 				in Typed
 

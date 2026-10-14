@@ -21,7 +21,7 @@ Nu sunt incluse parole în PBIX/PBIP. Modelul folosește tabele agregate distinc
 1. Pornește serviciile proiectului și verifică existența celor cinci view-uri analytics.
 2. În Power BI: **Transform data → Edit parameters**, setează **UsePostgreSQL = true**.
 3. Aplică schimbarea și execută **Refresh → Schema and data**.
-4. La dialogul de autentificare, introdu personal credențialele bazei. Server: **localhost:5433**; baza: **job_market_db**. Nu introduce parole în interogările M și nu le salva în README.
+4. La dialogul de autentificare, introdu personal credențialele bazei. Server: **localhost:15435**; baza: **job_market_db**. Nu introduce parole în interogările M și nu le salva în README.
 5. Verifică numărătorile față de `SELECT * FROM analytics.overview;`, apoi salvează raportul. Pentru date colectate ulterior, folosește Refresh din nou.
 
 Interogările PostgreSQL sunt pregătite în fiecare partiție a modelului și citesc exclusiv view-uri analytics. Mod de stocare: Import. Importul direct din PostgreSQL nu a fost executat/verificat în Power BI în această intervenție; verificarea vizuală a folosit snapshot-ul. Autentificarea necesită intervenția utilizatoarei. Conexiunea nu este DirectQuery și nu se actualizează automat când DAG-ul se termină. Nu s-a publicat raportul în Power BI Service și nu s-a configurat gateway/refresh programat.
@@ -33,3 +33,6 @@ Interogările PostgreSQL sunt pregătite în fiecare partiție a modelului și c
 Date istorice, inclusiv joburi expirate. Clasificarea rolurilor, detectarea competențelor și gruparea companiilor sunt euristice. Salariile sunt mediile limitelor publicate sau singura limită disponibilă; nu sunt salarii efectiv plătite. Monedele/perioadele nu se convertesc. Alte dimensiuni, mediane sau analiza evoluției salariilor nu sunt reprezentate în acest raport.
 
 Verificări în Power BI Desktop: toate paginile se deschid, snapshot-ul se încarcă, KPI-urile corespund SQL; Data Engineer Python 17/89,5% și SQL 16/84,2%; USD anual are 81 salarii în total, Data Engineer 5 cu media 184.679,50. Eliminarea filtrului anual golește graficul când rămân perioade mixte. Totalul procentual de competențe este gol. 27 de definiții JSON au fost validate față de schemele oficiale Microsoft. Fișierul PBIX a fost salvat din aplicație cu datele incluse; nu s-a făcut o redeschidere separată a PBIX după salvare.
+
+
+Dupa consolidarea din 14.10.2026, ambele rapoarte folosesc aceeasi baza business locala pe portul15435. Raportul original pastreaza implicit snapshotul demonstrativ; seteaza UsePostgreSQL=true si executa Refresh pentru baza reala. Folderul operator Docker este D:/Proiecte/job-market-data-platform.

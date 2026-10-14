@@ -126,7 +126,7 @@ table Skills
 				{"Data Engineer", 3, "spark", 7, 19, 36.84},
 				{"Data Scientist", 7, "aws", 4, 30, 13.33}
 				}),
-				 Source = if UsePostgreSQL then PostgreSQL.Database("localhost:5433", "job_market_db", [Query="SELECT * FROM analytics.skills_by_role", CreateNavigationProperties=false]) else Snapshot,
+				 Source = if UsePostgreSQL then PostgreSQL.Database("localhost:15435", "job_market_db", [Query="SELECT * FROM analytics.skills_by_role", CreateNavigationProperties=false]) else Snapshot,
 				 Typed = Table.TransformColumnTypes(Source, {{"primary_role", type text}, {"skill_id", Int64.Type}, {"skill", type text}, {"job_count", Int64.Type}, {"role_job_count", Int64.Type}, {"demand_pct", type number}})
 				in Typed
 
