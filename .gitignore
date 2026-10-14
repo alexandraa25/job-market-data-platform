@@ -27,3 +27,6 @@ data/sources/
 
 # Private database backups and consolidation exports
 data/backups/
+
+# Private presentation notes
+/docs/DEMONSTRATION.md

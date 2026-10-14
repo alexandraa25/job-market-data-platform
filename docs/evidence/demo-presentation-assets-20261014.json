@@ -1,0 +1,23 @@
+{
+  "captured_on": "2026-10-14",
+  "run_id": "manual__post_consolidation_20261014",
+  "business_rows": 1390,
+  "images": [
+    {
+      "file": "docs/images/powerbi-overview-20261014.jpg",
+      "bytes": 113238,
+      "sha256": "0df9b8944dcf3d764b6ab5138a01f5306d7aaaea2787faa2ad8257a9a86bed84"
+    },
+    {
+      "file": "docs/images/powerbi-skills-20261014.jpg",
+      "bytes": 119034,
+      "sha256": "6f5230e90f9d673fc4522e0200716e0fbee315b0633e42bfb9e45f411f5624c5"
+    },
+    {
+      "file": "docs/images/airflow-multi-source-20261014.jpg",
+      "bytes": 43629,
+      "sha256": "47cc2e53a56a319614378936db07e4e474b0fec0475ca251f4821619191c4e9a"
+    }
+  ],
+  "new_ingestion_triggered": false
+}

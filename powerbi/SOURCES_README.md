@@ -1,5 +1,7 @@
 # Compararea surselor în Power BI
 
+> Baza consolidată și capturile actuale din 14.10.2026 sunt prezentate în [README](../README.md). Valorile și imaginile mai vechi de mai jos descriu snapshoturile datate.
+
 Deschide `JobMarketSources.pbip` în Power BI Desktop. Raportul are două pagini, verificate în Desktop la 11 octombrie 2026. Păstrează folderele `JobMarketSources.Report` și `JobMarketSources.SemanticModel` lângă PBIP. La prima deschidere dintr-un clone fără cache, execută Refresh. Raportul original `JobMarket` este separat.
 
 ## Pagini și interpretare

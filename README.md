@@ -2,14 +2,13 @@
 
 Platformă de Data Engineering care colectează anunțuri din **Himalayas și Arbeitnow**, le transformă și validează, apoi le încarcă incremental în PostgreSQL. Airflow orchestrează procesarea, auditul urmărește fiecare sursă, iar Power BI prezintă rolurile și competențele.
 
-## Starea actuală
+[Operare](docs/OPERATIONS.md) · [Audit multi-source](docs/MULTIPLE_SOURCES.md)
 
-- DAG multi-source verificat live: două extrageri paralele → selecție/transformare/validare → încărcare atomică.
-- Proveniență și identitate pe sursă; UPSERT, audit de extragere și încărcare, candidați ambigui păstrați pentru revizuire.
-- Raportul `JobMarketSources.pbip` importă datele din PostgreSQL la Refresh. Include și un snapshot offline separat.
-- Pipeline-ul original Himalayas rămâne disponibil: extract → transform → validate → load → PySpark.
-- Arhivare opțională Azure Data Lake Gen2 și notebookuri Databricks Free Edition; transferul către Free Edition este manual.
-- Toate programările sunt oprite (`schedule=None`, Databricks `PAUSED`). Pornirea serviciilor nu declanșează ingestia.
+## Rezultat verificat
+
+Demonstrația din **14.10.2026**, după consolidarea bazei: **1.390 de anunțuri istorice** (1.341 Himalayas, 49 Arbeitnow), 604 cu salariu și **43,5% acoperire salarială**. Toate cele patru taskuri Airflow au reușit, iar Refresh-ul Power BI a confirmat totalurile SQL. Rularea manuală a inserat 2 joburi, actualizat 10 și omis 360 neschimbate, fără respingeri tehnice sau identități duplicate. [Dovezi agregate](docs/evidence/post-consolidation-demo-20261014.json).
+
+![Power BI — baza consolidată, 14.10.2026](docs/images/powerbi-overview-20261014.jpg)
 
 ## Arhitectură
 
@@ -28,17 +27,21 @@ flowchart LR
     AF -. orchestrează .-> L
 ```
 
-Fluxul original poate arhiva raw în Azure și procesa același snapshot cu PySpark în Parquet. Aceste operații cloud nu sunt adăugate implicit DAG-ului multi-source.
+- Identitate pe sursă, încărcare incrementală și audit de extragere/încărcare.
+- Selecție conservatoare Arbeitnow; candidații ambigui rămân pentru review.
+- Migrări repetabile, tranzacționale, înaintea serviciilor care consumă date.
+- Raport Power BI cu două pagini, filtre de sursă/rol și view-uri SQL.
+- Fluxul original Himalayas rămâne disponibil: extract → transform → validate → load → PySpark.
+
+Arhivarea Azure Data Lake Gen2 și notebookurile Databricks Free Edition sunt extensii separate. Transferul în Free Edition este manual; operațiile cloud nu sunt incluse implicit în DAG-ul multi-source.
 
 ## Tehnologii
 
 Python, Pandas, SQLAlchemy, PostgreSQL 18, Apache Airflow 3.3.2 / LocalExecutor, Docker Compose, PySpark, Azure Data Lake Storage Gen2, Databricks Free Edition, Power BI, Pytest și GitHub Actions.
 
-## Instalare și upgrade
+## Pornire
 
-1. Pornește Docker Desktop cu Linux containers. Copiază `.env.example` în `.env` și înlocuiește parolele/secretele demonstrative.
-2. Alege explicit **o singură stivă**. Numele Compose determină și volumele. Pentru o instalare principală, exemplul folosește `job-market-data-platform`, PostgreSQL `5433`, Airflow `8080`. Pentru worktree-ul separat sources folosește `job-market-data-platform-sources`, `15435`, `18083`. Nu rescrie un `.env` existent și păstrează parola volumului existent.
-3. Construiește și pornește:
+Pe un calculator nou, copiază `.env.example` în `.env`, completează secretele local și alege explicit numele Compose și porturile. Exemplul principal folosește `job-market-data-platform`, PostgreSQL `5433`, Airflow `8080`. Nu rescrie un `.env` existent. Pentru volume existente păstrează numele proiectului și parola bazei și urmează [procedura de upgrade](docs/OPERATIONS.md).
 
 ```powershell
 docker compose build airflow-init airflow-api-server airflow-scheduler airflow-dag-processor
@@ -46,69 +49,35 @@ docker compose up -d airflow-api-server airflow-scheduler airflow-dag-processor
 docker compose ps -a
 ```
 
-Pe o bază nouă se execută `sql/init.sql`, apoi serviciul **db-migrate** aplică migrările 001–006 și ambele seturi de view-uri într-o tranzacție. ETL, loaderul sources și serviciile Airflow care consumă date așteaptă migrarea reușită. `airflow-init` migrează separat metadatele Airflow. Exit 0 pentru cele două servicii de inițializare este normal.
+`db-migrate` aplică migrările 001–006 și ambele seturi de view-uri într-o tranzacție; consumatorii așteaptă succesul ei. `airflow-init` migrează separat metadatele. Exit 0 pentru aceste servicii este normal. Nu șterge volumele pentru upgrade.
 
-Pentru **upgrade-ul unui volum existent**, fă mai întâi backup și oprește serviciile care pot încărca date. Rulează din folderul care deține stiva, cu același `.env`, nume Compose și parolă:
+**Configurația laptopului demonstrat:** folder operator `D:/Proiecte/job-market-data-platform`, PostgreSQL `localhost:15435`, Airflow `http://localhost:18083`. `.env` păstrează numele Compose `job-market-data-platform-sources` pentru reutilizarea volumelor consolidate. Baza business veche este oprită; backup-urile au trecut restaurarea integrală. Nu porni stiva din vechiul worktree sources. [Consolidare](docs/evidence/database-consolidation-20261014.json).
 
-```powershell
-docker compose stop airflow-scheduler airflow-api-server airflow-dag-processor
-docker compose up -d db
-docker compose run --rm db-migrate
-# Numai după Exit 0:
-docker compose up -d airflow-api-server airflow-scheduler airflow-dag-processor
-```
+Toate programările sunt oprite: `schedule=None`, DAG-uri pe pauză, Databricks `PAUSED`, Azure upload dezactivat. Pornirea serviciilor nu declanșează ingestia. În Airflow, o demonstrație live necesită un Trigger manual al `job_market_multi_source`, cu `mode=live`; apoi DAG-ul se pune din nou pe pauză.
 
-Migrările sunt repetabile, păstrează datele și completează proveniența rândurilor Himalayas existente. Nu se combină bazele celor două stive. Nu șterge volumele pentru upgrade. [Ghid complet și alegerea bazei finale](docs/OPERATIONS.md).
-
-## Demonstrație multi-source
-
-Deschide Airflow la portul ales în `.env`. Autentificarea locală este descrisă în [OPERATIONS.md](docs/OPERATIONS.md). Scoate `job_market_multi_source` de pe pauză, declanșează manual cu `mode=live`, apoi verifică `extract_himalayas`, `extract_arbeitnow`, `process`, `load`. După succes, pune DAG-ul din nou pe pauză.
-
-Modul implicit `snapshot` necesită fișiere locale în `data/sources/input`, care nu sunt publicate. Pentru date noi alege explicit `live`. Nu activa o programare pentru demonstrație. În Power BI apasă Refresh după terminarea DAG-ului.
-
-Rularea din **14.10.2026**: toate cele patru taskuri success, 371 acceptate tehnic, 370 inserate și 1 omis, zero respingeri de calitate. Cele 26 de candidate Arbeitnow ambigue nu au fost încărcate. Baza cumulată și Power BI: **838 anunțuri istorice** (791 Himalayas, 47 Arbeitnow), 369 cu salariu, 44,0% acoperire. [Audit și procedură](docs/MULTIPLE_SOURCES.md) · [Dovezi agregate](docs/evidence/demo-multi-source-20261014.json).
-
-![Comparație surse, snapshot demonstrativ din 10.10.2026](docs/images/powerbi-sources-overview.png)
-
-Captura de mai sus a fost realizată la 11.10.2026 pe snapshotul de 468 de anunțuri; nu ilustrează totalul bazei după lotul din 14.10.2026.
+![Airflow — patru taskuri reușite, 14.10.2026](docs/images/airflow-multi-source-20261014.jpg)
 
 ## Power BI
 
-- **Sources:** `powerbi/JobMarketSources.pbip`, două pagini cu filtre sursă/rol; import PostgreSQL verificat. Raportul este salvat cu `UsePostgreSQL=true`, `DatabaseServer=localhost:15435`, corespunzător bazei consolidate locale. Pe alt calculator, folosește portul ales în `.env`. Credențialele se introduc personal în Desktop.
-- **Demo offline:** setează `UsePostgreSQL=false`, aplică și apasă Refresh. Snapshotul inclus din 10.10.2026 conține 468 de anunțuri; nu colectează date noi.
-- **Raport original:** `powerbi/JobMarket.pbip`, trei pagini pentru roluri, companii, competențe și salarii; are propriul snapshot demonstrativ.
+Deschide `powerbi/JobMarketSources.pbip`, păstrând folderele Report și SemanticModel lângă el. Raportul folosește `UsePostgreSQL=true`, `DatabaseServer=localhost:15435`; pe altă instalare setează portul ales în `.env`. Introdu credențialele personal în Desktop și execută Refresh. Mod Import, fără publicare sau refresh programat în Service.
 
-Păstrează folderele raportului și modelului lângă PBIP. Nu există publicare sau refresh programat în Service. [Ghid Sources](powerbi/SOURCES_README.md) · [Ghid raport original](powerbi/README.md).
+![Power BI — competențe pe surse și roluri, 14.10.2026](docs/images/powerbi-skills-20261014.jpg)
+
+Pentru demo offline, setează `UsePostgreSQL=false` și execută Refresh: snapshotul inclus din **10.10.2026 are 468 de joburi**, diferit de baza consolidată. Raportul original `powerbi/JobMarket.pbip` păstrează propriul snapshot și conexiuni PostgreSQL la același port local. [Ghid Sources](powerbi/SOURCES_README.md) · [Raport original](powerbi/README.md).
 
 ## Model și limite
 
-`jobs`, `companies`, `skills`, `job_skills` păstrează datele relaționale; `source_extraction_attempts` și `source_load_runs` urmăresc sursele. Fluxul original folosește `job_runs`, `job_run_attempts`, reconciliere și alerte persistente. [Contractele etapelor](docs/airflow-stages.md).
+`jobs`, `companies`, `skills`, `job_skills` păstrează modelul relațional; `source_extraction_attempts` și `source_load_runs` urmăresc sursele. Fluxul original folosește `job_runs`, `job_run_attempts`, reconciliere și alerte persistente. [Contractele etapelor](docs/airflow-stages.md).
 
-Datele includ istoric și anunțuri expirate; nu reprezintă întreaga piață. Deduplicarea de identitate nu elimină automat anunțurile similare între surse. Selecția Arbeitnow este conservatoare; clasificarea Himalayas și detectarea competențelor sunt euristice. Procentele competențelor nu se însumează. Arbeitnow nu furnizează salarii; valorile lipsă nu sunt salarii zero. Salariile nu sunt convertite între monede/perioade. Reconcilierea întreruperilor auditului multi-source rămâne o extensie viitoare.
+Datele includ istoric și anunțuri expirate; nu reprezintă întreaga piață. Identitatea pe sursă nu elimină automat anunțurile similare între surse. Clasificarea rolurilor și competențelor este euristică. Procentele competențelor nu se însumează; salariile absente nu sunt zero și nu sunt convertite între monede/perioade. Retenția automată și reconcilierea întreruperilor auditului multi-source rămân extensii viitoare.
 
-## Teste
+## Verificări
 
 ```powershell
 python -m pip install -r requirements.txt -r requirements.spark.txt
 python -m pytest -v
 ```
 
-Integrarea folosește `TEST_DATABASE_URL` către o bază dedicată cu nume terminat în `_test`; niciodată baza de business. Java 17 este necesar pentru Spark. Regresia pre-merge din 14.10.2026: 78 teste Python/PostgreSQL și 5 teste Spark trecute, o comparație cu un snapshot local omisă. Verificarea noului bootstrap este descrisă în [OPERATIONS.md](docs/OPERATIONS.md).
+Testele Spark necesită Java 17. Integrarea folosește o bază dedicată cu nume terminat în `_test`, niciodată baza business. CI verifică și bootstrap-ul/backfill-ul și reaplicarea migrărilor. Pentru prezentare, [scriptul SQL doar pentru citire](sql/demo_checks.sql) verifică auditul, totalurile și identitățile duplicate.
 
-## Azure, Databricks și istoricul demonstrațiilor
-
-`AZURE_UPLOAD_ENABLED=false` este implicit. Activarea necesită cont ADLS Gen2, containere private și rolul Storage Blob Data Contributor pentru aplicație. Datele stocate deja pot consuma credit chiar cu programările oprite. [Operare Azure](docs/OPERATIONS.md) · [Databricks](databricks/README.md).
-
-[Capturi și verificări istorice v1](docs/PROJECT_HISTORY.md) · [Dezvoltarea multi-source](docs/MULTIPLE_SOURCES.md). Extensia ML rămâne pe ramura sa separată. `.env`, cache-urile, PBIX, datele brute/intermediare și documentația personală sunt excluse din Git.
-
-
-## Consolidare verificata — 14.10.2026
-
-Baza activa unica are **1.388 de joburi** (1.341 Himalayas, 47 Arbeitnow), dupa importul a 550 de joburi lipsa din v1. Datele si auditurile anterioare au fost pastrate; backup-urile au trecut restaurarea integrala. Folderul operator este proiectul principal, cu PostgreSQL pe **15435** si Airflow pe **18083**, pastrand volumele stivei sources. Baza veche este oprita. Programarile raman oprite. Valorile/capturile anterioare descriu rularile lor istorice. Refresh-ul Power BI dupa consolidare ramane de efectuat in Desktop. Vezi [procedura](docs/OPERATIONS.md).
-
-
-## Verificare dupa consolidare — 14.10.2026
-
-Rulare manuala live `manual__post_consolidation_20261014`: toate cele4 taskuri Airflow success. Himalayas: 351 acceptate, 351 omise ca neschimbate. Arbeitnow: 21 acceptate, 2 inserate, 10 actualizate, 9 omise. Zero respingeri tehnice si zero identitati duplicate. Baza are acum 1.390 de joburi (1.341 Himalayas, 49 Arbeitnow), dintre care604 cu salariu.
-
-Refresh complet Schema and data verificat in Power BI Desktop: 1.390 anunturi,604 cu salariu,43,5% acoperire; tabelul surselor corespunde SQL. Raportul a fost salvat. Toate cele4 DAG-uri au revenit pe pauza; programarile raman None si Azure upload false. Valorile1388 din consolidare si838 din demonstratia anterioara sunt istorice, nu totaluri curente. Dovezi agregate: `docs/evidence/post-consolidation-demo-20261014.json`.
+Pentru oprire fără ștergerea datelor: `docker compose stop`. [Istoricul proiectului](docs/PROJECT_HISTORY.md) · [Operare completă](docs/OPERATIONS.md).
